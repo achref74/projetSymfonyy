@@ -1,114 +1,141 @@
 {% extends 'backBase.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}User index
+{% endblock %}
 
 {% block body %}
 
 
-            <div class="row ">
-              <div class="col-12 grid-margin">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">Utilisateurs</h4>     <a href="{{ path('app_user_new') }}" class="btn btn-success">Create new</a>
+	<div class="row ">
+		<div class="col-12 grid-margin">
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">Utilisateurs
+						<a href="{{ path('app_user_new') }}" class="btn btn-success ml-4">Create new</a>
+					</h4>
 
-                    <div class="table-responsive">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th>
-                              <div class="form-check form-check-muted m-0">
-                                <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input">
-                                </label>
-                              </div>
-                            </th>
-                            <th> Nom </th>
-                            <th> Email </th>
-                            <th> Téléphone </th>
-                            <th> Genre </th>
-                            <th> Role </th>
-                            <th> Actions </th>
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>
+										<div class="form-check form-check-muted m-0">
+											<label class="form-check-label">
+												<input type="checkbox" class="form-check-input">
+											</label>
+										</div>
+									</th>
+									<th>
+										Nom
+									</th>
+									<th>
+										Email
+									</th>
+									<th>
+										Téléphone
+									</th>
+									<th>
+										Genre
+									</th>
+									<th>
+										Role
+									</th>
+									<th>
+										Actions
+									</th>
 
-                          </tr>
-                        </thead>
-                        <tbody>
-                                {% for user in users %}
+								</tr>
+							</thead>
+							<tbody>
+								{% for user in users %}
 
-                          <tr>
-                            <td>
-                              <div class="form-check form-check-muted m-0">
-                                <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input">
-                                </label>
-                              </div>
-                            </td>
-                            <td>
-                              <imgsrc="{{ asset(user.imageProfil) }}" alt="image" />
-                              <span class="pl-2"> {{ user.nom }} {{ user.prenom }}</span>
-                            </td>
-                            <td> {{ user.email }} </td>
-                            <td> {{ user.numtel }} </td>
-                            <td> {{ user.genre }} </td>
-                            <td><div class="badge badge-outline-success">{{ user.role }} </div></td>
-                            <td>
-                            <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Show</a>
-                            {# <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-secondary">Edit</a>  #}
-                            </td>
+									<tr>
+										<td>
+											<div class="form-check form-check-muted m-0">
+												<label class="form-check-label">
+													<input type="checkbox" class="form-check-input">
+												</label>
+											</div>
+										</td>
+										<td>
+											<imgsrc="{{asset(user.imageProfil)}}" alt="image"/>
+											<span class="pl-2">
+												{{ user.nom }}
+												{{ user.prenom }}</span>
+										</td>
+										<td>
+											{{ user.email }}
+										</td>
+										<td>
+											{{ user.numtel }}
+										</td>
+										<td>
+											{{ user.genre }}
+										</td>
+										<td>
+											<div class="badge badge-outline-success">
+												{% if user.role == 0 %}
+													Client
+												{% elseif user.role == 1 %}
+													Formateur
+												{% else %}
+													Admin
+												{% endif %}
+											</div>
+										</td>
+										<td>
+											<a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Show</a>
+											{# <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-secondary">Edit</a>  #}
+										</td>
 
-                          </tr>
-                                  {% else %}
-            <p class="no-records-found">No records found</p>
-        {% endfor %}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-{# 
-              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-        {% for user in users %}
-  
-                <img class="card-image" src="{{ asset(user.imageProfil) }}" alt="Profil Image" width="200" height="200">
-                <div class="card-body">
-                    <h5 class="card-title">User ID: {{ user.idUser }}</h5>
-                    <p class="text-muted font-weight-normal"><strong>Nom:</strong> {{ user.nom }} {{ user.prenom }}</p>
-                    <p class="text-muted font-weight-normal"><strong>Email:</strong> {{ user.email }}</p>
-                    <p class="text-muted font-weight-normal"><strong>Date de Naissance:</strong> {{ user.dateNaissance ? user.dateNaissance|date('Y-m-d') : '' }}</p>
-                    <p class="text-muted font-weight-normal"><strong>Adresse:</strong> {{ user.adresse }}</p>
-                    <p class="text-muted font-weight-normal"><strong>Numéro de téléphone:</strong> {{ user.numtel }}</p>
-                    <p class="text-muted font-weight-normal"><strong>Genre:</strong> {{ user.genre }}</p>
-                    <p class="text-muted font-weight-normal"><strong>Spécialité:</strong> {{ user.specialite }}</p>
-                    <p class="text-muted font-weight-normal"><strong>Role:</strong> {{ user.role }}</p>
-                    <p class="text-muted font-weight-normal"><strong>Niveau Académique:</strong> {{ user.niveauAcademique }}</p>
-                    <p class="text-muted font-weight-normal"><strong>Disponibilité:</strong> {{ user.disponiblite }}</p>
-                     <img class="card-image" src="{{ asset(user.cv) }}" alt="Votre Cv" width="200" height="200">
-
-                    <p class="text-muted font-weight-normal"><strong>Niveau Scolaire:</strong> {{ user.niveauScolaire }}</p>
-                    <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Show</a>
-                    <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-secondary">Edit</a>
-                </div>
-            </div>
-        {% else %}
-            <p class="no-records-found">No records found</p>
-        {% endfor %} #}
-         <!-- Clear the floats -->
-    </div>
-
+									</tr>
+								{% else %}
+									<p class="no-records-found">No records found</p>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
-{% endblock %}
-
-{# {% block styles %}
-    <style>
-        .card {
-            width: 200px !important; /* Largeur fixe */
-            float: left !important; /* Flottement à gauche */
-            margin-right: 20px !important; /* Espacement entre les cartes */
-            margin-bottom: 20px !important; /* Espacement en bas des cartes */
-        }
-    </style>
-{% endblock %} #}
+	{# 
+	              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+	        {% for user in users %}
+	  
+	                <img class="card-image" src="{{ asset(user.imageProfil) }}" alt="Profil Image" width="200" height="200">
+	                <div class="card-body">
+	                    <h5 class="card-title">User ID: {{ user.idUser }}</h5>
+	                    <p class="text-muted font-weight-normal"><strong>Nom:</strong> {{ user.nom }} {{ user.prenom }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Email:</strong> {{ user.email }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Date de Naissance:</strong> {{ user.dateNaissance ? user.dateNaissance|date('Y-m-d') : '' }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Adresse:</strong> {{ user.adresse }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Numéro de téléphone:</strong> {{ user.numtel }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Genre:</strong> {{ user.genre }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Spécialité:</strong> {{ user.specialite }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Role:</strong> {{ user.role }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Niveau Académique:</strong> {{ user.niveauAcademique }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Disponibilité:</strong> {{ user.disponiblite }}</p>
+	                     <img class="card-image" src="{{ asset(user.cv) }}" alt="Votre Cv" width="200" height="200">
+	
+	                    <p class="text-muted font-weight-normal"><strong>Niveau Scolaire:</strong> {{ user.niveauScolaire }}</p>
+	                    <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Show</a>
+	                    <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-secondary">Edit</a>
+	                </div>
+	            </div>
+	        {% else %}
+	            <p class="no-records-found">No records found</p>
+	        {% endfor %} #}
+	<!-- Clear the floats -->
+</div>{% endblock %}{# {% block styles %}
+	    <style>
+	        .card {
+	            width: 200px !important; /* Largeur fixe */
+	            float: left !important; /* Flottement à gauche */
+	            margin-right: 20px !important; /* Espacement entre les cartes */
+	            margin-bottom: 20px !important; /* Espacement en bas des cartes */
+	        }
+	    </style>
+	{% endblock %} #}
