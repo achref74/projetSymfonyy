@@ -1,29 +1,61 @@
-{% extends 'base.html.twig' %}
+{% extends 'backBase.html.twig' %}
 
 {% block title %}User index{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
 
-    <div class="card-container">
+              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-9">
+                        <div class="d-flex align-items-center align-self-start">
+                          <h3 class="mb-0">$17.34</h3>
+                          <p class="text-success ml-2 mb-0 font-weight-medium">+11%</p>
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <div class="icon icon-box-success">
+                          <span class="mdi mdi-arrow-top-right icon-item"></span>
+                        </div>
+                      </div>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">Revenue current</h6>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
         {% for user in users %}
             <div class="card">
+             <div class="row">
+                      <div class="col-9">
+                        <div class="d-flex align-items-center align-self-start">
+                          <h3 class="mb-0"><strong>Nom:</strong> {{ user.nom }} {{ user.prenom }}</h3>
+                          <p class="text-success ml-2 mb-0 font-weight-medium">user.role</p>
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <div class="icon icon-box-success">
+<img class="card-image" src="{{ asset(user.imageProfil) }}" alt="Profil Image" width="100" height="100">                        </div>
+                      </div>
+                    </div>
                 <img class="card-image" src="{{ asset(user.imageProfil) }}" alt="Profil Image" width="200" height="200">
                 <div class="card-body">
                     <h5 class="card-title">User ID: {{ user.idUser }}</h5>
-                    <p class="card-text"><strong>Nom:</strong> {{ user.nom }} {{ user.prenom }}</p>
-                    <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
-                    <p class="card-text"><strong>Date de Naissance:</strong> {{ user.dateNaissance ? user.dateNaissance|date('Y-m-d') : '' }}</p>
-                    <p class="card-text"><strong>Adresse:</strong> {{ user.adresse }}</p>
-                    <p class="card-text"><strong>Numéro de téléphone:</strong> {{ user.numtel }}</p>
-                    <p class="card-text"><strong>Genre:</strong> {{ user.genre }}</p>
-                    <p class="card-text"><strong>Spécialité:</strong> {{ user.specialite }}</p>
-                    <p class="card-text"><strong>Role:</strong> {{ user.role }}</p>
-                    <p class="card-text"><strong>Niveau Académique:</strong> {{ user.niveauAcademique }}</p>
-                    <p class="card-text"><strong>Disponibilité:</strong> {{ user.disponiblite }}</p>
+                    <p class="text-muted font-weight-normal"><strong>Nom:</strong> {{ user.nom }} {{ user.prenom }}</p>
+                    <p class="text-muted font-weight-normal"><strong>Email:</strong> {{ user.email }}</p>
+                    <p class="text-muted font-weight-normal"><strong>Date de Naissance:</strong> {{ user.dateNaissance ? user.dateNaissance|date('Y-m-d') : '' }}</p>
+                    <p class="text-muted font-weight-normal"><strong>Adresse:</strong> {{ user.adresse }}</p>
+                    <p class="text-muted font-weight-normal"><strong>Numéro de téléphone:</strong> {{ user.numtel }}</p>
+                    <p class="text-muted font-weight-normal"><strong>Genre:</strong> {{ user.genre }}</p>
+                    <p class="text-muted font-weight-normal"><strong>Spécialité:</strong> {{ user.specialite }}</p>
+                    <p class="text-muted font-weight-normal"><strong>Role:</strong> {{ user.role }}</p>
+                    <p class="text-muted font-weight-normal"><strong>Niveau Académique:</strong> {{ user.niveauAcademique }}</p>
+                    <p class="text-muted font-weight-normal"><strong>Disponibilité:</strong> {{ user.disponiblite }}</p>
                      <img class="card-image" src="{{ asset(user.cv) }}" alt="Votre Cv" width="200" height="200">
 
-                    <p class="card-text"><strong>Niveau Scolaire:</strong> {{ user.niveauScolaire }}</p>
+                    <p class="text-muted font-weight-normal"><strong>Niveau Scolaire:</strong> {{ user.niveauScolaire }}</p>
                     <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Show</a>
                     <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-secondary">Edit</a>
                 </div>
@@ -35,9 +67,11 @@
     </div>
 
     <a href="{{ path('app_user_new') }}" class="btn btn-success">Create new</a>
+
+
 {% endblock %}
 
-{% block styles %}
+{# {% block styles %}
     <style>
         .card {
             width: 200px !important; /* Largeur fixe */
@@ -46,4 +80,4 @@
             margin-bottom: 20px !important; /* Espacement en bas des cartes */
         }
     </style>
-{% endblock %}
+{% endblock %} #}
