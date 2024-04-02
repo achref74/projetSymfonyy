@@ -4,42 +4,74 @@
 
 {% block body %}
 
-              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+
+            <div class="row ">
+              <div class="col-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
-                    <div class="row">
-                      <div class="col-9">
-                        <div class="d-flex align-items-center align-self-start">
-                          <h3 class="mb-0">$17.34</h3>
-                          <p class="text-success ml-2 mb-0 font-weight-medium">+11%</p>
-                        </div>
-                      </div>
-                      <div class="col-3">
-                        <div class="icon icon-box-success">
-                          <span class="mdi mdi-arrow-top-right icon-item"></span>
-                        </div>
-                      </div>
+                    <h4 class="card-title">Utilisateurs</h4>     <a href="{{ path('app_user_new') }}" class="btn btn-success">Create new</a>
+
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>
+                              <div class="form-check form-check-muted m-0">
+                                <label class="form-check-label">
+                                  <input type="checkbox" class="form-check-input">
+                                </label>
+                              </div>
+                            </th>
+                            <th> Nom </th>
+                            <th> Email </th>
+                            <th> Téléphone </th>
+                            <th> Genre </th>
+                            <th> Role </th>
+                            <th> Actions </th>
+
+                          </tr>
+                        </thead>
+                        <tbody>
+                                {% for user in users %}
+
+                          <tr>
+                            <td>
+                              <div class="form-check form-check-muted m-0">
+                                <label class="form-check-label">
+                                  <input type="checkbox" class="form-check-input">
+                                </label>
+                              </div>
+                            </td>
+                            <td>
+                              <imgsrc="{{ asset(user.imageProfil) }}" alt="image" />
+                              <span class="pl-2"> {{ user.nom }} {{ user.prenom }}</span>
+                            </td>
+                            <td> {{ user.email }} </td>
+                            <td> {{ user.numtel }} </td>
+                            <td> {{ user.genre }} </td>
+                            <td><div class="badge badge-outline-success">{{ user.role }} </div></td>
+                            <td>
+                            <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Show</a>
+                            {# <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-secondary">Edit</a>  #}
+                            </td>
+
+                          </tr>
+                                  {% else %}
+            <p class="no-records-found">No records found</p>
+        {% endfor %}
+                        </tbody>
+                      </table>
                     </div>
-                    <h6 class="text-muted font-weight-normal">Revenue current</h6>
                   </div>
                 </div>
               </div>
+            </div>
 
+
+{# 
               <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
         {% for user in users %}
-            <div class="card">
-             <div class="row">
-                      <div class="col-9">
-                        <div class="d-flex align-items-center align-self-start">
-                          <h3 class="mb-0"><strong>Nom:</strong> {{ user.nom }} {{ user.prenom }}</h3>
-                          <p class="text-success ml-2 mb-0 font-weight-medium">user.role</p>
-                        </div>
-                      </div>
-                      <div class="col-3">
-                        <div class="icon icon-box-success">
-<img class="card-image" src="{{ asset(user.imageProfil) }}" alt="Profil Image" width="100" height="100">                        </div>
-                      </div>
-                    </div>
+  
                 <img class="card-image" src="{{ asset(user.imageProfil) }}" alt="Profil Image" width="200" height="200">
                 <div class="card-body">
                     <h5 class="card-title">User ID: {{ user.idUser }}</h5>
@@ -62,11 +94,10 @@
             </div>
         {% else %}
             <p class="no-records-found">No records found</p>
-        {% endfor %}
-        <div style="clear:both;"></div> <!-- Clear the floats -->
+        {% endfor %} #}
+         <!-- Clear the floats -->
     </div>
 
-    <a href="{{ path('app_user_new') }}" class="btn btn-success">Create new</a>
 
 
 {% endblock %}
