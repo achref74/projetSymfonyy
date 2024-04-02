@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    <h1>User index</h1>
+
+    <div class="card-container">
+        {% for user in users %}
+            <div class="card">
+                <img class="card-image" src="{{ asset(user.imageProfil) }}" alt="Profil Image" width="200" height="200">
+                <div class="card-body">
+                    <h5 class="card-title">User ID: {{ user.idUser }}</h5>
+                    <p class="card-text"><strong>Nom:</strong> {{ user.nom }} {{ user.prenom }}</p>
+                    <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+                    <p class="card-text"><strong>Date de Naissance:</strong> {{ user.dateNaissance ? user.dateNaissance|date('Y-m-d') : '' }}</p>
+                    <p class="card-text"><strong>Adresse:</strong> {{ user.adresse }}</p>
+                    <p class="card-text"><strong>Numéro de téléphone:</strong> {{ user.numtel }}</p>
+                    <p class="card-text"><strong>Genre:</strong> {{ user.genre }}</p>
+                    <p class="card-text"><strong>Spécialité:</strong> {{ user.specialite }}</p>
+                    <p class="card-text"><strong>Role:</strong> {{ user.role }}</p>
+                    <p class="card-text"><strong>Niveau Académique:</strong> {{ user.niveauAcademique }}</p>
+                    <p class="card-text"><strong>Disponibilité:</strong> {{ user.disponiblite }}</p>
+                     <img class="card-image" src="{{ asset(user.cv) }}" alt="Votre Cv" width="200" height="200">
+
+                    <p class="card-text"><strong>Niveau Scolaire:</strong> {{ user.niveauScolaire }}</p>
+                    <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Show</a>
+                    <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-secondary">Edit</a>
+                </div>
+            </div>
+        {% else %}
+            <p class="no-records-found">No records found</p>
+        {% endfor %}
+        <div style="clear:both;"></div> <!-- Clear the floats -->
+    </div>
+
+    <a href="{{ path('app_user_new') }}" class="btn btn-success">Create new</a>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .card {
+            width: 200px !important; /* Largeur fixe */
+            float: left !important; /* Flottement à gauche */
+            margin-right: 20px !important; /* Espacement entre les cartes */
+            margin-bottom: 20px !important; /* Espacement en bas des cartes */
+        }
+    </style>
+{% endblock %}

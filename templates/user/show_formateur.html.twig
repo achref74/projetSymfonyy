@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil du Formateur{% endblock %}
+
+{% block body %}
+    <h1>Profil du Formateur</h1>
+    
+    <img class="card-image" src="{{ asset(user.imageProfil) }}" alt="Profil Image" width="200" height="200">
+    <p><strong>Nom:</strong> {{ user.getNom() }}</p>
+    <p><strong>Prénom:</strong> {{ user.getPrenom() }}</p>
+    <p><strong>Email:</strong> {{ user.getEmail() }}</p>
+    <p><strong>Date de Naissance:</strong> {{ user.getDateNaissance()|date('Y-m-d') }}</p>
+    <p><strong>Adresse:</strong> {{ user.getAdresse() }}</p>
+    <p><strong>Numéro de téléphone:</strong> {{ user.getNumtel() }}</p>
+    <p><strong>Genre:</strong> {{ user.getGenre() }}</p>
+    <p><strong>Spécialité:</strong> {{ user.getSpecialite() }}</p>
+    <p><strong>Niveau Académique:</strong> {{ user.getNiveauAcademique() }}</p>
+    <p><strong>Disponibilité:</strong> {{ user.getDisponiblite() }}</p>
+    <img class="card-image" src="{{ asset(user.getCv()) }}" alt="Votre Cv" width="200" height="200">
+
+
+    <a href="{{ path('app_user_show', {'idUser': user.getIdUser()}) }}">Retour</a>
+    <a href="{{ path('app_user_edit_formateur', {'idUser': user.getIdUser()}) }}
+">Modifier</a>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+    <h1>User</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>idUser</th>
+                <td>{{ user.idUser }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ user.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ user.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>DateNaissance</th>
+                <td>{{ user.dateNaissance ? user.dateNaissance|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ user.adresse }}</td>
+            </tr>
+            <tr>
+                <th>Numtel</th>
+                <td>{{ user.numtel }}</td>
+            </tr>
+            <tr>
+                <th>ImageProfil</th>
+                <td>{{ user.imageProfil }}</td>
+            </tr>
+            <tr>
+                <th>Genre</th>
+                <td>{{ user.genre }}</td>
+            </tr>
+            <tr>
+                <th>Mdp</th>
+                <td>{{ user.mdp }}</td>
+            </tr>
+             <tr>
+                <th>Role</th>
+                <td>{{ user.role }}</td>
+            </tr>
+            <tr>
+                <th>Specialite</th>
+                <td>{{ user.specialite }}</td>
+            </tr>
+           
+            <tr>
+                <th>NiveauAcademique</th>
+                <td>{{ user.niveauAcademique }}</td>
+            </tr>
+            <tr>
+                <th>Disponiblite</th>
+                <td>{{ user.disponiblite }}</td>
+            </tr>
+            <tr>
+                <th>Cv</th>
+                <td>{{ user.cv }}</td>
+            </tr>
+            <tr>
+                <th>Niveau_scolaire</th>
+                <td>{{ user.niveauScolaire }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_index') }}">back to list</a>
+
+    <a href="{{ path('app_user_edit', {'idUser': user.idUser}) }}">edit</a>
+
+    {{ include('user/_delete_form.html.twig') }}
+{% endblock %}

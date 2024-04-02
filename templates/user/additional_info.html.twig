@@ -1,0 +1,19 @@
+{# templates/user/additional_info.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Compléter les informations{% endblock %}
+
+{% block body %}
+    <h1>Compléter les informations</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.imageProfil) }}
+    {{ form_row(form.genre) }}
+    {{ form_row(form.specialite) }}
+    {{ form_row(form.niveauAcademique) }}
+    {{ form_row(form.disponiblite) }}
+    {{ form_row(form.cv) }}
+    {{ form_row(form.mdp) }}
+    <button type="submit" class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil du Client{% endblock %}
+
+{% block body %}
+    <h1>Profil du Client</h1>
+    <img class="card-image" src="{{ asset(user.imageProfil) }}" alt="Profil Image" width="200" height="200">
+    <p><strong>Nom:</strong> {{ user.getNom() }}</p>
+    <p><strong>Prénom:</strong> {{ user.getPrenom() }}</p>
+    <p><strong>Email:</strong> {{ user.getEmail() }}</p>
+    <p><strong>Date de Naissance:</strong> {{ user.getDateNaissance()|date('Y-m-d') }}</p>
+    <p><strong>Adresse:</strong> {{ user.getAdresse() }}</p>
+    <p><strong>Numéro de téléphone:</strong> {{ user.getNumtel() }}</p>
+    <p><strong>Genre:</strong> {{ user.getGenre() }}</p>
+    <p><strong>Niveau Scolaire:</strong> {{ user.getNiveauScolaire() }}</p>
+{% endblock %}

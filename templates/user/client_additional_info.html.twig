@@ -1,0 +1,16 @@
+{# templates/user/client_additional_info.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Informations supplémentaires du client{% endblock %}
+
+{% block body %}
+    <h1>Informations supplémentaires du client</h1>
+    {{ form_start(form) }}
+        {{ form_row(form.imageProfil) }}
+        {{ form_row(form.genre) }}
+        {{ form_row(form.niveauScolaire) }}
+        {{ form_row(form.mdp) }}
+        {{ form_row(form.suivant) }}
+    {{ form_end(form) }}
+{% endblock %}
