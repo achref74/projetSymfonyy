@@ -1,5 +1,5 @@
-{% extends 'base.html.twig' %}
-
+{% set baseTemplate = app.user.getRole() == 0 or app.user.getRole() == 1 ? 'frontBase.html.twig' : 'backBase.html.twig' %}
+{% extends baseTemplate %}
 {% block title %}Question index{% endblock %}
 
 {% block body %}
