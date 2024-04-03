@@ -17,8 +17,8 @@ class UserAdditionalInfoType extends AbstractType
         $builder
         ->add('imageProfil', FileType::class, [
             'label' => 'Image de profil',
-            'mapped' => false, // Indique à Symfony de ne pas mapper ce champ à une propriété de l'entité
-            'required' => false, // Rend le champ facultatif
+            'mapped' => false, 
+            'required' => false, 
         ])
         ->add('genre', ChoiceType::class, [
             'label' => 'Genre',

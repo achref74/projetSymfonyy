@@ -1,31 +1,91 @@
-{% extends 'base.html.twig' %}
+{% extends 'frontBase.html.twig' %}
 
 {% block title %}Modifier le profil du Client{% endblock %}
 
 {% block body %}
-    <h1>Modifier le profil du Client</h1>
-    <form method="post" action="{{ path('app_user_edit_client', {'idUser': user.getIdUser()}) }}">
-        <label for="nom">Nom:</label>
-        <input type="text" id="nom" name="nom" value="{{ user.getNom() }}" required>
-        
-        <label for="prenom">Prénom:</label>
-        <input type="text" id="prenom" name="prenom" value="{{ user.getPrenom() }}" required>
-        
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{ user.getEmail() }}" required>
-        
-        <label for="dateNaissance">Date de Naissance:</label>
-        <input type="date" id="dateNaissance" name="dateNaissance" value="{{ user.getDateNaissance()|date('Y-m-d') }}" required>
-        
-        <label for="adresse">Adresse:</label>
-        <input type="text" id="adresse" name="adresse" value="{{ user.getAdresse() }}" required>
-        
-        <label for="numtel">Numéro de téléphone:</label>
-        <input type="tel" id="numtel" name="numtel" value="{{ user.getNumtel() }}" required>
-        
-        <label for="niveauScolaire">Niveau Scolaire:</label>
-        <input type="text" id="niveauScolaire" name="niveauScolaire" value="{{ user.getNiveauScolaire() }}" required>
-        
-        <button type="submit">Enregistrer les modifications</button>
-    </form>
+    <section class="contact-us" id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 align-self-center">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form method="post" action="{{ path('app_user_edit_client', {'idUser': user.getIdUser()}) }}" id="contact">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h2>Modifier le profil du Client</h2>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="nom" type="text" id="nom" value="{{ user.getNom() }}" placeholder="Nom...*" required="">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="prenom" type="text" id="prenom" value="{{ user.getPrenom() }}" placeholder="Prénom...*" required="">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="email" type="email" id="email" value="{{ user.getEmail() }}" pattern="[^ @]*@[^ @]*" placeholder="Email...*" required="">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="dateNaissance" type="date" id="dateNaissance" value="{{ user.getDateNaissance()|date('Y-m-d') }}" placeholder="Date de Naissance...*" required="">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="adresse" type="text" id="adresse" value="{{ user.getAdresse() }}" placeholder="Adresse...*" required="">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="numtel" type="tel" id="numtel" value="{{ user.getNumtel() }}" placeholder="Numéro de téléphone...*" required="">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="niveauScolaire" type="text" id="niveauScolaire" value="{{ user.getNiveauScolaire() }}" placeholder="Niveau Scolaire...*" required="">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <fieldset>
+                                            <button type="submit" id="form-submit" class="button">Enregistrer les modifications</button>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="right-info">
+                        <ul>
+                            <li>
+                                <h6>Phone Number</h6>
+                                <span>010-020-0340</span>
+                            </li>
+                            <li>
+                                <h6>Email Address</h6>
+                                <span>info@meeting.edu</span>
+                            </li>
+                            <li>
+                                <h6>Street Address</h6>
+                                <span>Rio de Janeiro - RJ, 22795-008, Brazil</span>
+                            </li>
+                            <li>
+                                <h6>Website URL</h6>
+                                <span>www.meeting.edu</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <p>Copyright © 2022 Edu Meeting Co., Ltd. All Rights Reserved.
+                <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
+        </div>
+    </section>
 {% endblock %}

@@ -23,7 +23,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 #[Route('/user')]
 class UserController extends AbstractController
-{private $passwordEncoder;
+{
+    private $passwordEncoder;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -126,8 +127,6 @@ class UserController extends AbstractController
     }
     
    
-   
-   
     #[Route('/additional-info', name: 'app_user_additional_info', methods: ['GET', 'POST'])]
 public function additionalInfo(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger): Response
 {
@@ -149,7 +148,7 @@ public function additionalInfo(Request $request, EntityManagerInterface $entityM
     if ($form->isSubmitted() && $form->isValid()) {
         $rawPassword = $user->getMdp();
         if ($rawPassword !== null) {
-            $hashedPassword = md5($rawPassword);
+            $hashedPassword = $this->$passwordEncoder->encodePassword($user, $rawPassword);
             $user->setMdp($hashedPassword);
         }
         $imageFile = $form->get('imageProfil')->getData();
@@ -217,7 +216,7 @@ public function clientAdditionalInfo(Request $request, EntityManagerInterface $e
     if ($form->isSubmitted() && $form->isValid()) {
         $rawPassword = $user->getMdp();
         if ($rawPassword !== null) {
-            $hashedPassword = md5($rawPassword);
+            $hashedPassword = $this->$passwordEncoder->encodePassword($user, $rawPassword);
             $user->setMdp($hashedPassword);
         }
         $imageFile = $form->get('imageProfil')->getData();
@@ -246,6 +245,7 @@ public function clientAdditionalInfo(Request $request, EntityManagerInterface $e
         'form' => $form->createView(),
     ]);
 }
+
 #[Route('/{idUser}', name: 'app_user_show', methods: ['GET', 'POST'])]
     public function show(Request $request, User $user): Response
     {
@@ -259,7 +259,7 @@ public function clientAdditionalInfo(Request $request, EntityManagerInterface $e
             $entityManager->flush();
 
             // Rediriger vers la même page après la modification
-            return $this->redirectToRoute('app_user_show', ['idUser' => $user->getId()]);
+            return $this->redirectToRoute('app_user_show', ['idUser' => $user->getIdUser()]);
         }
 
         // Déterminer le template à utiliser en fonction du rôle de l'utilisateur
@@ -329,7 +329,7 @@ public function editFormateur(Request $request, User $user): Response
 }
 
 
-#[Route('/{idUser}/edit', name: 'app_user_edit_client', methods: ['GET', 'POST'])]
+#[Route('/{idUser}/editClient', name: 'app_user_edit_client', methods: ['GET', 'POST'])]
 public function editClient(Request $request, User $user): Response
 {
     // Vérifier si la requête est de type POST (l'utilisateur a soumis le formulaire de modification)
