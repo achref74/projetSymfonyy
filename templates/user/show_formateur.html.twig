@@ -1,4 +1,6 @@
-{% extends 'frontBase.html.twig' %}
+{% set baseTemplate = app.user.getRole() == 0 or app.user.getRole() == 1 ? 'frontBase.html.twig' : 'backBase.html.twig' %}
+{% extends baseTemplate %}
+
 
 {% block title %}Profil du Formateur{% endblock %}
 
@@ -102,4 +104,96 @@
             </div>
         </div>
     </section>
+
+
+           <div class="container d-flex justify-content-center" >
+                <div class="col-lg-5 my-5">
+                <div class="text-center card-box">
+                    <div class="member-card pt-2 pb-2">
+                        <div class="thumb-lg member-thumb mx-auto"><img src="{{ asset(user.imageProfil) }}" class="rounded-circle img-thumbnail" alt="profile-image"></div>
+                        <div class="">
+                            <h4 style="color :black;">{{ user.getNom() }}</h4>
+                            <p class="text-muted">{{ user.getEmail() }}<span></p>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="mt-3">
+                                        <h4 style="color :black;">{{ user.getDateNaissance()|date('Y-m-d') }}</h4>
+                                        <p class="mb-0 text-muted">Date de Naissance</p>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mt-3">
+                                        <h4 style="color :black;">												
+                                        {% if user.role == 0 %}
+													Client
+												{% elseif user.role == 1 %}
+													Formateur
+												{% else %}
+													Admin
+												{% endif %}</h4>
+                                        <p class="mb-0 text-muted">Role</p>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mt-3">
+                                        <h4 style="color :black;">{{ user.getGenre()}}</h4>
+                                        <p class="mb-0 text-muted">Genre</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                            <button type="button" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light">Modifier</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <style>
+.card-box {
+    padding: 20px;
+    border-radius: 3px;
+    margin-bottom: 30px;
+    background-color: #fff;
+}
+
+.social-links li a {
+    border-radius: 50%;
+    color: rgba(121, 121, 121, .8);
+    display: inline-block;
+    height: 30px;
+    line-height: 27px;
+    border: 2px solid rgba(121, 121, 121, .5);
+    text-align: center;
+    width: 30px
+}
+
+.social-links li a:hover {
+    color: #797979;
+    border: 2px solid #797979
+}
+.thumb-lg {
+    height: 88px;
+    width: 88px;
+}
+.img-thumbnail {
+    padding: .25rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    max-width: 100%;
+    height: auto;
+}
+.text-pink {
+    color: #ff679b!important;
+}
+.btn-rounded {
+    border-radius: 2em;
+}
+.text-muted {
+    color: #98a6ad!important;
+}
+</style>
 {% endblock %}
