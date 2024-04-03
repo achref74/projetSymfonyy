@@ -37,25 +37,14 @@
                                         <div class="count-title">Spécialité</div>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="count-area-content">
-                                        <div class="count-digit">{{ user.getNiveauAcademique() }}</div>
-                                        <div class="count-title">Niveau Académique</div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="count-area-content">
-                                        <div class="count-digit">{{ user.getDisponiblite() }}</div>
-                                        <div class="count-title">Disponibilité</div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="count-area-content new-students">
-                                        <div class="count-digit">{{ user.getEmail() }}</div>
+                                        <div class="count-digit" style="font-size: 10px;">{{ user.getEmail() }}</div>
                                         <div class="count-title">Email</div>
                                     </div>
                                 </div>
@@ -82,8 +71,33 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 align-self-center">
-                        <img src="{{ asset(user.imageProfil) }}" alt=""></a>
+                <div class="col-lg-6">
+                    <div class="row" style="margin-top: 130px;">
+
+
+                        <div class="col-lg-12 align-self-center">
+                            <img src="{{ asset(user.imageProfil) }}" alt=""></a>
+                        </div>
+
+                        <div class="col-lg-6 ">
+                                <div class="col-12">
+                                    <div class="count-area-content">
+                                        <div class="count-digit">{{ user.getAdresse() }}</div>
+                                        <div class="count-title">Adresse</div>
+                                    </div>
+                                </div>
+
+                        </div>
+                        <div class="col-6">
+                                <div class="col-12">
+                                    <div class="count-area-content">
+                                        <div class="count-digit">{{ user.getDisponiblite() }}</div>
+                                        <div class="count-title">Disponibilité</div>
+                                    </div>
+                                </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>

@@ -29,6 +29,7 @@ class UserController extends AbstractController
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
+
     }
     
     
