@@ -42,6 +42,7 @@
                                 <ul class="sub-menu">                            
                                     {% if app.user %}
                                         {{ app.user.getEmail() }}
+                                        {{ app.user.getIdUser() }}
                                     {% endif %}
                                     <li><a href="">Mon Profil</a></li>
                                     <li><a href="">Modifier mon profil</a></li>

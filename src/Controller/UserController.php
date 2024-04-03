@@ -197,7 +197,7 @@ public function additionalInfo(Request $request, EntityManagerInterface $entityM
 
 
 #[Route('/client-additional-info', name: 'client_additional_info', methods: ['GET', 'POST'])]
-public function clientAdditionalInfo(Request $request, EntityManagerInterface $entityManager): Response
+public function clientAdditionalInfo(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder): Response
 {
     $userData = $request->getSession()->get('userData', []);
 
@@ -215,11 +215,13 @@ public function clientAdditionalInfo(Request $request, EntityManagerInterface $e
     $form->handleRequest($request);
     
     if ($form->isSubmitted() && $form->isValid()) {
-        $plainPassword = $user->getMdp();
-        if ($plainPassword !== null) {
-            $hashedPassword = $this->$passwordEncoder->encodePassword($user, $plainPassword);
-            $user->setMdp($hashedPassword);
-        }
+           // Hachage du mot de passe avec l'algorithme par défaut de Symfony
+           $plainPassword = $user->getMdp();
+           if ($plainPassword !== null) {
+               $hashedPassword = $passwordEncoder->encodePassword($user, $plainPassword);
+               // Assurez-vous que votre entité User a une méthode setPassword() pour définir le mot de passe haché
+               $user->setMdp($hashedPassword);
+           }
         $imageFile = $form->get('imageProfil')->getData();
         if ($imageFile instanceof UploadedFile) {
             // Déplacer le fichier vers le répertoire de destination sans changer son nom
@@ -367,4 +369,3 @@ public function editClient(Request $request, User $user): Response
     ]);
 }
 }   
-
