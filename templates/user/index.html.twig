@@ -6,102 +6,38 @@
 {% block body %}
 
 
-	<div class="row ">
-		<div class="col-12 grid-margin">
-			<div class="card">
-				<div class="card-body">
-					<h4 class="card-title">Utilisateurs
-						<a href="{{ path('app_user_new') }}" class="btn btn-success ml-4">Create new</a>
-					</h4>
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container profile-page">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+        {% for user in users %}
+            {% if loop.index0 % 3 == 0 %}
+                <div class="row">
+            {% endif %}
+            
+            <div class="col-lg-4 col-md-4 col-12">
+                <div class="card profile-header">
+                    <div class="body">
+                        <div class="profile-image float-md-right">
+                            <img src="{{ asset(user.imageProfil) }}" alt="Profile Image" width="100" height="100">
+                        </div>
+                        <h4 class="m-t-0 m-b-0"><strong>{{ user.nom }} {{ user.prenom }}</strong></h4>
+                        <span class="job_post">{{ user.genre }}</span>
+                        <p>{{ user.adresse }}</p>
+                        <div>
+							<a lass="btn btn-primary btn-round" href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Show</a>
 
-					<div class="table-responsive">
-						<table class="table">
-							<thead>
-								<tr>
-									<th>
-										<div class="form-check form-check-muted m-0">
-											<label class="form-check-label">
-												<input type="checkbox" class="form-check-input">
-											</label>
-										</div>
-									</th>
-									<th>
-										Nom
-									</th>
-									<th>
-										Email
-									</th>
-									<th>
-										Téléphone
-									</th>
-									<th>
-										Genre
-									</th>
-									<th>
-										Role
-									</th>
-									<th>
-										Actions
-									</th>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {% if loop.index0 % 3 == 2 or loop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
 
-								</tr>
-							</thead>
-							<tbody>
-								{% for user in users %}
-
-									<tr>
-										<td>
-											<div class="form-check form-check-muted m-0">
-												<label class="form-check-label">
-													<input type="checkbox" class="form-check-input">
-												</label>
-											</div>
-										</td>
-										<td>
-											<imgsrc="{{asset(user.imageProfil)}}" alt="image"/>
-											<span class="pl-2">
-												{{ user.nom }}
-												{{ user.prenom }}</span>
-										</td>
-										<td>
-											{{ user.email }}
-										</td>
-										<td>
-											{{ user.numtel }}
-										</td>
-										<td>
-											{{ user.genre }}
-										</td>
-										<td>
-											<div class="badge badge-outline-success">
-												{% if user.role == 0 %}
-													Client
-												{% elseif user.role == 1 %}
-													Formateur
-												{% else %}
-													Admin
-												{% endif %}
-											</div>
-										</td>
-										<td>
-											<a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Afficher</a>
-											{# <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-danger">Supprimer</a> #}
-<form action="{{ path('app_user_delete', {'idUser': user.getIdUser()}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this user?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.getIdUser()) }}">
-    <button type="submit" class="btn btn-danger">Delete</button>
-</form>										</td>
-
-									</tr>
-								{% else %}
-									<p class="no-records-found">No records found</p>
-								{% endfor %}
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 
 
 	{# 
@@ -132,13 +68,72 @@
 	            <p class="no-records-found">No records found</p>
 	        {% endfor %} #}
 	<!-- Clear the floats -->
-</div>{% endblock %}{# {% block styles %}
+
 	    <style>
-	        .card {
-	            width: 200px !important; /* Largeur fixe */
-	            float: left !important; /* Flottement à gauche */
-	            margin-right: 20px !important; /* Espacement entre les cartes */
-	            margin-bottom: 20px !important; /* Espacement en bas des cartes */
-	        }
+a {
+    color: #f96332;
+}
+.m-t-5{
+    margin-top: 5px;   
+}
+.card {
+    background: #fff;
+    margin-bottom: 30px;
+    transition: .5s;
+    border: 0;
+    border-radius: .1875rem;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    box-shadow: none;
+}
+.card .body {
+    font-size: 14px;
+    color: #424242;
+    padding: 20px;
+    font-weight: 400;
+}
+.profile-page .profile-header {
+    position: relative
+}
+
+.profile-page .profile-header .profile-image img {
+    border-radius: 50%;
+    width: 140px;
+    border: 3px solid #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+}
+
+.profile-page .profile-header .social-icon a {
+    margin: 0 5px
+}
+
+.profile-page .profile-sub-header {
+    min-height: 60px;
+    width: 100%
+}
+
+.profile-page .profile-sub-header ul.box-list {
+    display: inline-table;
+    table-layout: fixed;
+    width: 100%;
+    background: #eee
+}
+
+.profile-page .profile-sub-header ul.box-list li {
+    border-right: 1px solid #e0e0e0;
+    display: table-cell;
+    list-style: none
+}
+
+.profile-page .profile-sub-header ul.box-list li:last-child {
+    border-right: none
+}
+
+.profile-page .profile-sub-header ul.box-list li a {
+    display: block;
+    padding: 15px 0;
+    color: #424242
+}
 	    </style>
-	{% endblock %} #}
+</div>{% endblock %}
