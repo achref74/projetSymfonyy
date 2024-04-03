@@ -1,10 +1,8 @@
-# Configuration du hachage de mot de passe par défaut
 security:
     enable_authenticator_manager: true
     password_hashers:
         Symfony\Component\Security\Core\User\UserInterface:
-            algorithm: md5
-            # configurez ici vos options de hachage
+            algorithm: auto
 
     # Configuration du fournisseur d'utilisateurs
     providers:
@@ -48,5 +46,4 @@ when@test:
         password_hashers:
             Symfony\Component\Security\Core\User\UserInterface:
                 App\Entity\User:
-                    algorithm: md5
-                    # configurez ici vos options de hachage
+                    algorithm: auto

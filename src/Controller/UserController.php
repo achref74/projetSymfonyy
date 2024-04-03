@@ -147,9 +147,9 @@ public function additionalInfo(Request $request, EntityManagerInterface $entityM
     $form->handleRequest($request);
     
     if ($form->isSubmitted() && $form->isValid()) {
-        $rawPassword = $user->getMdp();
-        if ($rawPassword !== null) {
-            $hashedPassword = $this->$passwordEncoder->encodePassword($user, $rawPassword);
+        $plainPassword = $user->getMdp();
+        if ($plainPassword !== null) {
+            $hashedPassword = $this->$passwordEncoder->encodePassword($user, $plainPassword);
             $user->setMdp($hashedPassword);
         }
         $imageFile = $form->get('imageProfil')->getData();
@@ -215,9 +215,9 @@ public function clientAdditionalInfo(Request $request, EntityManagerInterface $e
     $form->handleRequest($request);
     
     if ($form->isSubmitted() && $form->isValid()) {
-        $rawPassword = $user->getMdp();
-        if ($rawPassword !== null) {
-            $hashedPassword = $this->$passwordEncoder->encodePassword($user, $rawPassword);
+        $plainPassword = $user->getMdp();
+        if ($plainPassword !== null) {
+            $hashedPassword = $this->$passwordEncoder->encodePassword($user, $plainPassword);
             $user->setMdp($hashedPassword);
         }
         $imageFile = $form->get('imageProfil')->getData();
