@@ -1,8 +1,9 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\EvaluationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EvaluationRepository::class)]
@@ -21,9 +22,17 @@ class Evaluation
 
     #[ORM\ManyToOne(targetEntity: Cours::class, inversedBy: 'evaluations')]
     #[ORM\JoinColumn(nullable: false)]
-    private Cours $cours;
+    private ?Cours $cours;
 
-    // Getters and Setters
+    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'evaluation', cascade: ['persist', 'remove'])]
+    private Collection $questions;
+
+    public function __construct()
+    {
+        $this->questions = new ArrayCollection();
+    }
+
+    // Getters and setters
 
     public function getId(): ?int
     {
@@ -54,28 +63,19 @@ class Evaluation
         return $this;
     }
 
-    public function getCours(): Cours
+    public function getCours(): ?Cours
     {
         return $this->cours;
     }
 
-    public function setCours(Cours $cours): self
+    public function setCours(?Cours $cours): self
     {
         $this->cours = $cours;
 
         return $this;
     }
 
-    public function __construct()
-    {
-        $this->questions = new ArrayCollection();
-    }
-
-    #[ORM\OneToMany(mappedBy: 'evaluation', targetEntity: Question::class, cascade: ['persist', 'remove'])]
-    private Collection $questions;
-
-
-/**
+    /**
      * @return Collection|Question[]
      */
     public function getQuestions(): Collection
@@ -103,5 +103,9 @@ class Evaluation
         }
 
         return $this;
+    }
+    public function __toString(): string
+    {
+        return $this->nom; // Return the 'nom' property as a string representation
     }
 }

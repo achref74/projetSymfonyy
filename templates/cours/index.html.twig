@@ -16,7 +16,6 @@
                 <th>Prerequis</th>
                 <th>Ressource</th>
                 <th>Image</th>
-                <th>IdFormation</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -31,7 +30,6 @@
                 <td>{{ cour.prerequis }}</td>
                 <td>{{ cour.ressource }}</td>
                 <td>{{ cour.image }}</td>
-                <td>{{ cour.idFormation }}</td>
                 <td>
                     <a href="{{ path('app_cours_show', {'id': cour.id}) }}">show</a>
                     <a href="{{ path('app_cours_edit', {'id': cour.id}) }}">edit</a>

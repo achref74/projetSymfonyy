@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection; 
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 class Question
