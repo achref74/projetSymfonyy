@@ -17,32 +17,13 @@ class UserAdditionalInfoType extends AbstractType
         $builder
         ->add('imageProfil', FileType::class, [
             'label' => 'Image de profil',
-            'mapped' => false, 
-            'required' => false, 
+            'mapped' => false, // Indique à Symfony de ne pas mapper ce champ à une propriété de l'entité
+            'required' => false, // Rend le champ facultatif
         ])
-        ->add('genre', ChoiceType::class, [
-            'label' => 'Genre',
-            'choices' => [
-                'Homme' => 'homme',
-                'Femme' => 'femme',
-            ],
-            'attr' => [
-                'class' => 'form-control p_input',
-            ],
-        ])            
+            ->add('genre')
             ->add('specialite')
-            ->add('niveauAcademique', ChoiceType::class, [
-                'label' => 'Niveau Académique',
-                'choices' => [
-                    '1-6 primaire' => '1-6 primaire',
-                    '7-9 college' => '7-9 college',
-                    '1-4 lycée' => '1-4 lycée',
-                    'superieur' => 'superieur',
-                ],
-                'attr' => [
-                    'class' => 'form-control p_input',
-                ],
-            ])            ->add('disponiblite')
+            ->add('niveauAcademique')
+            ->add('disponiblite')
             ->add('cv', FileType::class, [
                 'label' => 'cv',
                 'mapped' => false, // Indique à Symfony de ne pas mapper ce champ à une propriété de l'entité

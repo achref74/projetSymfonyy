@@ -52,11 +52,18 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     
             // Récupérer l'ID de l'utilisateur
             $userId = $user->getIdUser();
+            $userRole = $user->getRole();
+
     
             // Vérifier si l'ID de l'utilisateur est valide
             if ($userId) {
-                // Rediriger l'utilisateur vers son profil en utilisant son ID
-                return new RedirectResponse($this->urlGenerator->generate('app_user_show', ['idUser' => $userId]));
+                if ($userRole == 2) {
+                    return new RedirectResponse($this->urlGenerator->generate('user_home_back', ['idUser' => $userId]));
+
+                }else {
+                    return new RedirectResponse($this->urlGenerator->generate('user_home_front', ['idUser' => $userId]));
+
+                }
             }
         
     
@@ -65,6 +72,12 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
 
     protected function getLoginUrl(Request $request): string
+    {
+        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+
+    }
+
+    public function onLogoutSuccess(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }

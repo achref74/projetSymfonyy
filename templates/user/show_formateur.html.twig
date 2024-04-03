@@ -2,108 +2,10 @@
 {% extends baseTemplate %}
 
 
-{% block title %}Profil du Formateur{% endblock %}
+{% block title %}Profile{% endblock %}
 
 {% block body %}
-    <section class="our-facts">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <h2>Profil</h2>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="count-area-content">
-                                        <div class="count-digit">{{ user.getNom() }}</div>
-                                        <div class="count-title">Nom</div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="count-area-content">
-                                        <div class="count-digit">{{ user.getPrenom() }}</div>
-                                        <div class="count-title">Prénom</div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="count-area-content">
-                                        <div class="count-digit">{{ user.getGenre() }}</div>
-                                        <div class="count-title">Genre</div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="count-area-content">
-                                        <div class="count-digit">{{ user.getSpecialite() }}</div>
-                                        <div class="count-title">Spécialité</div>
-                                    </div>
-                                </div>
 
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="count-area-content new-students">
-                                        <div class="count-digit" style="font-size: 10px;">{{ user.getEmail() }}</div>
-                                        <div class="count-title">Email</div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="count-area-content">
-                                        <div class="count-digit">{{ user.getDateNaissance()|date('Y-m-d') }}</div>
-                                        <div class="count-title">Date de Naissance</div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="count-area-content">
-                                        <div class="count-digit">{{ user.getAdresse() }}</div>
-                                        <div class="count-title">Adresse</div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="count-area-content">
-                                        <div class="count-digit">{{ user.getNumtel() }}</div>
-                                        <div class="count-title">Numéro de téléphone</div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="row" style="margin-top: 130px;">
-
-
-                        <div class="col-lg-12 align-self-center">
-                            <img src="{{ asset(user.imageProfil) }}" alt=""></a>
-                        </div>
-
-                        <div class="col-lg-6 ">
-                                <div class="col-12">
-                                    <div class="count-area-content">
-                                        <div class="count-digit">{{ user.getAdresse() }}</div>
-                                        <div class="count-title">Adresse</div>
-                                    </div>
-                                </div>
-
-                        </div>
-                        <div class="col-6">
-                                <div class="col-12">
-                                    <div class="count-area-content">
-                                        <div class="count-digit">{{ user.getDisponiblite() }}</div>
-                                        <div class="count-title">Disponibilité</div>
-                                    </div>
-                                </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
 
            <div class="container d-flex justify-content-center" >
@@ -145,8 +47,12 @@
                                 </div>
                             </div>
                         </div>
+{% if app.user.getRole() == 1 and app.user.getIdUser() == user.getIdUser() %}
+    <a class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light" href="{{ path('app_user_edit_formateur', {'idUser': app.user.getIdUser()}) }}">Modifier</a>
+{% elseif app.user.getRole() == 0 and app.user.getIdUser() == user.getIdUser() %}
+    <a class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light" href="{{ path('app_user_edit_client', {'idUser': app.user.getIdUser()}) }}">Modifier</a>
+{% endif %}
 
-                            <button type="button" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light">Modifier</button>
                     </div>
                 </div>
             </div>

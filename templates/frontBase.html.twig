@@ -31,7 +31,7 @@
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+                            <li class="scroll-to-section"><a href="{{ path('user_home_front') }}" class="active">Home</a></li>
                             <li class="has-sub"><a>{{ app.user.getEmail() }}
                             <a href="javascript:void(0)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="green" class="bi bi-person-fill-check" viewBox="0 0 16 16">
@@ -44,7 +44,12 @@
                                 <ul class="sub-menu">                            
 
                                     <li><a href="{{ path('app_user_show', {'idUser': app.user.getIdUser()}) }}" >Mon Profil</a></li>
-                                    <li><a href="">Modifier mon profil</a></li>
+                                    <li>
+                                    {% if app.user.getRole() == 1 %}
+    <a href="{{ path('app_user_edit_formateur', {'idUser': app.user.getIdUser()}) }}">Modifier</a>
+{% elseif app.user.getRole() == 0 %}
+    <a href="{{ path('app_user_edit_client', {'idUser': app.user.getIdUser()}) }}">Modifer</a>
+{% endif %}</li>
                                 </ul>
                             </li>
                             <li class="scroll-to-section"><a href="{{ path('app_logout') }}" class="active">Logout</a></li>

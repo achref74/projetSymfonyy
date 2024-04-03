@@ -32,6 +32,17 @@ class UserController extends AbstractController
 
     }
     
+    #[Route('/homeFront', name: 'user_home_front', methods: ['GET'])]
+    public function indexFront(): Response
+    {
+        return $this->render('user/homeFront.html.twig');
+    }
+
+    #[Route('/homeBack', name: 'user_home_back', methods: ['GET'])]
+    public function indexBack(): Response
+    {
+        return $this->render('user/homeBack.html.twig');
+    }
     
     #[Route('/app_user_index', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
@@ -141,7 +152,7 @@ public function additionalInfo(Request $request, EntityManagerInterface $entityM
     $user->setDateNaissance($dateNaissance);
     $user->setAdresse($userData['adresse'] ?? '');
     $user->setNumtel(isset($userData['numtel']) ? (int) $userData['numtel'] : 0);
-    $user->setRole(isset($userData['role']) ? (int) $userData['role'] : 0);
+    $user->setRole(isset($userData['role']) ? (int) $userData['role'] : 1);
     
     $form = $this->createForm(UserAdditionalInfoType::class, $user);
     $form->handleRequest($request);
@@ -149,7 +160,8 @@ public function additionalInfo(Request $request, EntityManagerInterface $entityM
     if ($form->isSubmitted() && $form->isValid()) {
         $plainPassword = $user->getMdp();
         if ($plainPassword !== null) {
-            $hashedPassword = $this->$passwordEncoder->encodePassword($user, $plainPassword);
+            $hashedPassword = $passwordEncoder->encodePassword($user, $plainPassword);
+            // Assurez-vous que votre entité User a une méthode setPassword() pour définir le mot de passe haché
             $user->setMdp($hashedPassword);
         }
         $imageFile = $form->get('imageProfil')->getData();
@@ -186,7 +198,7 @@ public function additionalInfo(Request $request, EntityManagerInterface $entityM
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
     }
 
     
@@ -241,7 +253,7 @@ public function clientAdditionalInfo(Request $request, EntityManagerInterface $e
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
     }
     
     return $this->render('user/client_additional_info.html.twig', [
@@ -360,7 +372,7 @@ public function editClient(Request $request, User $user): Response
         $entityManager->flush();
 
         // Rediriger vers la page de profil de l'utilisateur
-        return $this->redirectToRoute('app_user_show', ['idUser' => $user->getId()]);
+        return $this->redirectToRoute('app_user_show', ['idUser' => $user->getIdUser()]);
     }
 
     // Si la requête n'est pas de type POST, afficher le formulaire de modification du client

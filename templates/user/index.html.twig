@@ -84,9 +84,12 @@
 											</div>
 										</td>
 										<td>
-											<a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Show</a>
-											{# <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-secondary">Edit</a>  #}
-										</td>
+											<a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Afficher</a>
+											{# <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-danger">Supprimer</a> #}
+<form action="{{ path('app_user_delete', {'idUser': user.getIdUser()}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this user?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.getIdUser()) }}">
+    <button type="submit" class="btn btn-danger">Delete</button>
+</form>										</td>
 
 									</tr>
 								{% else %}
