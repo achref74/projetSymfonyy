@@ -5,8 +5,9 @@
 {% block body %}
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
+{% if app.user.getRole() != 2 %}
                     <a class="btn btn-primary btn-round ml-5" href="{{ path('app_cours_new') }}" class="btn btn-primary">New</a>
-
+{% endif %}
     <div class="container profile-page">
         <div class="col-xl-12 col-lg-12 col-md-12">
             {% for cour in cours %}

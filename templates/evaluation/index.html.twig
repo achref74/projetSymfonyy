@@ -36,8 +36,9 @@
                         {% endfor %}
                         </tbody>
                     </table>
-
+{% if app.user.getRole() != 2 %}
                     <a href="{{ path('app_evaluation_new') }}" class="btn btn-success">Create new</a>
+{% endif %}
                 </div>
             </div>
         </div>
