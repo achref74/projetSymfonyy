@@ -8,48 +8,7 @@
     {{ include('evaluation/_form.html.twig') }}
 
 
-    {% block javascripts %}
 
-    <script>
-        jQuery(document).ready(function() {
-            let $questionCollectionHolder = $('div.question-collection');
-
-            // Add a "Add Question" button
-            let $addQuestionButton = $('<button type="button" class="btn btn-secondary btn-sm mt-2">Add Question</button>');
-            let $newLinkLi = $('<li></li>').append($addQuestionButton);
-
-            $questionCollectionHolder.append($newLinkLi);
-
-            // Count the current form inputs we have (e.g. 2), use that as the new
-            // index when inserting a new item
-            $questionCollectionHolder.data('index', $questionCollectionHolder.find(':input').length);
-
-            $addQuestionButton.on('click', function(e) {
-                // Add a new form (see next code block)
-                addQuestionForm($questionCollectionHolder);
-            });
-
-            function addQuestionForm($questionCollectionHolder) {
-                // Get the data-prototype
-                let prototype = $questionCollectionHolder.data('prototype');
-
-                // get the new index
-                let index = $questionCollectionHolder.data('index');
-
-                // Replace '__name__' in the prototype's HTML to instead be a number based on how many items we have
-                let newForm = prototype.replace(/__name__/g, index);
-
-                // increase the index with one for the next item
-                $questionCollectionHolder.data('index', index + 1);
-
-                // Display the form in the page in an li, before the "Add a question" link li
-                let $newFormLi = $('<li></li>').append(newForm);
-                $newLinkLi.before($newFormLi);
-            }
-        });
-    </script>
-{% endblock %}
-    <a href="{{ path('app_evaluation_index') }}">back to list</a>
 
 {% endblock %}
 
