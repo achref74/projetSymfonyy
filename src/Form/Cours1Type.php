@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+
 class Cours1Type extends AbstractType
 {
 
@@ -50,7 +51,7 @@ class Cours1Type extends AbstractType
                     new NotBlank(),
                 ],
             ])
-            ->add('imageProfil', FileType::class, [
+            ->add('image', FileType::class, [
                 'label' => 'Image de profil',
                 'mapped' => false, // Indique à Symfony de ne pas mapper ce champ à une propriété de l'entité
                 'required' => false, // Rend le champ facultatif
