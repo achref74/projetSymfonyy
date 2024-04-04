@@ -24,13 +24,12 @@ class EvaluationType extends AbstractType
             ])
             ->add('questions', CollectionType::class, [
                 'entry_type' => QuestionType::class,
-                'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'by_reference' => false,
                 'prototype' => true,
-                'prototype_name' => '__question_prototype__',
                 'attr' => [
                     'class' => 'question-collection',
+                    'data-prototype' => '__question_prototype__'
                 ],
             ])
             ->add('save', SubmitType::class, ['label' => 'Save Evaluation'])
