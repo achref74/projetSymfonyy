@@ -3,41 +3,43 @@
 namespace App\Form;
 
 use App\Entity\Evaluation;
-use App\Entity\Cours;
+use App\Form\QuestionType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EvaluationType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('note')
-            ->add('nom')
-            ->add('cours', EntityType::class, [
-                'class' => Cours::class,
-                'choice_label' => 'nom',
+            ->add('note', TextType::class, [
+                'label' => 'Note',
+                'attr' => ['placeholder' => 'Note...', 'class' => 'form-control', 'required' => true],
             ])
+            ->add('nom', TextType::class, [
+                'label' => 'Nom',
+                'attr' => ['placeholder' => 'Nom...', 'class' => 'form-control', 'required' => true],
+            ])
+            ->add('cours')
             ->add('questions', CollectionType::class, [
                 'entry_type' => QuestionType::class,
-                'allow_add' => true,
+                'entry_options' => ['label' => false],
+                'allow_add' => false,
                 'by_reference' => false,
                 'prototype' => true,
-                'attr' => [
-                    'class' => 'question-collection',
-                    'data-prototype' => '__question_prototype__'
-                ],
+                'attr' => ['class' => 'question-collection'],
             ])
-            ->add('save', SubmitType::class, ['label' => 'Save Evaluation'])
-            ->setAction($options['action'] ?? '')
-            ->setMethod('POST');
+            ->add('save', SubmitType::class, [
+                'label' => 'Save Evaluation',
+                'attr' => ['class' => 'btn btn-success'],
+            ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Evaluation::class,

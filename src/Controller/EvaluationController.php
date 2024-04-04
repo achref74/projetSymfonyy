@@ -27,18 +27,20 @@ class EvaluationController extends AbstractController
     {
         $evaluation = new Evaluation();
         $form = $this->createForm(EvaluationType::class, $evaluation);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($evaluation);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_evaluation_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('evaluation_index');
         }
 
-        return $this->renderForm('evaluation/new.html.twig', [
+        return $this->render('evaluation/_form.html.twig', [
             'evaluation' => $evaluation,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
