@@ -5,26 +5,59 @@
 {% block body %}
     <h1>Evaluation</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ evaluation.id }}</td>
-            </tr>
-            <tr>
-                <th>Note</th>
-                <td>{{ evaluation.note }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ evaluation.nom }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container d-flex justify-content-center">
+        <div class="col-lg-5 my-5">
+            <div class="text-center card-box">
+                <div class="member-card pt-2 pb-2">
+                    <div class="">
+                        <h5 style="color: black;">{{ evaluation.note }}</h5>
+                        <p class="text-muted">Note</p>
+                    </div>
+                    <div class="">
+                        <h5 style="color: black;">{{ evaluation.nom }}</h5>
+                        <p class="text-muted">Nom</p>
+                    </div>
+                </div>
 
-    <a href="{{ path('app_evaluation_index') }}">back to list</a>
+                <div class="mt-4">
+                    <a href="{{ path('app_evaluation_index') }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light">Back to list</a>
+                    <a href="{{ path('app_evaluation_edit', {'id': evaluation.id}) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light">Edit</a>
+                </div>
 
-    <a href="{{ path('app_evaluation_edit', {'id': evaluation.id}) }}">edit</a>
+                {{ include('evaluation/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
 
-    {{ include('evaluation/_delete_form.html.twig') }}
+    <style>
+        .card-box {
+            padding: 20px;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            background-color: #fff;
+        }
+
+        .thumb-lg {
+            height: 88px;
+            width: 88px;
+        }
+
+        .img-thumbnail {
+            padding: .25rem;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: .25rem;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .btn-rounded {
+            border-radius: 2em;
+        }
+
+        .text-muted {
+            color: #98a6ad!important;
+        }
+
+    </style>
 {% endblock %}
