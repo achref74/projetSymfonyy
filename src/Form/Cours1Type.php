@@ -12,11 +12,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class Cours1Type extends AbstractType
 {
-    private $uploadDirectory;
 
-    public function __construct(string $uploadDirectory)
+    public function __construct()
     {
-        $this->uploadDirectory = $uploadDirectory;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -52,24 +50,34 @@ class Cours1Type extends AbstractType
                     new NotBlank(),
                 ],
             ])
-            ->add('image', null, [
+            ->add('video', FileType::class, [
+                'label' => 'Video',
+                'mapped' => false, // Tells Symfony not to try to set the 'video' field on your entity/entity form object
+                'required' => true,
                 'constraints' => [
-                    new NotBlank(),
+                    new NotBlank([
+                        'message' => 'Please upload a video',
+                    ]),
                     new File([
-                        'maxSize' => '1024k',
+                        'maxSize' => '1024M', // Adjust the max size as needed, 'M' stands for Megabytes
                         'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png',
-                            'image/gif',
+                            'video/mp4',
+                            'video/mpeg',
+                            'video/quicktime',
+                            'video/x-ms-wmv',
+                            'video/x-flv',
+                            'video/webm',
+                            'video/x-msvideo',
+                            'video/3gpp',
+                            'video/x-matroska',
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid image (jpeg, png, gif)',
+                        'mimeTypesMessage' => 'Please upload a valid video',
                     ]),
                 ],
             ])
         ;
 
         // Add the data transformer
-        $builder->get('image')->addModelTransformer(new StringToFileTransformer($this->uploadDirectory));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

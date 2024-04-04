@@ -14,10 +14,10 @@
 
     <div class="row">
         <div class="col-md-4">
-            <div class="form-group">
-                {{ form_label(form.note, 'Note') }}
-                {{ form_widget(form.note, {'attr': {'placeholder': 'Note...', 'class': 'form-control', 'required': 'required'}}) }}
-            </div>
+        <div class="form-group">
+            {{ form_label(form.note, 'Note') }}
+            {{ form_widget(form.note, {'attr': {'placeholder': 'Note...', 'class': 'form-control', 'type': 'number', 'required': 'required'}}) }}
+        </div>
         </div>
         <div class="col-md-4">
             <div class="form-group">
@@ -44,7 +44,7 @@
                         </div>
                     {% endfor %}
                 </div>
-                <button type="button" id="add-question" class="btn btn-primary">Ajouter une autre question</button>
+                <button type="submit" class="btn btn-primary">Ajouter une autre question</button>
             </div>
         </div>
     </div>
@@ -60,18 +60,3 @@
 </div>
 
 {{ form_end(form) }}
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let addButton = document.getElementById('add-question');
-        let container = document.getElementById('question-container');
-        let prototype = container.getAttribute('data-prototype');
-        let index = {{ form.questions|length }};
-
-        addButton.addEventListener('click', function() {
-            let newForm = prototype.replace(/__name__/g, index);
-            container.insertAdjacentHTML('beforeend', newForm);
-            index++;
-        });
-    });
-</script>
