@@ -30,6 +30,20 @@ class CoursController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imagePathFromDatabase = $form->getImage();
+
+            
+            // Extraire le nom du fichier de l'ancien chemin
+            $imageName = basename($imagePathFromDatabase);
+
+            
+            // Construire le nouveau chemin de l'image avec le nouveau nom de fichier
+            $newImagePath = '/images/' . $imageName;
+            $newImagePath1 = '/images/' . $imageName1;
+
+            
+            // Mettre à jour le chemin de l'image dans l'entité User
+            $user->setImageProfil($newImagePath);
             $entityManager->persist($cour);
             $entityManager->flush();
 
