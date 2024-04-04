@@ -31,6 +31,7 @@ class CoursController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $imagePathFromDatabase = $form->getImage();
+            $user = $form->getData();
 
             
             // Extraire le nom du fichier de l'ancien chemin
