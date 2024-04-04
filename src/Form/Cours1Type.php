@@ -50,6 +50,11 @@ class Cours1Type extends AbstractType
                     new NotBlank(),
                 ],
             ])
+            ->add('imageProfil', FileType::class, [
+                'label' => 'Image de profil',
+                'mapped' => false, // Indique à Symfony de ne pas mapper ce champ à une propriété de l'entité
+                'required' => false, // Rend le champ facultatif
+            ])
 
         ;
 
