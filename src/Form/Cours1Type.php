@@ -50,31 +50,7 @@ class Cours1Type extends AbstractType
                     new NotBlank(),
                 ],
             ])
-            ->add('video', FileType::class, [
-                'label' => 'Video',
-                'mapped' => false, // Tells Symfony not to try to set the 'video' field on your entity/entity form object
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please upload a video',
-                    ]),
-                    new File([
-                        'maxSize' => '1024M', // Adjust the max size as needed, 'M' stands for Megabytes
-                        'mimeTypes' => [
-                            'video/mp4',
-                            'video/mpeg',
-                            'video/quicktime',
-                            'video/x-ms-wmv',
-                            'video/x-flv',
-                            'video/webm',
-                            'video/x-msvideo',
-                            'video/3gpp',
-                            'video/x-matroska',
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid video',
-                    ]),
-                ],
-            ])
+
         ;
 
         // Add the data transformer
