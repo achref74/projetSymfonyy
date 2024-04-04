@@ -37,7 +37,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 {{ form_label(form.questions, 'Questions') }}
-                <div id="question-container">
+                <div id="question-container" class="justify-content-center">
                     {% for questionForm in form.questions %}
                         <div class="question-item mb-3">
                             {{ form_row(questionForm, {'attr': {'class': 'form-control'}}) }}
