@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Form;
 
 use App\Entity\Cours;
+use App\Form\DataTransformer\StringToFileTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -10,6 +12,13 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class Cours1Type extends AbstractType
 {
+    private $uploadDirectory;
+
+    public function __construct(string $uploadDirectory)
+    {
+        $this->uploadDirectory = $uploadDirectory;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -58,6 +67,9 @@ class Cours1Type extends AbstractType
                 ],
             ])
         ;
+
+        // Add the data transformer
+        $builder->get('image')->addModelTransformer(new StringToFileTransformer($this->uploadDirectory));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

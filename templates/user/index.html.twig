@@ -40,35 +40,6 @@
 
 
 
-	{# 
-	              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-	        {% for user in users %}
-	  
-	                <img class="card-image" src="{{ asset(user.imageProfil) }}" alt="Profil Image" width="200" height="200">
-	                <div class="card-body">
-	                    <h5 class="card-title">User ID: {{ user.idUser }}</h5>
-	                    <p class="text-muted font-weight-normal"><strong>Nom:</strong> {{ user.nom }} {{ user.prenom }}</p>
-	                    <p class="text-muted font-weight-normal"><strong>Email:</strong> {{ user.email }}</p>
-	                    <p class="text-muted font-weight-normal"><strong>Date de Naissance:</strong> {{ user.dateNaissance ? user.dateNaissance|date('Y-m-d') : '' }}</p>
-	                    <p class="text-muted font-weight-normal"><strong>Adresse:</strong> {{ user.adresse }}</p>
-	                    <p class="text-muted font-weight-normal"><strong>Numéro de téléphone:</strong> {{ user.numtel }}</p>
-	                    <p class="text-muted font-weight-normal"><strong>Genre:</strong> {{ user.genre }}</p>
-	                    <p class="text-muted font-weight-normal"><strong>Spécialité:</strong> {{ user.specialite }}</p>
-	                    <p class="text-muted font-weight-normal"><strong>Role:</strong> {{ user.role }}</p>
-	                    <p class="text-muted font-weight-normal"><strong>Niveau Académique:</strong> {{ user.niveauAcademique }}</p>
-	                    <p class="text-muted font-weight-normal"><strong>Disponibilité:</strong> {{ user.disponiblite }}</p>
-	                     <img class="card-image" src="{{ asset(user.cv) }}" alt="Votre Cv" width="200" height="200">
-	
-	                    <p class="text-muted font-weight-normal"><strong>Niveau Scolaire:</strong> {{ user.niveauScolaire }}</p>
-	                    <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Show</a>
-	                    <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-secondary">Edit</a>
-	                </div>
-	            </div>
-	        {% else %}
-	            <p class="no-records-found">No records found</p>
-	        {% endfor %} #}
-	<!-- Clear the floats -->
-
 	    <style>
 a {
     color: #f96332;
