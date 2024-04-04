@@ -30,21 +30,23 @@ class CoursController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $imagePathFromDatabase = $form->getImage();
-            $user = $form->getData();
-
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile instanceof UploadedFile) {
+                // Déplacer le fichier vers le répertoire de destination sans changer son nom
+                try {
+                    $imageFile->move(
+                        $this->getParameter('kernel.project_dir') . '/public/images',
+                        $imageFile->getClientOriginalName()
+                    );
+                    // Mettre à jour le chemin complet de l'image dans l'entité User
+                    $cour->setImage('/images/' . $imageFile->getClientOriginalName());
+                } catch (FileException $e) {
+                    // Gérer l'exception si le déplacement du fichier a échoué
+                    // Par exemple, enregistrer le message d'erreur dans les logs
+                }
+            }
             
-            // Extraire le nom du fichier de l'ancien chemin
-            $imageName = basename($imagePathFromDatabase);
-
-            
-            // Construire le nouveau chemin de l'image avec le nouveau nom de fichier
-            $newImagePath = '/images/' . $imageName;
-            $newImagePath1 = '/images/' . $imageName1;
-
-            
-            // Mettre à jour le chemin de l'image dans l'entité User
-            $user->setImageProfil($newImagePath);
+            // Mettre à jour le chemin de l'image dans l'entité cours
             $entityManager->persist($cour);
             $entityManager->flush();
 
