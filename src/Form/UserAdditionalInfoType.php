@@ -8,6 +8,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+
 
 
 class UserAdditionalInfoType extends AbstractType
@@ -17,22 +20,44 @@ class UserAdditionalInfoType extends AbstractType
         $builder
         ->add('imageProfil', FileType::class, [
             'label' => 'Image de profil',
-            'mapped' => false, // Indique à Symfony de ne pas mapper ce champ à une propriété de l'entité
-            'required' => false, // Rend le champ facultatif
+            'mapped' => false,
+            'required' => false,
         ])
-            ->add('genre')
-            ->add('specialite')
-            ->add('niveauAcademique')
-            ->add('disponiblite')
-            ->add('cv', FileType::class, [
-                'label' => 'cv',
-                'mapped' => false, // Indique à Symfony de ne pas mapper ce champ à une propriété de l'entité
-                'required' => false, // Rend le champ facultatif
-            ])
-            ->add('mdp')
-            ->add('suivant', SubmitType::class, [
-                'label' => 'Enregistrer',
-            ]);
+        ->add('genre', ChoiceType::class, [
+            'choices' => [
+                'Homme' => 'Homme',
+                'Femme' => 'Femme',
+                'Autre' => 'Autre',
+            ],
+            'label' => 'Genre',
+            'required' => true,
+        ])
+        ->add('specialite')
+        ->add('niveauAcademique', ChoiceType::class, [
+            'choices' => [
+                'Primaire' => 'primaire',
+                'Secondaire' => 'secondaire',
+                'Universitaire' => 'universitaire',
+            ],
+            'label' => 'Niveau Académique',
+            'required' => true,
+        ])
+        ->add('disponiblite')
+        ->add('cv', FileType::class, [
+            'label' => 'CV',
+            'mapped' => false,
+            'required' => false,
+        ])
+        ->add('mdp', PasswordType::class, [
+            'label' => 'Mot de passe',
+            'required' => true,
+            'attr' => [
+                'autocomplete' => 'new-password',
+            ],
+        ])
+        ->add('suivant', SubmitType::class, [
+            'label' => 'Enregistrer',
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

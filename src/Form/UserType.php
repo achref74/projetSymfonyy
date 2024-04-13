@@ -10,19 +10,71 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Event\PreSubmitEvent;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('nom')
-        ->add('prenom')
-        ->add('email')
+        ->add('nom', TextType::class, [
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'Le nom ne doit pas être vide.',
+                ]),
+                new Regex([
+                    'pattern' => '/^[a-zA-Z]+$/',
+                    'message' => 'Le nom ne doit contenir que des lettres.',
+                ]),
+            ],
+        ])
+        ->add('prenom', TextType::class, [
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'Le prenom ne doit pas être vide.',
+                ]),
+                new Regex([
+                    'pattern' => '/^[a-zA-Z]+$/',
+                    'message' => 'Le prénom ne doit contenir que des lettres.',
+                ]),
+            ],
+        ])
+        ->add('email', EmailType::class, [
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'L`email ne doit pas être vide.',
+                ]),                
+                new Email([
+                    'message' => 'Veuillez saisir une adresse email valide.',
+                ]),
+            ],
+        ])
         ->add('dateNaissance')
-        ->add('adresse')
-        ->add('numtel')
+        ->add('adresse', TextType::class, [
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'L`adresse ne doit pas être vide.',
+                ]),
+            ],
+        ])
+        ->add('numtel', IntegerType::class, [
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'Le numéro de téléphone ne doit pas être vide.',
+                ]),
+                new Length([
+                    'min' => 8,
+                    'max' => 8,
+                    'exactMessage' => 'Le numéro de téléphone doit contenir exactement 8 chiffres.',
+                ]),
+            ],
+        ])
         ->add('role', ChoiceType::class, [
             'choices' => [
                 'Client' => 0,
@@ -31,8 +83,10 @@ class UserType extends AbstractType
             'expanded' => true,
             'multiple' => false,
             'label' => 'Vous êtes',
+            'constraints' => [
+                new NotBlank(),
+            ],
         ])
-        
         ->add('suivant', SubmitType::class, [
             'label' => 'Suivant',
         ]);

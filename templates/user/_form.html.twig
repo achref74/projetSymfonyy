@@ -1,7 +1,3 @@
-{# {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form, {'render_rest': false}) }} #}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,33 +25,55 @@
                         <div class="card-body px-5 py-5">
                             <h3 class="card-title text-left mb-3">Register</h3>
                             {{ form_start(form) }}
+                                {{ form_widget(form._token) }}
                                 <div class="form-group">
                                     {{ form_label(form.nom) }}
                                     {{ form_widget(form.nom, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {% if form_errors(form.nom) %}
+                                        <div class="alert alert-danger">{{ form_errors(form.nom) }}</div>
+                                    {% endif %}
                                 </div>
                                 <div class="form-group">
                                     {{ form_label(form.prenom) }}
                                     {{ form_widget(form.prenom, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {% if form_errors(form.prenom) %}
+                                        <div class="alert alert-danger">{{ form_errors(form.prenom) }}</div>
+                                    {% endif %}
                                 </div>
                                 <div class="form-group">
                                     {{ form_label(form.email) }}
                                     {{ form_widget(form.email, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {% if form_errors(form.email) %}
+                                        <div class="alert alert-danger">{{ form_errors(form.email) }}</div>
+                                    {% endif %}
                                 </div>
                                 <div class="form-group">
                                     {{ form_label(form.dateNaissance) }}
                                     {{ form_widget(form.dateNaissance, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {% if form_errors(form.dateNaissance) %}
+                                        <div class="alert alert-danger">{{ form_errors(form.dateNaissance) }}</div>
+                                    {% endif %}
                                 </div>
                                 <div class="form-group">
                                     {{ form_label(form.adresse) }}
                                     {{ form_widget(form.adresse, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {% if form_errors(form.adresse) %}
+                                        <div class="alert alert-danger">{{ form_errors(form.adresse) }}</div>
+                                    {% endif %}
                                 </div>
                                 <div class="form-group">
                                     {{ form_label(form.numtel) }}
                                     {{ form_widget(form.numtel, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {% if form_errors(form.numtel) %}
+                                        <div class="alert alert-danger">{{ form_errors(form.numtel) }}</div>
+                                    {% endif %}
                                 </div>
                                 <div class="form-group">
                                     {{ form_label(form.role) }}
-                                    {{ form_widget(form.role, {'attr': {'class': 'form-check-input'}}) }}
+                                    {{ form_widget(form.role, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {% if form_errors(form.role) %}
+                                        <div class="alert alert-danger">{{ form_errors(form.role) }}</div>
+                                    {% endif %}
                                 </div>
                                 <div class="pb-5"></div>
                                 <div class="text-center">
@@ -63,27 +81,6 @@
                                 </div>
                                 <p class="sign-up text-center">Already have an Account?<a href="{{ path('app_login') }}"> Sign In</a></p>
                             {{ form_end(form, {'render_rest': false}) }}
-{% if app.request.method == 'POST' %}
-    {% set userData = {
-        'nom': form.nom.vars.value,
-        'prenom': form.prenom.vars.value,
-        'email': form.email.vars.value,
-        'adresse': form.adresse.vars.value,
-        'numtel': form.numtel.vars.value is not null ? form.numtel.vars.value : '',
-        'role': form.role.vars.value
-    } %}
-    {{ app.session.set('userData', userData) }}
-
-    <script>
-        {% if userData.role == 0 %}
-            window.location.href = "{{ path('client_additional_info') }}";
-        {% else %}
-            window.location.href = "{{ path('app_user_additional_info') }}";
-        {% endif %}
-    </script>
-{% endif %}
-
-
                         </div>
                     </div>
                 </div>
