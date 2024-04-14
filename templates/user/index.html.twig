@@ -13,7 +13,7 @@
             {% if loop.index0 % 3 == 0 %}
                 <div class="row">
             {% endif %}
-            
+{#             
             <div class="col-lg-4 col-md-4 col-12">
                 <div class="card profile-header">
                     <div class="body">
@@ -29,7 +29,38 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> #}
+<!---->
+                          <div class="col-sm-4 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h5>Sales</h5>
+                    <div class="row">
+                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                        <div class="d-flex d-sm-block d-md-flex align-items-center">
+                          <h4 class="mb-0">{{ user.nom }} {{ user.prenom }}</h4>
+                          <p class="text-success ms-2 mb-0 font-weight-medium">
+                            {% if user.role == 0 %}
+                                Client
+                            {% elseif user.role == 1 %}
+                                Formateur
+                            {% else %}
+                                Admin
+                            {% endif %}
+                          </p>
+                        </div>
+                        <h6 class="text-muted font-weight-normal"> {{ user.genre }}</h6>
+                      </div>
+                      <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                        <img src="{{ asset(user.imageProfil) }}" alt="Profile Image" width="100" height="100">
+                      </div>
+                        <div>
+							<a lass="btn btn-primary btn-round" href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Show</a>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             
             {% if loop.index0 % 3 == 2 or loop.last %}
                 </div>
