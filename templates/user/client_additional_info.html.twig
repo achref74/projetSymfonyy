@@ -28,7 +28,7 @@
                                 {{ form_widget(form._token) }}
                                 <div class="form-group">
                                     {{ form_label(form.imageProfil) }}
-                                    {{ form_widget(form.imageProfil, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {{ form_widget(form.imageProfil, {'attr': {'class': 'form-control', 'type': 'file'}}) }}
                                     {% if form_errors(form.imageProfil) %}
                                         <div class="alert alert-danger">{{ form_errors(form.imageProfil) }}</div>
                                     {% endif %}
