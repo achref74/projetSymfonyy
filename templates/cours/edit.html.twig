@@ -3,11 +3,9 @@
 {% block title %}Edit Cours{% endblock %}
 
 {% block body %}
-    <h1>Edit Cours</h1>
+    <h1 class="text-white mx-3">Edit Cours</h1>
 
     {{ include('cours/_form.html.twig', {'button_label': 'Update'}) }}
 
-<a href="{{ path('app_cours_index') }}" class="btn btn-secondary">Back to List</a>
 
-    {{ include('cours/_delete_form.html.twig') }}
 {% endblock %}

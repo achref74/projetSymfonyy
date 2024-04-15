@@ -13,7 +13,8 @@
                         {{ form_start(form, {'attr': {'id': 'contact', 'class': 'contact-form', 'method': 'post'}}) }}
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <h2>Nouveau cours</h2>
+                                    <h2>Cours     <a href="{{ path('app_cours_index') }}" class="btn btn-secondary">Back to List</a></h2> 
+
                                 </div>
                                 <div class="col-lg-4">
                                     <fieldset>
@@ -55,7 +56,9 @@
                                         {{ form_widget(form._token) }}
                                         <button type="submit" id="form-submit" class="button">Ajouter</button>
                                     </fieldset>
+
                                 </div>
+
                             </div>
                         {{ form_end(form) }}
                     </div>
