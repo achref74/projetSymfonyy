@@ -36,34 +36,13 @@ class EvaluationController extends AbstractController
             $entityManager->persist($evaluation);
             $entityManager->flush();
 
-            return $this->redirectToRoute('evaluation_show', ['id' => $evaluation->getId()]);
+            return $this->redirectToRoute('app_evaluation_show', ['id' => $evaluation->getId()]);
         }
 
         return $this->render('evaluation/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
-//     #[Route('/new', name: 'app_evaluation_new', methods: ['GET', 'POST'])]
-//     public function new(Request $request): Response
-//     {
-//         $evaluation = new Evaluation();
-//         $form = $this->createForm(EvaluationType::class, $evaluation);
-
-//         $form->handleRequest($request);
-
-//         if ($form->isSubmitted() && $form->isValid()) {
-//             $entityManager = $this->getDoctrine()->getManager();
-//             $entityManager->persist($evaluation);
-//             $entityManager->flush();
-
-//             return $this->redirectToRoute('app_evaluation_index');
-//         }
-
-//         return $this->render('evaluation/_form.html.twig', [
-//             'evaluation' => $evaluation,
-//             'form' => $form->createView(),
-//         ]);
-// }
 
     #[Route('/{id}', name: 'app_evaluation_show', methods: ['GET'])]
     public function show(Evaluation $evaluation): Response

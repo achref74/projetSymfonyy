@@ -46,31 +46,25 @@ document
     })
 
 function addFormToCollection(e) {
-    const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+       const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
 
     const item = document.createElement('div');
-    item.classList.add( 'col-4'); 
+    item.classList.add('col-4'); 
 
-    item.innerHTML = `
-                        ${collectionHolder.dataset.prototype
-                            .replace(/__name__/g, collectionHolder.dataset.index)
-                            .replace(/ressource/g, `questions_${collectionHolder.dataset.index}_ressource`)
-                            .replace(/duree/g, `questions_${collectionHolder.dataset.index}_duree`)
-                            .replace(/point/g, `questions_${collectionHolder.dataset.index}_point`)
-                            .replace(/choix1/g, `questions_${collectionHolder.dataset.index}_choix1`)
-                            .replace(/choix2/g, `questions_${collectionHolder.dataset.index}_choix2`)
-                            .replace(/choix3/g, `questions_${collectionHolder.dataset.index}_choix3`)
-                            .replace(/reponse/g, `questions_${collectionHolder.dataset.index}_reponse`)
-                            .replace(/crx/g, `questions_${collectionHolder.dataset.index}_crx`)}
-                  `;
+  item.innerHTML = collectionHolder
+    .dataset
+    .prototype
+    .replace(
+      /__name__/g,
+      collectionHolder.dataset.index
+    );
 
     collectionHolder.appendChild(item);
 
     collectionHolder.dataset.index++;
 
     addTagFormDeleteLink(item);
-};
-
+}
 
 
 function addTagFormDeleteLink(item) {
