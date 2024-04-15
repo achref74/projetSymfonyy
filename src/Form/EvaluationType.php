@@ -25,6 +25,7 @@ class EvaluationType extends AbstractType
                 'choice_label' => 'nom',
                 'placeholder' => 'Choose a course',
                 'required' => true,
+                
             ])
             ->add('questions', CollectionType::class, [
                 'entry_type' => QuestionType::class,

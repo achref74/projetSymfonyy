@@ -1,80 +1,34 @@
-{# {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}  #}
+{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
 
-{# 
-<div class="container">
-{{ form_start(form, {'attr': {'id': 'evaluation_form', 'class': 'evaluation-form', 'method': 'post'}}) }}
+    <div class="row mb-3 mx-3">
+        <div class="col-4">
+            {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'control-label text-white'}}) }}
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.nom) }}
+        </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <h2>Créer une évaluation</h2>
+        <div class="col-4">
+            {{ form_label(form.note, 'Note', {'label_attr': {'class': 'control-label text-white'}}) }}
+            {{ form_widget(form.note, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.note) }}
+        </div>
+
+        <div class="col-4">
+            {{ form_label(form.cours, 'Cours', {'label_attr': {'class': 'control-label text-white'}}) }}
+            {{ form_widget(form.cours, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.cours) }}
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-4">
-        <div class="form-group">
-            {{ form_label(form.note, 'Note') }}
-            {{ form_widget(form.note, {'attr': {'placeholder': 'Note...', 'class': 'form-control', 'type': 'number', 'required': 'required'}}) }}
-        </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                {{ form_label(form.nom, 'Nom') }}
-                {{ form_widget(form.nom, {'attr': {'placeholder': 'Nom...', 'class': 'form-control', 'required': 'required'}}) }}
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                {{ form_label(form.cours, 'Cours') }}
-                {{ form_widget(form.cours, {'attr': {'class': 'form-control'}}) }}
-            </div>
-        </div>
-    </div>
+    <h4 class="text-white">Questions : </h4>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                {{ form_label(form.questions, 'Questions') }}
-                <div id="question-container" class="justify-content-center">
-                    {% for questionForm in form.questions %}
-                        <div class="question-item mb-3">
-                            {{ form_row(questionForm, {'attr': {'class': 'form-control'}}) }}
-                        </div>
-                    {% endfor %}
-                </div>
-                <button type="submit" class="btn btn-primary">Ajouter une autre question</button>
-            </div>
-        </div>
-    </div>
+    <div class="questions row"
+        data-index="{{ form.questions|length > 0 ? form.questions|last.vars.ressource + 1 : 0 }}"
+        data-prototype="{{ form_widget(form.questions.vars.prototype)|e('html_attr') }}"
+    ></div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
-                {{ form_widget(form._token) }}
-            </div>
-        </div>
-    </div>
-    {{ form_end(form) }}
-
-</div>
- #}
-{{ form_start(form) }}
-    {{ form_row(form.nom) }}
-    {{ form_row(form.note) }}
-    {{ form_row(form.cours) }}
-
-    <h3>questions</h3>
-
-    <ul class="questions"
-    data-index="{{ form.questions|length > 0 ? form.questions|last.vars.ressource + 1 : 0 }}"
-    data-prototype="{{ form_widget(form.questions.vars.prototype)|e('html_attr') }}"
-></ul>
-<button type="button" class="add_item_link" data-collection-holder-class="questions">Add a question</button>
-<button class="btn">{{ button_label|default('Save') }}</button>
+    <button type="button" class="btn btn-primary mx-2 add_item_link" data-collection-holder-class="questions">Add a Question</button>
+    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
 
 {{ form_end(form) }}
 
@@ -86,35 +40,43 @@ document
   });
 
   document
-    .querySelectorAll('ul.questions li')
+    .querySelectorAll('div.questions div')
     .forEach((question) => {
         addTagFormDeleteLink(question)
     })
 
-  function addFormToCollection(e) {
-  const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+function addFormToCollection(e) {
+    const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
 
-  const item = document.createElement('li');
+    const item = document.createElement('div');
+    item.classList.add( 'col-4'); 
 
-  item.innerHTML = collectionHolder
-    .dataset
-    .prototype
-    .replace(
-      /__name__/g,
-      collectionHolder.dataset.index
-    );
+    item.innerHTML = `
+                        ${collectionHolder.dataset.prototype
+                            .replace(/__name__/g, collectionHolder.dataset.index)
+                            .replace(/ressource/g, `questions_${collectionHolder.dataset.index}_ressource`)
+                            .replace(/duree/g, `questions_${collectionHolder.dataset.index}_duree`)
+                            .replace(/point/g, `questions_${collectionHolder.dataset.index}_point`)
+                            .replace(/choix1/g, `questions_${collectionHolder.dataset.index}_choix1`)
+                            .replace(/choix2/g, `questions_${collectionHolder.dataset.index}_choix2`)
+                            .replace(/choix3/g, `questions_${collectionHolder.dataset.index}_choix3`)
+                            .replace(/reponse/g, `questions_${collectionHolder.dataset.index}_reponse`)
+                            .replace(/crx/g, `questions_${collectionHolder.dataset.index}_crx`)}
+                  `;
 
-  collectionHolder.appendChild(item);
+    collectionHolder.appendChild(item);
 
-  collectionHolder.dataset.index++;
+    collectionHolder.dataset.index++;
 
     addTagFormDeleteLink(item);
-
 };
+
+
 
 function addTagFormDeleteLink(item) {
     const removeFormButton = document.createElement('button');
     removeFormButton.innerText = 'Delete this question';
+    removeFormButton.classList.add('btn', 'btn-danger', 'my-3','mx-3','w-20'); 
 
     item.append(removeFormButton);
 
@@ -123,4 +85,5 @@ function addTagFormDeleteLink(item) {
         item.remove();
     });
 }
+
 </script>
