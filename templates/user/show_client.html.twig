@@ -5,95 +5,146 @@
 
 {% block body %}
 
-        <div class="container d-flex justify-content-center" >
-                <div class="col-lg-5 my-5">
-                <div class="text-center card-box">
-                    <div class="member-card pt-2 pb-2">
-                        <div class="thumb-lg member-thumb mx-auto"><img src="{{ asset(user.imageProfil) }}" class="rounded-circle img-thumbnail" alt="profile-image"></div>
-                        <div class="">
-                            <h4 style="color :black;">{{ user.getNom() }}</h4>
-                            <p class="text-muted">{{ user.getEmail() }}<span></p>
-                        </div>
 
-                        <div class="mt-4">
-                            <div class="row">
-                                <div class="col-4">
-                                    <div class="mt-3">
-                                        <h4 style="color :black;">{{ user.getDateNaissance()|date('Y-m-d') }}</h4>
-                                        <p class="mb-0 text-muted">Date de Naissance</p>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="mt-3">
-                                        <h4 style="color :black;">												
-                                        {% if user.role == 0 %}
+            <div class="row">
+              <div class="col-md-4 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Profil Image</h4>
+                        <div class="thumb-lg member-thumb mx-auto"><img src="{{ asset(user.imageProfil) }}" class="rounded img-thumbnail" alt="profile-image"></div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-8 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="d-flex flex-row justify-content-between">
+                      <h4 class="card-title mb-1">Profil Info</h4>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="preview-list">
+                          <div class="preview-item border-bottom">
+                            <div class="preview-thumbnail">
+                              <div class="preview-icon bg-primary">
+                                <i class="mdi mdi-email"></i>
+                              </div>
+                            </div>
+                            <div class="preview-item-content d-sm-flex flex-grow">
+                              <div class="flex-grow">
+                                <h6 class="preview-subject">Email</h6>
+                                <p class="text-muted mb-0">{{ user.getEmail() }}</p>
+                              </div>
+                                   <div class="me-auto text-sm-right pt-2 pt-sm-0">
+                                <p class="text-muted">
+                                {% if user.role == 0 %}
 													Client
 												{% elseif user.role == 1 %}
 													Formateur
 												{% else %}
 													Admin
-												{% endif %}</h4>
-                                        <p class="mb-0 text-muted">Role</p>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="mt-3">
-                                        <h4 style="color :black;">{{ user.getGenre()}}</h4>
-                                        <p class="mb-0 text-muted">Genre</p>
-                                    </div>
-                                </div>
+												{% endif %}
+                                </p>
+                              </div>
                             </div>
+                          </div>
+                          <div class="preview-item border-bottom">
+                            <div class="preview-thumbnail">
+                              <div class="preview-icon bg-success">
+                                <i class="mdi mdi-account"></i>
+                              </div>
+                            </div>
+                            <div class="preview-item-content d-sm-flex flex-grow">
+                              <div class="flex-grow">
+                                <h6 class="preview-subject">Nom Prenom</h6>
+                                <p class="text-muted mb-0">{{ user.getNom() }} {{ user.getPrenom() }}</p>
+                              </div>
+
+                            </div>
+                          </div>
+                          <div class="preview-item border-bottom">
+                            <div class="preview-thumbnail">
+                              <div class="preview-icon bg-info">
+                                <i class="mdi mdi-cake"></i>
+                              </div>
+                            </div>
+                            <div class="preview-item-content d-sm-flex flex-grow">
+                              <div class="flex-grow">
+                                <h6 class="preview-subject">Date de Naissance</h6>
+                                <p class="text-muted mb-0">{{ user.getDateNaissance()|date('Y-m-d') }}</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="preview-item border-bottom">
+                            <div class="preview-thumbnail">
+                              <div class="preview-icon bg-danger">
+                                <i class="mdi mdi-cellphone-basic"></i>
+                              </div>
+                            </div>
+                            <div class="preview-item-content d-sm-flex flex-grow">
+                              <div class="flex-grow">
+                                <h6 class="preview-subject">Numéro de téléphone</h6>
+                                <p class="text-muted mb-0">{{user.numtel}}</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="preview-item border-bottom">
+                            <div class="preview-thumbnail">
+                              <div class="preview-icon bg-warning">
+                                <i class="mdi mdi-home"></i>
+                              </div>
+                            </div>
+                            <div class="preview-item-content d-sm-flex flex-grow">
+                              <div class="flex-grow">
+                                <h6 class="preview-subject">Adresse</h6>
+                                <p class="text-muted mb-0">{{user.adresse}}</p>
+                              </div>
+                            </div>
+                          </div>
+                            <div class="preview-item border-bottom">
+                            <div class="preview-thumbnail">
+                              <div class="preview-icon bg-warning">
+                                <i class="mdi mdi-school"></i>
+                              </div>
+                            </div>
+                            <div class="preview-item-content d-sm-flex flex-grow">
+                              <div class="flex-grow">
+                                <h6 class="preview-subject">Niveau</h6>
+                                <p class="text-muted mb-0">{{user.getNiveauScolaire()}}</p>
+                              </div>
+                            </div>
+                          </div>
+                                {% if user.role == 1 %}
+                            <div class="preview-item border-bottom">
+                            <div class="preview-thumbnail">
+                              <div class="preview-icon bg-primary">
+                                <i class="mdi mdi-checkbox-marked-circle"></i>
+                              </div>
+                            </div>
+                            <div class="preview-item-content d-sm-flex flex-grow">
+                              <div class="flex-grow">
+                                <h6 class="preview-subject">Disponibilité</h6>
+                                <p class="text-muted mb-0">
+                                                {% if user.disponiblite == 0 %}
+													Non Disponible
+												{% elseif user.role == 1 %}
+													Disponible
+												{% endif %}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+
+								{% endif %}
                         </div>
-
+                      </div>
                     </div>
+                  </div>
                 </div>
+              </div>
             </div>
-        </div>
-            <style>
-.card-box {
-    padding: 20px;
-    border-radius: 3px;
-    margin-bottom: 30px;
-    background-color: #fff;
-}
-
-.social-links li a {
-    border-radius: 50%;
-    color: rgba(121, 121, 121, .8);
-    display: inline-block;
-    height: 30px;
-    line-height: 27px;
-    border: 2px solid rgba(121, 121, 121, .5);
-    text-align: center;
-    width: 30px
-}
-
-.social-links li a:hover {
-    color: #797979;
-    border: 2px solid #797979
-}
-.thumb-lg {
-    height: 88px;
-    width: 88px;
-}
-.img-thumbnail {
-    padding: .25rem;
-    background-color: #fff;
-    border: 1px solid #dee2e6;
-    border-radius: .25rem;
-    max-width: 100%;
-    height: auto;
-}
-.text-pink {
-    color: #ff679b!important;
-}
-.btn-rounded {
-    border-radius: 2em;
-}
-.text-muted {
-    color: #98a6ad!important;
-}
-</style>
 {% endblock %}
 
 

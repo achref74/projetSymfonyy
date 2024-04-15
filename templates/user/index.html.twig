@@ -13,28 +13,10 @@
             {% if loop.index0 % 3 == 0 %}
                 <div class="row">
             {% endif %}
-{#             
-            <div class="col-lg-4 col-md-4 col-12">
-                <div class="card profile-header">
-                    <div class="body">
-                        <div class="profile-image float-md-right">
-                            <img src="{{ asset(user.imageProfil) }}" alt="Profile Image" width="100" height="100">
-                        </div>
-                        <h4 class="m-t-0 m-b-0"><strong>{{ user.nom }} {{ user.prenom }}</strong></h4>
-                        <span class="job_post">{{ user.genre }}</span>
-                        <p>{{ user.adresse }}</p>
-                        <div>
-							<a lass="btn btn-primary btn-round" href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Show</a>
-
-                        </div>
-                    </div>
-                </div>
-            </div> #}
 <!---->
                           <div class="col-sm-4 grid-margin">
                 <div class="card">
                   <div class="card-body">
-                    <h5>Sales</h5>
                     <div class="row">
                       <div class="col-8 col-sm-12 col-xl-8 my-auto">
                         <div class="d-flex d-sm-block d-md-flex align-items-center">
@@ -49,13 +31,13 @@
                             {% endif %}
                           </p>
                         </div>
-                        <h6 class="text-muted font-weight-normal"> {{ user.genre }}</h6>
+                        <h6 class="text-muted font-weight-normal">( {{ user.genre }} )</h6>
                       </div>
                       <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                        <img src="{{ asset(user.imageProfil) }}" alt="Profile Image" width="100" height="100">
+                        <img src="{{ asset(user.imageProfil) }}" class="rounded-circle" alt="Profile Image" width="100" height="100">
                       </div>
                         <div>
-							<a lass="btn btn-primary btn-round" href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Show</a>
+							<a  href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-outline-primary">Show</a>
                         </div>
                     </div>
                   </div>
@@ -100,71 +82,5 @@
 	        {% endfor %} #}
 	<!-- Clear the floats -->
 
-	    <style>
-a {
-    color: #f96332;
-}
-.m-t-5{
-    margin-top: 5px;   
-}
-.card {
-    background: #fff;
-    margin-bottom: 30px;
-    transition: .5s;
-    border: 0;
-    border-radius: .1875rem;
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    box-shadow: none;
-}
-.card .body {
-    font-size: 14px;
-    color: #424242;
-    padding: 20px;
-    font-weight: 400;
-}
-.profile-page .profile-header {
-    position: relative
-}
 
-.profile-page .profile-header .profile-image img {
-    border-radius: 50%;
-    width: 140px;
-    border: 3px solid #fff;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
-}
-
-.profile-page .profile-header .social-icon a {
-    margin: 0 5px
-}
-
-.profile-page .profile-sub-header {
-    min-height: 60px;
-    width: 100%
-}
-
-.profile-page .profile-sub-header ul.box-list {
-    display: inline-table;
-    table-layout: fixed;
-    width: 100%;
-    background: #eee
-}
-
-.profile-page .profile-sub-header ul.box-list li {
-    border-right: 1px solid #e0e0e0;
-    display: table-cell;
-    list-style: none
-}
-
-.profile-page .profile-sub-header ul.box-list li:last-child {
-    border-right: none
-}
-
-.profile-page .profile-sub-header ul.box-list li a {
-    display: block;
-    padding: 15px 0;
-    color: #424242
-}
-	    </style>
 </div>{% endblock %}
