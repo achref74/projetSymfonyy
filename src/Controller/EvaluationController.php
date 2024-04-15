@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Question;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[Route('/evaluation')]
 class EvaluationController extends AbstractController
@@ -52,23 +53,53 @@ class EvaluationController extends AbstractController
         ]);
     }
 
+    // #[Route('/{id}/edit', name: 'app_evaluation_edit', methods: ['GET', 'POST'])]
+    // public function edit(Request $request, Evaluation $evaluation, EntityManagerInterface $entityManager): Response
+    // {
+    //     $form = $this->createForm(EvaluationType::class, $evaluation);
+    //     $form->handleRequest($request);
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $entityManager->flush();
+
+    //         return $this->redirectToRoute('app_evaluation_index', [], Response::HTTP_SEE_OTHER);
+    //     }
+
+    //     return $this->renderForm('evaluation/edit.html.twig', [
+    //         'evaluation' => $evaluation,
+    //         'form' => $form,
+    //     ]);
+    // }
+
     #[Route('/{id}/edit', name: 'app_evaluation_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Evaluation $evaluation, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(EvaluationType::class, $evaluation);
-        $form->handleRequest($request);
+public function edit(Request $request, Evaluation $evaluation, EntityManagerInterface $entityManager): Response
+{
+    $originalQuestions = new ArrayCollection();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+    foreach ($evaluation->getQuestions() as $question) {
+        $originalQuestions->add($question);
+    }
 
-            return $this->redirectToRoute('app_evaluation_index', [], Response::HTTP_SEE_OTHER);
+    $form = $this->createForm(EvaluationType::class, $evaluation);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        foreach ($originalQuestions as $question) {
+            if (false === $evaluation->getQuestions()->contains($question)) {
+                $entityManager->remove($question);
+            }
         }
 
-        return $this->renderForm('evaluation/edit.html.twig', [
-            'evaluation' => $evaluation,
-            'form' => $form,
-        ]);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_evaluation_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->renderForm('evaluation/edit.html.twig', [
+        'evaluation' => $evaluation,
+        'form' => $form,
+    ]);
+}
 
     #[Route('/{id}', name: 'app_evaluation_delete', methods: ['POST'])]
     public function delete(Request $request, Evaluation $evaluation, EntityManagerInterface $entityManager): Response

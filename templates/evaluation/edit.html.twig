@@ -3,11 +3,88 @@
 {% block title %}Edit Evaluation{% endblock %}
 
 {% block body %}
-    <h1>Edit Evaluation</h1>
+    <h1 class="text-white mx-2">Edit Evaluation</h1>
 
-    {{ include('evaluation/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
 
-    <a href="{{ path('app_evaluation_index') }}">back to list</a>
+<div class="row mb-3 mx-3">
+    <div class="col-4">
+        {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'control-label text-white'}}) }}
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.nom) }}
+    </div>
 
-    {{ include('evaluation/_delete_form.html.twig') }}
+    <div class="col-4">
+        {{ form_label(form.note, 'Note', {'label_attr': {'class': 'control-label text-white'}}) }}
+        {{ form_widget(form.note, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.note) }}
+    </div>
+
+    <div class="col-4">
+        {{ form_label(form.cours, 'Cours', {'label_attr': {'class': 'control-label text-white'}}) }}
+        {{ form_widget(form.cours, {'attr': {'class': 'form-select'}}) }}
+        {{ form_errors(form.cours) }}
+    </div>
+</div>
+
+<h4 class="text-white">Questions : </h4>
+
+<div class="questions row"
+    data-index="{{ form.questions|length }}"
+    data-prototype="{{ form_widget(form.questions.vars.prototype)|e('html_attr') }}"
+></div>
+
+<button type="button" class="btn btn-primary mx-2 add_item_link" data-collection-holder-class="questions">Add a Question</button>
+<button class="btn btn-success">{{ button_label|default('Save') }}</button>
+
+{{ form_end(form) }}
+
+<script>
+document
+  .querySelectorAll('.add_item_link')
+  .forEach(btn => {
+      btn.addEventListener("click", addFormToCollection)
+  });
+
+document
+    .querySelectorAll('div.questions div')
+    .forEach((question) => {
+        addTagFormDeleteLink(question)
+    });
+
+function addFormToCollection(e) {
+    const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+    const item = document.createElement('div');
+    item.classList.add('col-4'); 
+
+    item.innerHTML = collectionHolder
+        .dataset
+        .prototype
+        .replace(
+            /__name__/g,
+            collectionHolder.dataset.index
+        );
+
+    collectionHolder.appendChild(item);
+
+    collectionHolder.dataset.index++;
+
+    addTagFormDeleteLink(item);
+}
+
+function addTagFormDeleteLink(item) {
+    const removeFormButton = document.createElement('button');
+    removeFormButton.innerText = 'Delete this question';
+    removeFormButton.classList.add('btn', 'btn-danger', 'my-3','mx-3','w-20'); 
+
+    item.append(removeFormButton);
+
+    removeFormButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        item.remove();
+    });
+}
+</script>
+
 {% endblock %}
