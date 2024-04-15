@@ -10,6 +10,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+
 
 
 class Cours1Type extends AbstractType
@@ -32,7 +34,11 @@ class Cours1Type extends AbstractType
                     new NotBlank(),
                 ],
             ])
-            ->add('date', null, [
+            ->add('date', DateType::class, [
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'form-control datepicker',
+                ],
                 'constraints' => [
                     new NotBlank(),
                 ],
@@ -53,10 +59,24 @@ class Cours1Type extends AbstractType
                 ],
             ])
             ->add('image', FileType::class, [
-                'label' => 'Image de profil',
-                'mapped' => false, // Indique à Symfony de ne pas mapper ce champ à une propriété de l'entité
-                'required' => false, // Rend le champ facultatif
-            ])
+                'label' => 'Image',
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'style' => 'height: auto;', // Optional: Adjust the height
+                ],
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid JPG or PNG image',
+                    ])
+                ],
+            ]);
 
         ;
 
