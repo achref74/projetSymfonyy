@@ -40,6 +40,19 @@ class Evaluation
         return $this->id;
     }
 
+    public function addQuestion(Question $q): void
+    {
+        $q->setEvaluation($this);
+
+        $this->questions->add($q);
+    }
+
+
+    public function removeQuestion(Question $q): void
+    {
+        $this->questions->removeElement($q);
+    }
+
     public function getNote(): int
     {
         return $this->note;
@@ -84,27 +97,6 @@ class Evaluation
         return $this->questions;
     }
 
-    public function addQuestion(Question $question): self
-    {
-        if (!$this->questions->contains($question)) {
-            $this->questions[] = $question;
-            $question->setEvaluation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeQuestion(Question $question): self
-    {
-        if ($this->questions->removeElement($question)) {
-            // set the owning side to null (unless already changed)
-            if ($question->getEvaluation() === $this) {
-                $question->setEvaluation(null);
-            }
-        }
-
-        return $this;
-    }
     public function __toString(): string
     {
         return $this->nom; // Return the 'nom' property as a string representation
