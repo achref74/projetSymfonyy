@@ -278,7 +278,7 @@ public function clientAdditionalInfo(Request $request, EntityManagerInterface $e
         }
 
         // Déterminer le template à utiliser en fonction du rôle de l'utilisateur
-        $template = $user->getSpecialite() !== null ? 'user/show_formateur.html.twig' : 'user/show_client.html.twig';
+        $template = $user->getRole() !== null ? 'user/show_client.html.twig' : 'user/show_client.html.twig';
 
         // Afficher le profil avec le formulaire de modification
         return $this->render($template, [
