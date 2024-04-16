@@ -1,0 +1,13 @@
+{# edit_formation.html.twig #}
+
+<form action="{{ path('app_formation_edit', {'id': formation.id}) }}" method="post">
+    {{ form_row(form.nom) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.prix) }}
+    {{ form_row(form.dated) }}
+    {{ form_row(form.datef) }}
+    {{ form_row(form.nbrcours) }}
+    {{ form_row(form.imageUrl) }}
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
