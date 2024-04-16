@@ -37,9 +37,10 @@
                             </div>
                         </div>
                     </div>
-    {{ include('cours/_delete_form.html.twig') }}
 
-{% if app.user.getRole() != 2 %}
+
+{% if app.user.getRole() != 1 %}
+    {{ include('cours/_delete_form.html.twig') }}
     <a href="{{ path('app_cours_edit', {'id': cour.id}) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light">Edit</a>
 {% endif %}              
   </div>

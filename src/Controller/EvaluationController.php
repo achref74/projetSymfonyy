@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Question;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\QuestionRepository;
+
 
 #[Route('/evaluation')]
 class EvaluationController extends AbstractController
@@ -21,6 +23,23 @@ class EvaluationController extends AbstractController
     {
         return $this->render('evaluation/index.html.twig', [
             'evaluations' => $evaluationRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/{evaluationId}/questions', name: 'evaluation_questions', methods: ['GET'])]
+    public function questions(QuestionRepository $questionRepository, int $evaluationId, Request $request): Response
+    {
+        $questions = $questionRepository->findAllByEvaluationId($evaluationId);
+        $totalQuestions = count($questions);
+
+        $currentQuestionIndex = $request->query->getInt('index', 0);
+        $currentQuestion = $questions[$currentQuestionIndex] ?? null;
+
+        return $this->render('evaluation/test_evaluation.html.twig', [
+            'currentQuestion' => $currentQuestion,
+            'currentQuestionIndex' => $currentQuestionIndex,
+            'totalQuestions' => $totalQuestions,
+            'evaluationId' => $evaluationId,
         ]);
     }
 

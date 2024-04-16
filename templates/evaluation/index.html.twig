@@ -26,9 +26,13 @@
                                 <td>{{ evaluation.note }}</td>
                                 <td>{{ evaluation.nom }}</td>
                                 <td>
-                                    <a href="{{ path('app_evaluation_show', {'id': evaluation.id}) }}" class="btn btn-primary">Show</a>
+                                
+                                    <a href="{{ path('evaluation_questions', {'evaluationId': evaluation.id}) }}" class="btn btn-primary">Test</a>
                                     <a href="{{ path('app_evaluation_edit', {'id': evaluation.id}) }}" class="btn btn-secondary">Edit</a>
-                                    <a>{{ include('evaluation/_delete_form.html.twig') }}</a>
+                                    {% if app.user.getRole() == 1 %}
+                                    <a href="{{ path('app_evaluation_delete', {'id': evaluation.id}) }}" class="btn btn-danger">Delete</a>
+                                    {% endif %}
+
 
                                 </td>
                             </tr>
@@ -39,7 +43,7 @@
                         {% endfor %}
                         </tbody>
                     </table>
-{% if app.user.getRole() != 2 %}
+{% if app.user.getRole() == 1 %}
                     <a href="{{ path('app_evaluation_new') }}" class="btn btn-success">Create new</a>
 {% endif %}
                 </div>

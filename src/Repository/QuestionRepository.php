@@ -21,6 +21,21 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
+     /**
+     * Find all questions by evaluation_id.
+     *
+     * @param int $evaluationId
+     * @return Question[]
+     */
+    public function findAllByEvaluationId(int $evaluationId): array
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.evaluation = :evaluationId')
+            ->setParameter('evaluationId', $evaluationId)
+            ->orderBy('q.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Question[] Returns an array of Question objects
 //     */
