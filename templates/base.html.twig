@@ -72,7 +72,7 @@ https://templatemo.com/tm-569-edu-meeting
                       <ul class="nav">
                           <li class="scroll-to-section"><a href="{{ path('app_formation_index') }}" class="active">Home</a></li>
 
-                          <li><a href="{{ path('app_formation_show') }}">Fomation</a></li>
+                          <li><a href="{{ path('app_formation_index2') }}">Fomation</a></li>
 
                           <li class="scroll-to-section"><a href="#apply">Apply Now</a></li>
                           <li class="has-sub">
@@ -98,9 +98,9 @@ https://templatemo.com/tm-569-edu-meeting
 
   <!-- ***** Main Banner Area Start ***** -->
   <section class="section main-banner" id="top" data-section="section1">
-	{% block body %}
+	{% block body1 %}
       <video autoplay muted loop id="bg-video">
-          <source src="assets/images/course-video.mp4" type="video/mp4" />
+          <source src="{{asset('assets/images/course-video.mp4')}}" type="video/mp4" />
       </video>
 
       <div class="video-overlay header-text">
@@ -124,7 +124,7 @@ https://templatemo.com/tm-569-edu-meeting
   <!-- ***** Main Banner Area End ***** -->
 
   <section class="services">
- 	{% block body %}
+ 	{% block body2 %}
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
@@ -188,7 +188,7 @@ https://templatemo.com/tm-569-edu-meeting
   </section>
 
   <section class="upcoming-meetings" id="meetings">
-  {% block body %}
+  {% block body3 %}
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
@@ -289,7 +289,7 @@ https://templatemo.com/tm-569-edu-meeting
   </section>
 
   <section class="apply-now" id="apply">
-  {% block body %}
+  {% block body4 %}
     <div class="container">
       <div class="row">
         <div class="col-lg-6 align-self-center">
@@ -379,7 +379,7 @@ https://templatemo.com/tm-569-edu-meeting
   </section>
 
   <section class="our-courses" id="courses">
-  	{% block body %}
+  	{% block body5 %}
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
@@ -658,7 +658,7 @@ https://templatemo.com/tm-569-edu-meeting
   </section>
 
   <section class="our-facts">
-  {% block body %}
+  {% block body6 %}
     <div class="container">
       <div class="row">
         <div class="col-lg-6">
@@ -711,7 +711,7 @@ https://templatemo.com/tm-569-edu-meeting
   </section>
 
   <section class="contact-us" id="contact">
-  {% block body %} 
+  {% block body7 %} 
     <div class="container">
       <div class="row">
         <div class="col-lg-9 align-self-center">
