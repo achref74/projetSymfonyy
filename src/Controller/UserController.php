@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 
@@ -206,6 +208,45 @@ public function additionalInfo(Request $request, EntityManagerInterface $entityM
         'form' => $form->createView(),
     ]);
 }
+
+
+#[Route('/modify-password', name: 'modify_password', methods: ['GET', 'POST'])]
+public function modifyPassword(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder): Response
+{
+    $user = $this->getUser();
+
+    $form = $this->createFormBuilder($user)
+        ->add('mdp', PasswordType::class, [
+            'label' => 'Nouveau mot de passe',
+            'attr' => ['class' => 'form-control']
+        ])
+        ->add('Modifier', SubmitType::class, [
+            'attr' => ['class' => 'btn btn-primary']
+        ])
+        ->getForm();
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $plainPassword = $form->get('mdp')->getData();
+
+        $hashedPassword = $passwordEncoder->encodePassword($user, $plainPassword);
+        $user->setMdp($hashedPassword);
+
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Mot de passe modifié avec succès.');
+
+        return $this->redirectToRoute('user_home_front');
+    }
+
+    return $this->render('user/modify_password.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
+
+
 
 
 #[Route('/client-additional-info', name: 'client_additional_info', methods: ['GET', 'POST'])]

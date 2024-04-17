@@ -1,6 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+/* Add this CSS to your stylesheet */
+.role-radio-buttons label {
+    display: inline-block;
+    margin-right: 20px; /* Adjust spacing between radio buttons */
+}
+
+.role-radio-buttons input[type="radio"] {
+    display: none; /* Hide the actual radio buttons */
+}
+
+/* Custom styling for radio button appearance */
+.role-radio-buttons input[type="radio"] + label::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc; /* Change border color as needed */
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+/* Custom styling for checked radio buttons */
+.role-radio-buttons input[type="radio"]:checked + label::before {
+    background-color: #007bff; /* Change color as needed */
+}
+
+</style>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -47,13 +76,19 @@
                                         <div class="alert alert-danger">{{ form_errors(form.email) }}</div>
                                     {% endif %}
                                 </div>
-                                <div class="form-group">
-                                    {{ form_label(form.dateNaissance) }}
-                                    {{ form_widget(form.dateNaissance, {'attr': {'class': 'form-control p_input'}}) }}
-                                    {% if form_errors(form.dateNaissance) %}
-                                        <div class="alert alert-danger">{{ form_errors(form.dateNaissance) }}</div>
-                                    {% endif %}
-                                </div>
+<div class="form-group">
+    {{ form_label(form.dateNaissance) }}
+    <div class="input-group date" id="datepicker">
+        {{ form_widget(form.dateNaissance, {'attr': {'class': 'form-control', 'placeholder': 'YYYY-MM-DD'}}) }}
+        <div class="input-group-append">
+            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+        </div>
+    </div>
+    {% if form_errors(form.dateNaissance) %}
+        <div class="alert alert-danger">{{ form_errors(form.dateNaissance) }}</div>
+    {% endif %}
+</div>
+
                                 <div class="form-group">
                                     {{ form_label(form.adresse) }}
                                     {{ form_widget(form.adresse, {'attr': {'class': 'form-control p_input'}}) }}
@@ -68,13 +103,16 @@
                                         <div class="alert alert-danger">{{ form_errors(form.numtel) }}</div>
                                     {% endif %}
                                 </div>
-                                <div class="form-group">
-                                    {{ form_label(form.role) }}
-                                    {{ form_widget(form.role, {'attr': {'class': ' p_input mx-3'}}) }}
-                                    {% if form_errors(form.role) %}
-                                        <div class="alert alert-danger">{{ form_errors(form.role) }}</div>
-                                    {% endif %}
-                                </div>
+<div class="form-group">
+    {{ form_label(form.role) }}
+    <div class="role-radio-buttons ml-4">
+        {{ form_widget(form.role, {'attr': {'class': 'form-check-input'}}) }}
+    </div>
+    {% if form_errors(form.role) %}
+        <div class="alert alert-danger">{{ form_errors(form.role) }}</div>
+    {% endif %}
+</div>
+
                                 <div class="pb-5"></div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary btn-block enter-btn">Suivant</button>
@@ -100,6 +138,16 @@
     <script src="{{ asset('shared/assets/js/misc.js') }}"></script>
     <script src="{{ asset('shared/assets/js/settings.js') }}"></script>
     <script src="{{ asset('shared/assets/js/todolist.js') }}"></script>
+    <script>
+    $(document).ready(function () {
+        $('#datepicker').datepicker({
+            format: 'yyyy-mm-dd', // Specify the desired date format
+            autoclose: true,
+            todayHighlight: true,
+        });
+    });
+</script>
+
     <!-- endinject -->
 </body>
 </html>

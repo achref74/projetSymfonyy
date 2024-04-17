@@ -1,5 +1,10 @@
 
 {% block stylesheets %}
+    <style>
+        .contact-us {
+            min-height: calc(100vh - 10px);
+        }
+    </style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -16,6 +21,7 @@
     <link rel="stylesheet" href="{{ asset('frontOffice/assets/css/owl.css') }}">
     <link rel="stylesheet" href="{{ asset('frontOffice/assets/css/lightbox.css') }}">
 {% endblock %}
+
 <body>
 
     <!-- ***** Header Area Start ***** -->
@@ -39,6 +45,7 @@
                                 <ul class="sub-menu">                            
 
                                     <li><a href="{{ path('app_user_show', {'idUser': app.user.getIdUser()}) }}" >Mon Profil</a></li>
+                                    <li><a href="{{ path('modify_password') }}">Modifier le mot de passe</a></li>
                                     <li>
                                     {% if app.user.getRole() == 1 %}
     <a href="{{ path('app_user_edit_formateur', {'idUser': app.user.getIdUser()}) }}">Modifier</a>
@@ -69,6 +76,8 @@
   <section class="contact-us" id="contact">
 
         {% block body %}
+
+
 
         {% endblock %}
     </section>

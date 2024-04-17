@@ -47,10 +47,23 @@
                                         </fieldset>
                                     </div>
                                     <div class="col-lg-4">
-                                        <fieldset>
-                                            <input name="niveauScolaire" type="text" id="niveauScolaire" value="{{ user.getNiveauScolaire() }}" placeholder="Niveau Scolaire...*" required="">
+                                        <fieldset class="mb-4">
+                                            <select name="disponiblite" id="disponiblite" class="form-select rounded-3" required="">
+                                                <option value="1" {% if user.getDisponiblite() == '1' %}selected{% endif %}>Disponible</option>
+                                                <option value="0" {% if user.getDisponiblite() == '0' %}selected{% endif %}>Non Disponible</option>
+                                            </select>
                                         </fieldset>
                                     </div>
+                                        <div class="col-lg-4">
+                                    <fieldset class="mb-4">
+                                        <select name="niveauScolaire" id="niveauScolaire" class="form-select rounded-3" required="">
+                                            <option value="secondaire" {% if user.getNiveauScolaire() == 'secondaire' %}selected{% endif %}>Secondaire</option>
+                                            <option value="primaire" {% if user.getNiveauScolaire() == 'primaire' %}selected{% endif %}>Primaire</option>
+                                            <option value="académique" {% if user.getNiveauScolaire() == 'académique' %}selected{% endif %}>Académique</option>
+                                        </select>
+                                    </fieldset>
+                                    </div>
+
                                     <div class="col-lg-12">
                                         <fieldset>
                                             <button type="submit" id="form-submit" class="button">Enregistrer les modifications</button>
@@ -59,7 +72,7 @@
                                 </div>
                             </form>
                         </div>
-                    </div>
+                    </div
                 </div>
 
             </div>

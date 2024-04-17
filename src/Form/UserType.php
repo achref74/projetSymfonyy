@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class UserType extends AbstractType
 {
@@ -55,7 +56,13 @@ class UserType extends AbstractType
                 ]),
             ],
         ])
-        ->add('dateNaissance')
+        ->add('dateNaissance', DateType::class, [
+            'widget' => 'single_text',
+            'html5' => false, // Set to false to use a custom date format
+            'format' => 'yyyy-MM-dd', // Specify the desired date format
+            'years' => range(date('Y') - 100, date('Y') - 18), // Adjust the date range
+            // Other options...
+        ])
         ->add('adresse', TextType::class, [
             'constraints' => [
                 new NotBlank([
