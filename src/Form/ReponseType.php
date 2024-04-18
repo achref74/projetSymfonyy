@@ -22,7 +22,6 @@ class ReponseType extends AbstractType
             'choice_label' => 'idUser',
         ])
             ->add('description')
-            ->add('dateReponse')
             ->add('reclamation', EntityType::class, [
                 'class' => Reclamation::class,
                 'choice_label' => 'description',

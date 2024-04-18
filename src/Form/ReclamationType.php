@@ -16,7 +16,7 @@ class ReclamationType extends AbstractType
     {
         $builder
             ->add('description')
-            ->add('date')
+            
             ->add('formation', EntityType::class, [
                 'class' => Formation::class,
                 'choice_label' => 'nom',

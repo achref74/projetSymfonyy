@@ -4,6 +4,8 @@ namespace App\Entity;
 use App\Repository\ReponseRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert; // Use the correct namespace
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReponseRepository")
@@ -44,6 +46,8 @@ class Reponse
      * @ORM\Column(type="string", length=255)
      */
     #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank(message: "Description must not be blank")]
+
     private  $description;
 
     /**

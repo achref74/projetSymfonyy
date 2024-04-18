@@ -18,7 +18,7 @@ class Formation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name:"idFormation" ,type: "integer")]
-    private  $idFormation;
+    private      $idFormation;
 
     
     #[ORM\Column(name: "nom", type: "string", length: 255)]

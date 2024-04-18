@@ -21,7 +21,7 @@ class User
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name:"idUser",type: "integer")]
-    private $idUser;
+    private  $idUser;
 
     /**
      * @ORM\Column(name="nom", type="string", length=255)

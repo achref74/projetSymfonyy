@@ -1,0 +1,4 @@
+/* Define border for .bordered-card */
+.bordered-card {
+    border: 1px solid #000000; /* Add your desired border style */
+}

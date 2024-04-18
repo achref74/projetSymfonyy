@@ -13,7 +13,7 @@ class Categorie
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer",name="idCategorie")
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]

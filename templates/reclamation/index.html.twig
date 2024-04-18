@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'backBase.html.twig' %}
 
 {% block title %}Reclamation index{% endblock %}
 
@@ -8,8 +8,10 @@
     <table class="table">
         <thead>
             <tr>
-            
+                <th>Username</th>
                 <th>Description</th>
+                <th>Formation</th>
+                <th>Outil</th>
                 <th>Date</th>
                 <th>actions</th>
             </tr>
@@ -17,8 +19,10 @@
         <tbody>
         {% for reclamation in reclamations %}
             <tr>
-                
+                <td>{{ reclamation.user.idUser }}</td>
                 <td>{{ reclamation.description }}</td>
+                <td>{{reclamation.formation.nom}}</td>
+                <td>{{reclamation.outil.nom}}</td>
                 <td>{{ reclamation.date ? reclamation.date|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}">show</a>

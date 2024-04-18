@@ -1,14 +1,15 @@
 <?php
-
 namespace App\Entity;
+
 use App\Repository\ReclamationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert; // Use the correct namespace
 
 /**
- *  @ORM\Table(name="reclamation")
+ * @ORM\Table(name="reclamation")
  * @ORM\Entity(repositoryClass="App\Repository\ReclamationRepository")
  */
 #[ORM\Entity(repositoryClass: ReclamationRepository::class)]
@@ -21,46 +22,62 @@ class Reclamation
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: "id_reclamation",type: "integer")]
-    private  $id_reclamation;
+    #[ORM\Column(name: "id_reclamation", type: "integer")]
+    private $id_reclamation;
 
     /**
      * @ORM\Column(type="string", length=500)
+     * @Assert\NotBlank(message="Description must not be blank")
+     * @Assert\Length(
+     *     max=500,
+     *     maxMessage="Description cannot be longer than {{ limit }} characters"
+     * )
      */
     #[ORM\Column(type: "string", length: 500)]
-    private  $description;
+    #[Assert\NotBlank(message: "Description must not be blank")]
+    #[Assert\Length(
+        max: 500,
+        maxMessage: "Description cannot be longer than {{ limit }} characters"
+    )]
+    private $description;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank(message="Date must not be blank")
      */
     #[ORM\Column(type: "datetime")]
-    private  $date;
+    #[Assert\NotBlank(message: "Date must not be blank")]
+    private $date;
 
-  /**
- * @ORM\OneToOne(targetEntity="App\Entity\Formation")
- * @ORM\JoinColumn(name="id_formation", referencedColumnName="idFormation", nullable=false)
- */
-#[ORM\OneToOne(targetEntity: Formation::class)]
-#[ORM\JoinColumn(name: "id_formation", referencedColumnName: "idFormation", nullable: false)]
-private $formation;
-
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Formation")
+     * @ORM\JoinColumn(name="id_formation", referencedColumnName="idFormation", nullable=false)
+     * @Assert\NotNull(message="Formation must not be null")
+     */
+    #[ORM\OneToOne(targetEntity: Formation::class)]
+    #[ORM\JoinColumn(name: "id_formation", referencedColumnName: "idFormation", nullable: false)]
+    #[Assert\NotNull(message: "Formation must not be null")]
+    private $formation;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Outil")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull(message="Outil must not be null")
      */
     #[ORM\OneToOne(targetEntity: Outil::class)]
     #[ORM\JoinColumn(name: "id_outil", referencedColumnName: "idoutils")]
-    private   $outil;
+    #[Assert\NotNull(message: "Outil must not be null")]
+    private $outil;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull(message="User must not be null")
      */
-
-     #[ORM\OneToOne(targetEntity: User::class)]
-     #[ORM\JoinColumn(name: "id_user", referencedColumnName: "idUser")]
-    private  $user;
+    #[ORM\OneToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "id_user", referencedColumnName: "idUser")]
+    #[Assert\NotNull(message: "User must not be null")]
+    private $user;
 
     public function getId(): ?int
     {
@@ -122,7 +139,7 @@ private $formation;
 
     public function setUser(?User $user): self
     {
-        $this->user = $user;
+        $this->user =$user;
 
         return $this;
     }
