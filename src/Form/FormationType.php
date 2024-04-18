@@ -18,42 +18,51 @@ class FormationType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
-                'required' => true,
+              
                 'label' => 'Nom:',
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control'],
+                'required' => false,
             ])
             ->add('description', TextareaType::class, [
-                'required' => true,
+                
                 'label' => 'Description:',
+                'required' => false,
                 'attr' => ['class' => 'form-control', 'rows' => 3]
             ])
             ->add('prix', NumberType::class, [
-                'required' => true,
+               
                 'label' => 'Prix:',
+                'required' => false,
                 'attr' => ['class' => 'form-control']
             ])
             ->add('dated', DateType::class, [
-                'required' => true,
+               
                 'label' => 'Date de début:',
                 'widget' => 'single_text',
+                'required' => false,
                 'attr' => ['class' => 'form-control']
             ])
             ->add('datef', DateType::class, [
-                'required' => true,
+               
                 'label' => 'Date de fin:',
                 'widget' => 'single_text',
+                'required' => false,
                 'attr' => ['class' => 'form-control']
             ])
             ->add('nbrcours', NumberType::class, [
-                'required' => true,
+               
                 'label' => 'Nombre de cours:',
+                'required' => false,
                 'attr' => ['class' => 'form-control']
             ])
             ->add('imageUrl', FileType::class, [
                 'required' => false,
-                'label' => 'Image File:',
-                'attr' => ['class' => 'form-control-file']
+                'label' => 'Image',
+                'data_class' => null,
+                
+                // Add more options here as needed
             ])
+           
          ;
     }
 

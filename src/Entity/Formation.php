@@ -3,7 +3,7 @@ namespace App\Entity;
 
 use App\Repository\FormationRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=FormationRepository::class)
  */
@@ -18,38 +18,52 @@ class Formation
 
     /**
      * @ORM\Column(name="nom", type="string", length=255)
+      * @Assert\NotBlank(message="Le nom est requis")
      */
-    private string $nom;
+    private $nom;
 
     /**
      * @ORM\Column(name="description", type="string", length=255)
+     * @Assert\NotBlank(message="La description est requise")
      */
-    private string $description;
+    private $description;
 
     /**
      * @ORM\Column(name="dated", type="date")
+     * @Assert\GreaterThan("today", message="The start date must be in the future")
+    * @Assert\NotBlank(message="La date de début est requise")
      */
-    private \DateTimeInterface $dated;
+    private  $dated;
 
     /**
      * @ORM\Column(name="datef", type="date")
+      * @Assert\NotBlank(message="The end date is required")
+     * @Assert\GreaterThan("today", message="The end date must be in the future")
+     
+     * @Assert\GreaterThan(propertyPath="dateD", message="The end date must be greater than the start date")
      */
-    private \DateTimeInterface $datef;
+    private  $datef;
 
     /**
      * @ORM\Column(name="prix", type="float")
+     * @Assert\NotBlank(message="Le prix est requis")
+     * @Assert\GreaterThanOrEqual(value=0, message="The price must be a positive number or zero")
+     * @Assert\Type(type="float", message="Le prix doit être un nombre décimal")
      */
-    private float $prix;
+    private $prix;
 
     /**
      * @ORM\Column(name="nbrcours", type="integer")
+     * @Assert\NotBlank(message="Le nombre de cours est requis")
+     * @Assert\GreaterThanOrEqual(value=1, message="The nbcours must be a positive number ")
+     * @Assert\Type(type="integer", message="Le nombre de cours doit être un entier")
      */
-    private int $nbrcours;
+    private $nbrcours;
 
     /**
      * @ORM\Column(name="imageurl", type="string", length=255)
      */
-    private string $imageurl;
+    private $imageurl;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
@@ -73,7 +87,7 @@ class Formation
         return $this->nom;
     }
 
-    public function setNom(string $nom): self
+    public function setNom(?string $nom): self
     {
         $this->nom = $nom;
         return $this;
@@ -84,7 +98,7 @@ class Formation
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
         return $this;
@@ -95,7 +109,7 @@ class Formation
         return $this->dated;
     }
 
-    public function setDated(\DateTimeInterface $dated): self
+    public function setDated(?\DateTimeInterface $dated): self
     {
         $this->dated = $dated;
         return $this;
@@ -106,7 +120,7 @@ class Formation
         return $this->datef;
     }
 
-    public function setDatef(\DateTimeInterface $datef): self
+    public function setDatef(?\DateTimeInterface $datef): self
     {
         $this->datef = $datef;
         return $this;
@@ -117,7 +131,7 @@ class Formation
         return $this->prix;
     }
 
-    public function setPrix(float $prix): self
+    public function setPrix(?float $prix): self
     {
         $this->prix = $prix;
         return $this;
@@ -128,7 +142,7 @@ class Formation
         return $this->nbrcours;
     }
 
-    public function setNbrcours(int $nbrcours): self
+    public function setNbrcours(?int $nbrcours): self
     {
         $this->nbrcours = $nbrcours;
         return $this;
@@ -139,7 +153,7 @@ class Formation
         return $this->imageurl;
     }
 
-    public function setImageurl(string $imageurl): self
+    public function setImageurl(?string $imageurl): self
     {
         $this->imageurl = $imageurl;
         return $this;

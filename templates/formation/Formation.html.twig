@@ -17,10 +17,15 @@
 
 <section class="meetings-page" id="meetings">
     <div class="container">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFormationModal">
-            Add Formation
-        </button>
+        <a href="{{ path('app_formation_add') }}" class="btn btn-primary" role="button">Add Formation</a>
         
+        <div class="col" style="text-align: right; margin-top: -40px;">
+            <a href="{{ path('display_offers') }}" class="btn btn-primary" role="button">Display Offers</a>
+        </div>
+        
+
+
+       
         <!-- Add Formation Modal -->
         <div class="modal fade" id="addFormationModal" tabindex="-1" role="dialog" aria-labelledby="addFormationModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">

@@ -20,6 +20,14 @@ class FormationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Formation::class);
     }
+    public function findAllWithOffres(): array
+    {
+        return $this->createQueryBuilder('f')
+            ->leftJoin('App\Entity\Offre', 'o', 'WITH', 'o.formation = f.idFormation')
+            ->addSelect('o')
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return Formation[] Returns an array of Formation objects
