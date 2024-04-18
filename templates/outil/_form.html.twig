@@ -1,0 +1,84 @@
+<div class="main-panel">
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                {{ form_start(form, {'attr': {'class': 'forms-sample', 'novalidate': 'novalidate'}}) }}
+                <div class="form-group">
+                    {{ form_label(form.nom, 'Name', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.nom.vars.errors %}
+                        <div class="text-danger">
+                            {{ form_errors(form.nom) }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.description.vars.errors %}
+                        <div class="text-danger">
+                            {{ form_errors(form.description) }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.prix, 'Price', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.prix, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.prix.vars.errors %}
+                        <div class="text-danger">
+                            {{ form_errors(form.prix) }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.ressources, 'Resources', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.ressources, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.ressources.vars.errors %}
+                        <div class="text-danger">
+                            {{ form_errors(form.ressources) }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.stock, 'Stock', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.stock, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.stock.vars.errors %}
+                        <div class="text-danger">
+                            {{ form_errors(form.stock) }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.etat, 'Status', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.etat, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.etat.vars.errors %}
+                        <div class="text-danger">
+                            {{ form_errors(form.etat) }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.image, 'Image URL', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.image.vars.errors %}
+                        <div class="text-danger">
+                            {{ form_errors(form.image) }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.categories, 'Categorie', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.categories, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.categories.vars.errors %}
+                        <div class="text-danger">
+                            {{ form_errors(form.categories) }}
+                        </div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">{{ button_label|default('Save') }}</button>
+                <button type="button" class="btn btn-dark">Cancel</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Categorie Index{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Categorie Index</h1>
+
+        <!-- Card for Table Display -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Categories Overview</h4>
+                <p class="card-description">
+                    List of all categories. You can show or edit details from here.
+                </p>
+
+                <!-- Table inside card -->
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nom</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for categorie in categories %}
+                            <tr>
+                                <td>{{ categorie.id }}</td>
+                                <td>{{ categorie.nom }}</td>
+                                <td>{{ categorie.description }}</td>
+                                <td>
+                                    <a href="{{ path('app_categorie_show', {'id': categorie.id}) }}" class="btn btn-info btn-sm">Show</a>
+                                    <a href="{{ path('app_categorie_edit', {'id': categorie.id}) }}" class="btn btn-primary btn-sm">Edit</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">No records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button to create new category -->
+        <div class="mt-4">
+            <a href="{{ path('app_categorie_new') }}" class="btn btn-success">Create New Category</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Achat Index{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Achat Index</h1>
+
+        <!-- Bootstrap Card for Table Display -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">List of Purchases</h4>
+                <p class="card-description">
+                    Here you can view all the purchase records and manage them.
+                </p>
+
+                <!-- Responsive Table inside a Card -->
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Total</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for achat in achats %}
+                            <tr>
+                                <td>{{ achat.id }}</td>
+                                <td>{{ achat.total }}</td>
+                                <td>{{ achat.date ? achat.date|date('Y-m-d') : '' }}</td>
+                                <td>
+                                    <a href="{{ path('app_achat_show', {'id': achat.id}) }}" class="btn btn-info btn-sm">Show</a>
+                                    <a href="{{ path('app_achat_edit', {'id': achat.id}) }}" class="btn btn-primary btn-sm">Edit</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">No records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button to Create a New Purchase Record -->
+        <div class="mt-4">
+            <a href="{{ path('app_achat_new') }}" class="btn btn-success">Create New</a>
+        </div>
+    </div>
+{% endblock %}

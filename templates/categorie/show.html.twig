@@ -1,0 +1,46 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Categorie Details{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Categorie Details</h1>
+
+        <!-- Card for Displaying Categorie Details -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Categorie Information</h4>
+                <p class="card-description">
+                    Here you can view detailed information about the category.
+                </p>
+
+                <!-- Table inside card for displaying categorie data -->
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ categorie.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nom</th>
+                            <td>{{ categorie.nom }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ categorie.description }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-4">
+            <a href="{{ path('app_categorie_index') }}" class="btn btn-primary">Back to List</a>
+            <a href="{{ path('app_categorie_edit', {'id': categorie.id}) }}" class="btn btn-warning">Edit</a>
+            {{ include('categorie/_delete_form.html.twig', {'attr': {'class': 'btn btn-danger'}}) }}
+        </div>
+    </div>
+{% endblock %}

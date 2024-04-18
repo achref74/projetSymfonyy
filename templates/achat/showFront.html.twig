@@ -1,0 +1,48 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}Achat Details{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Achat Details</h1>
+
+        <!-- Card for Displaying Achat Details -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Purchase Information</h4>
+                <p class="card-description">
+                    Detailed information about the transaction.
+                </p>
+
+                <!-- Table inside card for displaying achat data -->
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ achat.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Total</th>
+                            <td>{{ achat.total }}</td>
+                        </tr>
+                        <tr>
+                            <th>Outil</th>
+                            <td>{{ achat.outil.nom }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <td>{{ achat.date ? achat.date|date('Y-m-d') : '' }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-4">
+            <a href="{{ path('app_outil_indexFront') }}" class="btn btn-primary">Back to List Outil</a>
+        </div>
+    </div>
+{% endblock %}

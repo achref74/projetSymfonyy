@@ -1,0 +1,11 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Edit Outil{% endblock %}
+
+{% block content %}
+    {{ include('outil/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_outil_index') }}">back to list</a>
+
+    {{ include('outil/_delete_form.html.twig') }}
+{% endblock %}

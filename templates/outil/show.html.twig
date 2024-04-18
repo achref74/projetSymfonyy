@@ -1,0 +1,74 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Outil{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Outil Details</h1>
+
+        <!-- Card for Table Display -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Outil Information</h4>
+                <p class="card-description">
+                    Basic information about the selected tool.
+                </p>
+
+                <!-- Table inside card -->
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ outil.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nom</th>
+                            <td>{{ outil.nom }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ outil.description }}</td>
+                        </tr>
+                        <tr>
+                            <th>Prix</th>
+                            <td>{{ outil.prix }}</td>
+                        </tr>
+                        <tr>
+                            <th>Ressources</th>
+                            <td>{{ outil.ressources }}</td>
+                        </tr>
+                        <tr>
+                            <th>Stock</th>
+                            <td>{{ outil.stock }}</td>
+                        </tr>
+                        <tr>
+                            <th>Etat</th>
+                            <td>
+                                <span class="badge
+                                    {{ outil.etat == 'Pending' ? 'badge-danger' :
+                                outil.etat == 'In progress' ? 'badge-warning' :
+                                outil.etat == 'Fixed' ? 'badge-info' :
+                                'badge-success' }}">
+                                    {{ outil.etat }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Image</th>
+                            <td><img src="{{ outil.image }}" alt="Tool Image" class="img-fluid" style="max-width: 100px;"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons for actions -->
+        <div class="mt-4">
+            <a href="{{ path('app_outil_index') }}" class="btn btn-primary">Back to List</a>
+            <a href="{{ path('app_outil_edit', {'id': outil.id}) }}" class="btn btn-warning">Edit</a>
+            {{ include('outil/_delete_form.html.twig', { 'class': 'btn btn-danger' }) }}
+        </div>
+    </div>
+{% endblock %}
