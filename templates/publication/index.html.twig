@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Publication index{% endblock %}
+
+{% block body %}
+    <h1>Publication index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idp</th>
+                <th>Datecreation</th>
+                <th>Contenup</th>
+                <th>Image</th>
+                <th>Nblike</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for publication in publications %}
+            <tr>
+                <td>{{ publication.idp }}</td>
+                <td>{{ publication.datecreation ? publication.datecreation|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ publication.contenup }}</td>
+                <td>{{ publication.image }}</td>
+                <td>{{ publication.nblike }}</td>
+                <td>
+                    <form method="post" action="{{ path('app_publication_delete', {'idp': publication.idp ,'idUser': idUser,'idForum': idForum}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ publication.idp) }}">
+    <button class="btn">Delete</button>
+</form>
+
+                    <a href="{{ path('app_publication_edit', {'idp': publication.idp,'idUser': idUser,'idForum': idForum }) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

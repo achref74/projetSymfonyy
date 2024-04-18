@@ -1,0 +1,86 @@
+{% extends 'backBase.html.twig' %}
+
+{% block title %}User index
+{% endblock %}
+
+{% block body %}
+
+
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container profile-page">
+    <div class="col-xl-12 col-lg-12 col-md-12">
+        {% for user in users %}
+            {% if loop.index0 % 3 == 0 %}
+                <div class="row">
+            {% endif %}
+<!---->
+                          <div class="col-sm-4 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                        <div class="d-flex d-sm-block d-md-flex align-items-center">
+                          <h4 class="mb-0">{{ user.nom }} {{ user.prenom }}</h4>
+                          <p class="text-success ms-2 mb-0 font-weight-medium">
+                            {% if user.role == 0 %}
+                                Client
+                            {% elseif user.role == 1 %}
+                                Formateur
+                            {% else %}
+                                Admin
+                            {% endif %}
+                          </p>
+                        </div>
+                        <h6 class="text-muted font-weight-normal">( {{ user.genre }} )</h6>
+                      </div>
+                      <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                        <img src="{{ asset(user.imageProfil) }}" class="rounded-circle" alt="Profile Image" width="100" height="100">
+                      </div>
+                        <div>
+							<a  href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-outline-primary">Show</a>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+            {% if loop.index0 % 3 == 2 or loop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+
+
+	{# 
+	              <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+	        {% for user in users %}
+	  
+	                <img class="card-image" src="{{ asset(user.imageProfil) }}" alt="Profil Image" width="200" height="200">
+	                <div class="card-body">
+	                    <h5 class="card-title">User ID: {{ user.idUser }}</h5>
+	                    <p class="text-muted font-weight-normal"><strong>Nom:</strong> {{ user.nom }} {{ user.prenom }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Email:</strong> {{ user.email }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Date de Naissance:</strong> {{ user.dateNaissance ? user.dateNaissance|date('Y-m-d') : '' }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Adresse:</strong> {{ user.adresse }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Numéro de téléphone:</strong> {{ user.numtel }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Genre:</strong> {{ user.genre }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Spécialité:</strong> {{ user.specialite }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Role:</strong> {{ user.role }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Niveau Académique:</strong> {{ user.niveauAcademique }}</p>
+	                    <p class="text-muted font-weight-normal"><strong>Disponibilité:</strong> {{ user.disponiblite }}</p>
+	                     <img class="card-image" src="{{ asset(user.cv) }}" alt="Votre Cv" width="200" height="200">
+	
+	                    <p class="text-muted font-weight-normal"><strong>Niveau Scolaire:</strong> {{ user.niveauScolaire }}</p>
+	                    <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-primary">Show</a>
+	                    <a href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-secondary">Edit</a>
+	                </div>
+	            </div>
+	        {% else %}
+	            <p class="no-records-found">No records found</p>
+	        {% endfor %} #}
+	<!-- Clear the floats -->
+
+
+</div>{% endblock %}

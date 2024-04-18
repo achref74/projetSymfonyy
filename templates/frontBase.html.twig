@@ -1,0 +1,87 @@
+
+{% block stylesheets %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="TemplateMo">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <title>Connect Artisan </title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ asset('frontOffice/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{{ asset('frontOffice/assets/css/fontawesome.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontOffice/assets/css/templatemo-edu-meeting.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontOffice/assets/css/owl.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontOffice/assets/css/lightbox.css') }}">
+{% endblock %}
+<body>
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a  class="logo">
+                            Connect Artisan
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li class="scroll-to-section"><a href="{{ path('user_home_front') }}" class="active">Home</a></li>
+                            <li class="has-sub"><a>
+
+                            </a>
+                                
+                                <ul class="sub-menu">                            
+
+                                    <li><a href="" >Mon Profil</a></li>
+                                    <li>
+                             <a href="">Modifier</a>
+
+                                <a href="">Modifer</a>
+                             </li>
+                                </ul>
+                            </li>
+                            <li class="scroll-to-section"><a href="{{ path('app_logout') }}" class="active">Logout</a></li>
+
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <body>
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ***** Main Banner Area Start ***** -->
+
+    <!-- ***** Main Banner Area End ***** -->
+
+  <section class="contact-us" id="contact">
+
+        {% block body %}
+
+        {% endblock %}
+    </section>
+</body>
+        {% block js %}
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="{{ asset('frontOffice/assets/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('frontOffice/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('frontOffice/assets/js/isotope.min.js') }}"></script>
+    <script src="{{ asset('frontOffice/assets/js/owl-carousel.js') }}"></script>
+    <script src="{{ asset('frontOffice/assets/js/lightbox.js') }}"></script>
+    <script src="{{ asset('frontOffice/assets/js/tabs.js') }}"></script>
+    <script src="{{ asset('frontOffice/assets/js/video.js') }}"></script>
+    <script src="{{ asset('frontOffice/assets/js/slick-slider.js') }}"></script>
+        {% endblock %}

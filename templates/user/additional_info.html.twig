@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Connect Artisan</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="{{ asset('shared/assets/vendors/mdi/css/materialdesignicons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('shared/assets/vendors/css/vendor.bundle.base.css') }}">
+    <!-- endinject -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="{{ asset('shared/assets/css/style.css') }}">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="{{ asset('shared/assets/images/favicon.png') }}" />
+</head>
+<body>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="row w-100 m-0">
+                <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
+                    <div class="card col-lg-4 mx-auto">
+                        <div class="card-body px-5 py-5">
+                            <h3 class="card-title text-left mb-3">Compléter les informations</h3>
+                            {{ form_start(form) }}
+                                {{ form_widget(form._token) }}
+                                <div class="form-group">
+                                    {{ form_label(form.imageProfil) }}
+                                    {{ form_widget(form.imageProfil, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {% if form_errors(form.imageProfil) %}
+                                        <div class="alert alert-danger">{{ form_errors(form.imageProfil) }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.genre) }}
+                                    {{ form_widget(form.genre, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {% if form_errors(form.genre) %}
+                                        <div class="alert alert-danger">{{ form_errors(form.genre) }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.specialite) }}
+                                    {{ form_widget(form.specialite, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {% if form_errors(form.specialite) %}
+                                        <div class="alert alert-danger">{{ form_errors(form.specialite) }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.niveauAcademique) }}
+                                    {{ form_widget(form.niveauAcademique, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {% if form_errors(form.niveauAcademique) %}
+                                        <div class="alert alert-danger">{{ form_errors(form.niveauAcademique) }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.disponiblite) }}
+                                    {{ form_widget(form.disponiblite, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {% if form_errors(form.disponiblite) %}
+                                        <div class="alert alert-danger">{{ form_errors(form.disponiblite) }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.cv) }}
+                                    {{ form_widget(form.cv, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {% if form_errors(form.cv) %}
+                                        <div class="alert alert-danger">{{ form_errors(form.cv) }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.mdp) }}
+                                    {{ form_widget(form.mdp, {'attr': {'class': 'form-control p_input'}}) }}
+                                    {% if form_errors(form.mdp) %}
+                                        <div class="alert alert-danger">{{ form_errors(form.mdp) }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="text-center">
+                                    <div class="form-group">
+                                        {{ form_widget(form.suivant, {'attr': {'class': 'btn btn-primary btn-block enter-btn'}}) }}
+                                    </div>
+                                </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+                <!-- content-wrapper ends -->
+            </div>
+            <!-- row ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="{{ asset('shared/assets/vendors/js/vendor.bundle.base.js') }}"></script>
+    <!-- endinject -->
+    <!-- inject:js -->
+    <script src="{{ asset('shared/assets/js/off-canvas.js') }}"></script>
+    <script src="{{ asset('shared/assets/js/hoverable-collapse.js') }}"></script>
+    <script src="{{ asset('shared/assets/js/misc.js') }}"></script>
+    <script src="{{ asset('shared/assets/js/settings.js') }}"></script>
+    <script src="{{ asset('shared/assets/js/todolist.js') }}"></script>
+    <!-- endinject -->
+</body>
+</html>

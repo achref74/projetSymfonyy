@@ -1,0 +1,69 @@
+{% extends 'frontBase.html.twig' %}
+
+{% block title %}
+    Modifier le profil du Client
+{% endblock %}
+
+{% block body %}
+    <section class="contact-us" id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 align-self-center">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form method="post" action="{{ path('app_user_edit_client', {'idUser': user.getIdUser()}) }}" id="contact">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h2>Modifier le profil du Client</h2>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="nom" type="text" id="nom" value="{{ user.getNom() }}" placeholder="Nom...*" required="">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="prenom" type="text" id="prenom" value="{{ user.getPrenom() }}" placeholder="Prénom...*" required="">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="email" type="email" id="email" value="{{ user.getEmail() }}" pattern="[^ @]*@[^ @]*" placeholder="Email...*" required="">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="dateNaissance" type="date" id="dateNaissance" value="{{ user.getDateNaissance()|date('Y-m-d') }}" placeholder="Date de Naissance...*" required="">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="adresse" type="text" id="adresse" value="{{ user.getAdresse() }}" placeholder="Adresse...*" required="">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="numtel" type="tel" id="numtel" value="{{ user.getNumtel() }}" placeholder="Numéro de téléphone...*" required="">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="niveauScolaire" type="text" id="niveauScolaire" value="{{ user.getNiveauScolaire() }}" placeholder="Niveau Scolaire...*" required="">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <fieldset>
+                                            <button type="submit" id="form-submit" class="button">Enregistrer les modifications</button>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+{% endblock %}
