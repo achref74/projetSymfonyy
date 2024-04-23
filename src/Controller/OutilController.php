@@ -12,17 +12,31 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 #[Route('/outil')]
 class OutilController extends AbstractController
 {
     #[Route('/', name: 'app_outil_index', methods: ['GET'])]
-    public function index(OutilRepository $outilRepository): Response
+    public function index(Request $request,OutilRepository $outilRepository, PaginatorInterface $paginator): Response
     {
+          // Récupère tous les travaux depuis la base de données
+          $allTravaux = $outilRepository->findAll();
+            // Paginer les travaux avec KnpPaginatorBundle
+        $travaux = $paginator->paginate(
+            $allTravaux, // Les données à paginer
+            $request->query->getInt('page', 1), // Numéro de la page, par défaut 1
+            4 // Nombre d'éléments par page
+        );
         return $this->render('outil/index.html.twig', [
-            'outils' => $outilRepository->findAll(),
+            'outils' => $travaux,
         ]);
     }
+
+
+
+
     #[Route('/front', name: 'app_outil_indexFront', methods: ['GET'])]
     public function indexFront(OutilRepository $outilRepository): Response
     {

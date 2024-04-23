@@ -5,6 +5,31 @@
 {% endblock %}
 
 {% block content %}
+<style>
+.pagination {
+    background-color: #007bff; /* Couleur de fond */
+    color: #fff; /* Couleur du texte */
+    border-color: #007bff; /* Couleur de la bordure */
+    display: inline-block; /* Affichage en ligne */
+    padding: 6px 12px; /* Espacement intérieur */
+    margin: 0; /* Marge extérieure */
+    border-radius: 4px; /* Rayon de la bordure */
+}
+
+.pagination a {
+    color: #fff; /* Couleur du texte des liens */
+    text-decoration: none; /* Supprimer le soulignement des liens */
+}
+
+.pagination a:hover {
+    background-color: #0056b3; /* Couleur de fond au survol */
+}
+
+.pagination .active {
+    background-color: #0056b3; /* Couleur de fond de l'élément actif */
+    border-color: #0056b3; /* Couleur de la bordure de l'élément actif */
+}
+</style>
     <div class="main-panel">
         <div class="row">
             <h1>Outil index</h1>
@@ -70,6 +95,9 @@
                 </div>
             </div>
         </div>
+        <center><div class="pagination">
+    {{ knp_pagination_render(outils) }}
+</div></center>
         <a href="{{ path('app_outil_new') }}">Create new</a>
 
     </div>

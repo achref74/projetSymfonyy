@@ -3,6 +3,31 @@
 {% block title %}Achat Index{% endblock %}
 
 {% block content %}
+<style>
+.pagination {
+    background-color: #007bff; /* Couleur de fond */
+    color: #fff; /* Couleur du texte */
+    border-color: #007bff; /* Couleur de la bordure */
+    display: inline-block; /* Affichage en ligne */
+    padding: 6px 12px; /* Espacement intérieur */
+    margin: 0; /* Marge extérieure */
+    border-radius: 4px; /* Rayon de la bordure */
+}
+
+.pagination a {
+    color: #fff; /* Couleur du texte des liens */
+    text-decoration: none; /* Supprimer le soulignement des liens */
+}
+
+.pagination a:hover {
+    background-color: #0056b3; /* Couleur de fond au survol */
+}
+
+.pagination .active {
+    background-color: #0056b3; /* Couleur de fond de l'élément actif */
+    border-color: #0056b3; /* Couleur de la bordure de l'élément actif */
+} 
+</style>
     <div class="container mt-4">
         <h1 class="mb-4">Achat Index</h1>
 
@@ -46,7 +71,9 @@
                 </div>
             </div>
         </div>
-
+<center><div class="pagination">
+    {{ knp_pagination_render(achats) }}
+</div></center>
         <!-- Button to Create a New Purchase Record -->
         <div class="mt-4">
             <a href="{{ path('app_achat_new') }}" class="btn btn-success">Create New</a>

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\PdfGeneratorService;
 use App\Entity\Achat;
 use App\Entity\Outil;
 use App\Form\AchatType;
@@ -11,15 +11,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 #[Route('/achat')]
 class AchatController extends AbstractController
 {
     #[Route('/', name: 'app_achat_index', methods: ['GET'])]
-    public function index(AchatRepository $achatRepository): Response
+    public function index(Request $request,AchatRepository $achatRepository,PaginatorInterface $paginator): Response
     {
+        // Récupère tous les travaux depuis la base de données
+        $allTravaux = $achatRepository->findAll();
+
+        // Paginer les travaux avec KnpPaginatorBundle
+        $travaux = $paginator->paginate(
+            $allTravaux, // Les données à paginer
+            $request->query->getInt('page', 1), // Numéro de la page, par défaut 1
+            5 // Nombre d'éléments par page
+        );
+
         return $this->render('achat/index.html.twig', [
-            'achats' => $achatRepository->findAll(),
+            'achats' => $travaux,
         ]);
     }
 
@@ -92,4 +104,23 @@ class AchatController extends AbstractController
 
         return $this->redirectToRoute('app_achat_index', [], Response::HTTP_SEE_OTHER);
     }
-}
+    #[Route('/pdf/reservation', name: 'generator_service_reservation')]
+    public function pdfEvenement(): Response
+    {
+        $achats= $this->getDoctrine()
+            ->getRepository(Achat::class)
+            ->findAll();
+
+
+
+        $html =$this->renderView('mpdf/index.html.twig', ['achats' => $achats]);
+        $pdfGeneratorService=new PdfGeneratorService();
+        $pdf = $pdfGeneratorService->generatePdf($html);
+
+        return new Response($pdf, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="document.pdf"',
+        ]);
+
+}}
+

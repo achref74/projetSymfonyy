@@ -10,15 +10,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/categorie')]
 class CategorieController extends AbstractController
 {
     #[Route('/', name: 'app_categorie_index', methods: ['GET'])]
-    public function index(CategorieRepository $categorieRepository): Response
+    public function index(Request $request,CategorieRepository $categorieRepository,PaginatorInterface $paginator): Response
     {
+          // Récupère tous les travaux depuis la base de données
+          $allTravaux = $categorieRepository->findAll();
+            // Paginer les travaux avec KnpPaginatorBundle
+        $travaux = $paginator->paginate(
+            $allTravaux, // Les données à paginer
+            $request->query->getInt('page', 1), // Numéro de la page, par défaut 1
+            1 // Nombre d'éléments par page
+        );
         return $this->render('categorie/index.html.twig', [
-            'categories' => $categorieRepository->findAll(),
+            'categories' => $travaux,
         ]);
     }
 
