@@ -13,23 +13,34 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/publication')]
 class PublicationController extends AbstractController
 {
     #[Route('/{idUser}/{idForum}/{idformation}', name: 'app_publication_index', methods: ['GET'])]
-    public function index(PublicationRepository $publicationRepository, int $idUser, int $idForum, int $idformation): Response
-    {
-        // Retrieve publications based on $idForum
-        $publications = $publicationRepository->findBy(['idforum' => $idForum]);
-    
-        return $this->render('publication/index.html.twig', [
-            'publications' => $publications,
-            'idUser' => $idUser,
-            'idForum' => $idForum,
-            'idformation' => $idformation,
-        ]);
-    }
+public function index(Request $request, PaginatorInterface $paginator, PublicationRepository $publicationRepository, int $idUser, int $idForum, int $idformation): Response
+{
+    // Retrieve all publications based on $idForum
+    $publicationsQuery = $publicationRepository->createQueryBuilder('p')
+        ->where('p.idforum = :idforum')
+        ->setParameter('idforum', $idForum)
+        ->getQuery();
+
+    // Paginate the publications
+    $publications = $paginator->paginate(
+        $publicationsQuery, // Query to paginate
+        $request->query->getInt('page', 1), // Current page number, 1 by default
+        3 // Number of items per page
+    );
+
+    return $this->render('publication/index.html.twig', [
+        'publications' => $publications,
+        'idUser' => $idUser,
+        'idForum' => $idForum,
+        'idformation' => $idformation,
+    ]);
+}
     #[Route('/Back/{idUser}/{idForum}/{idformation}', name: 'Back_publication_index', methods: ['GET'])]
     public function indexBack(PublicationRepository $publicationRepository, int $idUser, int $idForum, int $idformation): Response
     {

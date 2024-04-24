@@ -30,6 +30,15 @@ class ForumRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function countOccurrencesByIdFormation(): array
+{
+    return $this->createQueryBuilder('f')
+        ->select('f.idFormation as idFormation', 'COUNT(f.idFormation) as formationCount')
+        ->groupBy('f.idFormation')
+        ->getQuery()
+        ->getResult();
+}
+
 //    /**
 //     * @return Forum[] Returns an array of Forum objects
 //     */

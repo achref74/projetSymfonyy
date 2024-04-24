@@ -193,4 +193,5 @@ public function delete(Request $request, Forum $forum, EntityManagerInterface $e
     return $this->redirectToRoute('app_forum_index', ['idformation' => $idformation], Response::HTTP_SEE_OTHER);
 }
 
+
 }
