@@ -4,30 +4,62 @@
 
 {% block body %}
     <h1>Forum index</h1>
+   <ul class="navbar-nav w-100">
+    <li class="nav-item w-100">
+        <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" action="{{ path('app_forum_search', {'idformation': idformation, 'idUser': idUser}) }}" method="GET" id="searchForm">
+            <input type="text" class="form-control" name="titre" id="searchInput" placeholder="Search products">
+        </form>
+    </li>
+</ul>
 
-    <table class="table">
+<script>
+    var idformation = {{ idformation }};
+    var idUser = {{ idUser }};
+
+    document.getElementById('searchInput').addEventListener('input', function(event) {
+        var searchValue = document.getElementById('searchInput').value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '{{ path('app_forum_search', {'idformation': idformation, 'idUser': idUser}) }}?titre=' + encodeURIComponent(searchValue), true);
+
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                document.getElementById('searchResults').innerHTML = xhr.responseText;
+            } else {
+                console.error('La requête a échoué : ' + xhr.status);
+            }
+        };
+
+        xhr.send();
+    });
+</script>
+
+
+    <table class="table table-hover">
         <thead>
             <tr>
-                <th>Idforum</th>
+                
                 <th>Titre</th>
-                <th>Datecreation</th>
+                <th>Date dernière modification</th>
                 <th>Description</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for forum in forums %}
             <tr>
-                <td>{{ forum.idforum }}</td>
+                
                 <td>{{ forum.titre }}</td>
                 <td>{{ forum.datecreation ? forum.datecreation|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ forum.description }}</td>
                 <td>
                     <form method="post" action="{{ path('app_forum_delete', {'idforum': forum.idforum,'idformation': idformation}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ forum.idforum) }}">
-    <button class="btn">Delete</button>
+    <button  type="button" class="btn btn-inverse-primary btn-fw">Delete</button>
 </form>
-                    <a href="{{ path('app_forum_edit', {'idforum': forum.idforum , 'idformation': idformation}) }}">edit</a>
+                    <button type="button" class="btn btn-inverse-primary btn-fw" onclick="window.location.href='{{ path('app_forum_edit', {'idforum': forum.idforum, 'idformation': idformation}) }}'">Edit</button>
+                    <td><a href="{{ path('Back_publication_index', {'idUser': idUser, 'idForum': forum.idForum, 'idformation': idformation}) }}">go to pub</a></td>
+
 
                 </td>
             </tr>
@@ -39,5 +71,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_forum_new', {'idformation': idformation}) }}">Create new</a>
+    <button type="button" class="btn btn-inverse-primary btn-fw" onclick="window.location.href='{{ path('app_forum_new', {'idformation': idformation,'idUser': idUser}) }}'">Create new</button>
+
 {% endblock %}
