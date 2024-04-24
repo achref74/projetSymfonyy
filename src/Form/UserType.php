@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Validator\Constraints\LessThan;
 
 class UserType extends AbstractType
 {
@@ -25,6 +26,7 @@ class UserType extends AbstractType
     {
         $builder
         ->add('nom', TextType::class, [
+            'required' => false, // Set the required attribute to false
             'constraints' => [
                 new NotBlank([
                     'message' => 'Le nom ne doit pas être vide.',
@@ -36,6 +38,7 @@ class UserType extends AbstractType
             ],
         ])
         ->add('prenom', TextType::class, [
+            'required' => false, // Set the required attribute to false
             'constraints' => [
                 new NotBlank([
                     'message' => 'Le prenom ne doit pas être vide.',
@@ -47,6 +50,7 @@ class UserType extends AbstractType
             ],
         ])
         ->add('email', EmailType::class, [
+            'required' => false, // Set the required attribute to false
             'constraints' => [
                 new NotBlank([
                     'message' => 'L`email ne doit pas être vide.',
@@ -56,14 +60,20 @@ class UserType extends AbstractType
                 ]),
             ],
         ])
-        ->add('dateNaissance', DateType::class, [
+          ->add('dateNaissance', DateType::class, [
+            'required' => false, // Set the required attribute to false
             'widget' => 'single_text',
             'html5' => false, // Set to false to use a custom date format
             'format' => 'yyyy-MM-dd', // Specify the desired date format
             'years' => range(date('Y') - 100, date('Y') - 18), // Adjust the date range
-            // Other options...
+            'constraints' => [
+                new LessThan([
+                    'value' => '2004-01-01',
+                    'message' => 'La date de naissance doit être inférieure à 2004-01-01.'
+                ]),]
         ])
         ->add('adresse', TextType::class, [
+            'required' => false, // Set the required attribute to false
             'constraints' => [
                 new NotBlank([
                     'message' => 'L`adresse ne doit pas être vide.',
@@ -71,6 +81,7 @@ class UserType extends AbstractType
             ],
         ])
         ->add('numtel', IntegerType::class, [
+            'required' => false, // Set the required attribute to false
             'constraints' => [
                 new NotBlank([
                     'message' => 'Le numéro de téléphone ne doit pas être vide.',

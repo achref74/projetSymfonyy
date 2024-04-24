@@ -237,7 +237,7 @@ public function modifyPassword(Request $request, EntityManagerInterface $entityM
 
         $this->addFlash('success', 'Mot de passe modifié avec succès.');
 
-        return $this->redirectToRoute('user_home_front');
+        return $this->redirectToRoute('app_login');
     }
 
     return $this->render('user/modify_password.html.twig', [

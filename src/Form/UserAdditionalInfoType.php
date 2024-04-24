@@ -35,14 +35,25 @@ class UserAdditionalInfoType extends AbstractType
         ->add('specialite')
         ->add('niveauAcademique', ChoiceType::class, [
             'choices' => [
-                'Primaire' => 'primaire',
-                'Secondaire' => 'secondaire',
-                'Universitaire' => 'universitaire',
+                'Bac+1' => 'Bac+1',
+                'Bac+2' => 'Bac+2',
+                'Bac+3' => 'Bac+3',
+                'Bac+4' => 'Bac+4',
+                'Bac+5' => 'Bac+5',
+
+
             ],
             'label' => 'Niveau Académique',
             'required' => true,
         ])
-        ->add('disponiblite')
+        ->add('disponiblite', ChoiceType::class, [
+            'choices' => [
+                'Disponible' => '1',
+                'Non Disponible' => '0',
+            ],
+            'label' => 'Genre',
+            'required' => true,
+        ])
         ->add('cv', FileType::class, [
             'label' => 'CV',
             'mapped' => false,

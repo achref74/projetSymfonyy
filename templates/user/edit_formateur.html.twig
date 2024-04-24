@@ -1,7 +1,7 @@
 {% extends 'frontBase.html.twig' %}
 
 {% block title %}
-    Modifier le profil du Client
+    Modifier le profil du Formateur
 {% endblock %}
 
 {% block body %}
@@ -11,59 +11,59 @@
                 <div class="col-lg-12 align-self-center">
                     <div class="row">
                         <div class="col-lg-12">
-                            <form method="post" action="{{ path('app_user_edit_client', {'idUser': user.getIdUser()}) }}" id="contact">
+                            <form method="post" action="{{ path('app_user_edit_client', {'idUser': user.getIdUser() }) }}" id="contact-form">
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <h2>Modifier le profil du Client</h2>
                                     </div>
                                     <div class="col-lg-4">
                                         <fieldset>
-                                            <input name="nom" type="text" id="nom" value="{{ user.getNom() }}" placeholder="Nom...*" required="">
+                                            <input name="nom" type="text" id="nom" value="{{ user.getNom() }}" placeholder="Nom..." required>
                                         </fieldset>
                                     </div>
                                     <div class="col-lg-4">
                                         <fieldset>
-                                            <input name="prenom" type="text" id="prenom" value="{{ user.getPrenom() }}" placeholder="Prénom...*" required="">
+                                            <input name="prenom" type="text" id="prenom" value="{{ user.getPrenom() }}" placeholder="Prénom..." required>
                                         </fieldset>
                                     </div>
                                     <div class="col-lg-4">
                                         <fieldset>
-                                            <input name="email" type="email" id="email" value="{{ user.getEmail() }}" pattern="[^ @]*@[^ @]*" placeholder="Email...*" required="">
+    <input name="email" type="email" id="email" value="{{ user.getEmail() }}"
+           placeholder="Email..." required
+           pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <input name="dateNaissance" type="date" id="dateNaissance" value="{{ user.getDateNaissance()|date('Y-m-d') }}" placeholder="Date de Naissance..." required>
                                         </fieldset>
                                     </div>
                                     <div class="col-lg-4">
                                         <fieldset>
-                                            <input name="dateNaissance" type="date" id="dateNaissance" value="{{ user.getDateNaissance()|date('Y-m-d') }}" placeholder="Date de Naissance...*" required="">
+                                            <input name="adresse" type="text" id="adresse" value="{{ user.getAdresse() }}" placeholder="Adresse..." required>
                                         </fieldset>
                                     </div>
                                     <div class="col-lg-4">
                                         <fieldset>
-                                            <input name="adresse" type="text" id="adresse" value="{{ user.getAdresse() }}" placeholder="Adresse...*" required="">
+                                            <input name="numtel" type="tel" id="numtel" pattern="\d{8}" title="Le numéro de téléphone doit contenir exactement 8 chiffres." value="{{ user.getNumtel() }}" placeholder="Numéro de téléphone..." required>
                                         </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+    <fieldset>
+        <select name="disponiblite" id="disponiblite" class="form-select rounded-3" required>
+            <option value="1" {% if user.getDisponiblite() == 1 %}selected{% endif %}>Disponible</option>
+            <option value="0" {% if user.getDisponiblite() == 0 %}selected{% endif %}>Non Disponible</option>
+        </select>
+    </fieldset>
                                     </div>
                                     <div class="col-lg-4">
                                         <fieldset>
-                                            <input name="numtel" type="tel" id="numtel" value="{{ user.getNumtel() }}" placeholder="Numéro de téléphone...*" required="">
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <fieldset class="mb-4">
-                                            <select name="disponiblite" id="disponiblite" class="form-select rounded-3" required="">
-                                                <option value="1" {% if user.getDisponiblite() == '1' %}selected{% endif %}>Disponible</option>
-                                                <option value="0" {% if user.getDisponiblite() == '0' %}selected{% endif %}>Non Disponible</option>
+                                            <select name="niveauScolaire" id="niveauScolaire" class="form-select rounded-3" required>
+                                                <option value="secondaire" {% if user.getNiveauScolaire() == 'secondaire' %}selected{% endif %}>Secondaire</option>
+                                                <option value="primaire" {% if user.getNiveauScolaire() == 'primaire' %}selected{% endif %}>Primaire</option>
+                                                <option value="académique" {% if user.getNiveauScolaire() == 'académique' %}selected{% endif %}>Académique</option>
                                             </select>
                                         </fieldset>
                                     </div>
-                                        <div class="col-lg-4">
-                                    <fieldset class="mb-4">
-                                        <select name="niveauScolaire" id="niveauScolaire" class="form-select rounded-3" required="">
-                                            <option value="secondaire" {% if user.getNiveauScolaire() == 'secondaire' %}selected{% endif %}>Secondaire</option>
-                                            <option value="primaire" {% if user.getNiveauScolaire() == 'primaire' %}selected{% endif %}>Primaire</option>
-                                            <option value="académique" {% if user.getNiveauScolaire() == 'académique' %}selected{% endif %}>Académique</option>
-                                        </select>
-                                    </fieldset>
-                                    </div>
-
                                     <div class="col-lg-12">
                                         <fieldset>
                                             <button type="submit" id="form-submit" class="button">Enregistrer les modifications</button>
@@ -72,11 +72,40 @@
                                 </div>
                             </form>
                         </div>
-                    </div
+                    </div>
                 </div>
-
             </div>
         </div>
-
     </section>
+
+    <script>
+        // JavaScript for validating date of birth
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            var dateNaissance = document.getElementById('dateNaissance').value;
+            var date = new Date(dateNaissance);
+            var dateThreshold = new Date('2003-01-01');
+
+            if (date >= dateThreshold) {
+                alert('La date de naissance doit être avant le 1er janvier 2003.');
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('editClientForm');
+            const emailInput = document.getElementById('email');
+
+            form.addEventListener('submit', function(event) {
+                // Define the desired pattern
+                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+                // Check if the email matches the pattern
+                if (!emailPattern.test(emailInput.value)) {
+                    // If the email doesn't match the pattern, prevent form submission
+                    event.preventDefault();
+                    // Display an alert or error message (you could use a more sophisticated UI)
+                    alert('Veuillez entrer une adresse email au format something@something.com.');
+                }
+            });
+        });
+    </script>
 {% endblock %}
