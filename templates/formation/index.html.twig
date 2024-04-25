@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formation index{% endblock %}
+
+{% block body %}
+    <h1>Formation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IdFormation</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for formation in formations %}
+            <tr>
+                <td>{{ formation.idFormation }}</td>
+                <td>
+                    <a href="{{ path('app_formation_show', {'idFormation': formation.idFormation}) }}">show</a>
+                    <a href="{{ path('app_formation_edit', {'idFormation': formation.idFormation}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_formation_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block body1 %}
+<section class="heading-page header-text" id="top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h6>Here are our upcoming meetings</h6>
+                <h2>Upcoming Meetings</h2>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 
+
+{% block body2 %}
+<section class="meetings-page" id="meetings">
+    <div class="container">
+        
+        <a href="{{ path('editFormation', {'id': formation.idFormation}) }}" class="btn btn-primary" role="button">Edit Formation</a>
+        <div class="col" style="text-align: right; margin-top: -40px;">
+        <a href="{{ path('create_offer', { id: formation.idFormation }) }}" class="btn btn-primary">Add Offer</a>
+    </div>
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="meeting-single-item">
+                            <div class="thumb">
+                                <div class="price">
+                                    <span>${{ formation.prix }}</span>
+                                </div>
+                                <div class="date">
+                                    <h6>{{ formation.dated|date('M') }} <span>{{ formation.dated|date('d') }}</span></h6>
+                                </div>
+                                <img src="{{ asset(formation.imageUrl) }}" alt="">
+                            </div>
+                            <div class="down-content">
+                                <a href="#"><h4>{{ formation.nom }}</h4></a>
+                                <p>{{ formation.description }}</p>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="hours">
+                                            <h5>Date</h5>
+                                             <p>{{ formation.dated|date('l') }} - {{ formation.datef|date('l') }}: {{ formation.dated|date('Y-m-d') }} - {{ formation.datef|date('Y-m-d') }}</p>
+
+                                        </div>
+                                    </div>
+                            
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="main-button-red">
+                            <a href="{{ path('app_formation_index2') }}">Back To Meetings List</a>
+                        </div>
+                        {# Add button to create new offer for this formation #}
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>Copyright © 2022 Edu Meeting Co., Ltd. All Rights Reserved.
+            <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
+    </div>
+</section>
+<li class="list-inline-item mb-1">
+    <a href="{{ path('editFormation', {'id': formation.getIdFormation()}) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><span class="fa fa-pencil"></span></a>
+</li>
+
+{# Add button to create new offer for this formation #}
+<a href="{{ path('create_offer', { id: formation.idFormation }) }}" class="btn btn-primary">Add Offer</a>
+
+{% endblock %} 
+
+{% block body3 %}
+{% endblock %} 
+{% block body4 %}
+{% endblock %} 
+{% block body5 %}
+{% endblock %} 
+{% block body6 %}
+{% endblock %} 
+{% block body7 %}
+{% endblock %}
