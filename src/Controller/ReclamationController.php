@@ -10,13 +10,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+
+
 
 #[Route('/reclamation')]
 class ReclamationController extends AbstractController
 {
-    #[Route('/', name: 'app_reclamation_index', methods: ['GET'])]
-    public function index(ReclamationRepository $reclamationRepository): Response
+    #[Route('/', name: 'app_reclamation_index', methods: ['GET', 'POST'])]
+    public function index(Request $request, ReclamationRepository $reclamationRepository): Response
     {
+        if ($request->isXmlHttpRequest()) {
+            $searchTerm = $request->request->get('searchTerm');
+            $reclamations = $reclamationRepository->findBySearchTerm($searchTerm);
+            return $this->render('reclamation/_reclamation_list.html.twig', [
+                'reclamations' => $reclamations,
+            ]);
+        }
+    
         return $this->render('reclamation/index.html.twig', [
             'reclamations' => $reclamationRepository->findAll(),
         ]);
