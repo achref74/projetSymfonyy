@@ -43,10 +43,8 @@ class Reclamation
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank(message="Date must not be blank")
      */
     #[ORM\Column(type: "datetime")]
-    #[Assert\NotBlank(message: "Date must not be blank")]
     private $date;
 
     /**

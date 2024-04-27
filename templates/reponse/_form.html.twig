@@ -1,16 +1,18 @@
 {{ form_start(form, { 'attr': { 'novalidate': 'novalidate' } }) }}
-<div class="form-group">
+<div class="count-title">
     {{ form_label(form.description, null, {'attr': {'class': 'white-label'}}) }}  <!-- Description label with white class -->
     {{ form_widget(form.description) }} 
+</div>
+<div class="count-digit">
     {{ form_errors(form.description) }}  <!-- Description input -->
 </div>
-<div class="form-group">
+<div class="count-title">
     {{ form_label(form.user, null, {'attr': {'class': 'white-label'}}) }}  <!-- User label with white class -->
     {{ form_widget(form.user) }}  <!-- User input -->
 </div>
-<div class="form-group">
+<div class="count-title">
     {{ form_label(form.reclamation, null, {'attr': {'class': 'white-label'}}) }}  <!-- User label with white class -->
     {{ form_widget(form.reclamation) }}  <!-- User input -->
 </div>
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <button class="button">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

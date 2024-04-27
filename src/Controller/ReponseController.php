@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Reponse;
+use App\Entity\Reclamation;
+
 use App\Form\ReponseType;
 use App\Repository\ReponseRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,25 +24,31 @@ class ReponseController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_reponse_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $reponse = new Reponse();
-        $form = $this->createForm(ReponseType::class, $reponse);
-        $form->handleRequest($request);
+    #[Route('/new/{reclamationId}', name: 'app_reponse_new', methods: ['GET', 'POST'])]
+public function new(Request $request, EntityManagerInterface $entityManager, $reclamationId): Response
+{
+    // Fetch the Reclamation entity by its ID
+    $reclamation = $this->getDoctrine()->getRepository(Reclamation::class)->find($reclamationId);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($reponse);
-            $entityManager->flush();
+    // Create a new Reponse entity
+    $reponse = new Reponse();
+    $reponse->setReclamation($reclamation); // Set the Reclamation entity
 
-            return $this->redirectToRoute('app_reponse_index', [], Response::HTTP_SEE_OTHER);
-        }
+    $form = $this->createForm(ReponseType::class, $reponse);
+    $form->handleRequest($request);
 
-        return $this->renderForm('reponse/new.html.twig', [
-            'reponse' => $reponse,
-            'form' => $form,
-        ]);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->persist($reponse);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_reponse_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->renderForm('reponse/new.html.twig', [
+        'reponse' => $reponse,
+        'form' => $form,
+    ]);
+}
 
     #[Route('/{id}', name: 'app_reponse_show', methods: ['GET'])]
     public function show(Reponse $reponse): Response
