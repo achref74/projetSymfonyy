@@ -95,12 +95,23 @@
                 </div>
             </div>
         </div>
+      
         <center><div class="pagination">
     {{ knp_pagination_render(outils) }}
 </div></center>
+
 <div id="google_translate_element"></div> <script type="text/javascript"> function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en'},'google_translate_element'); } </script> <script type="text/javascript"src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
         <a href="{{ path('app_outil_new') }}">Create new</a>
+         <li class="dropdown" style="list-style: none; margin-bottom: 100px; display:flex; justify-content: center  ">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color: #91DAF0; font-size: 25px; ">Trier les outils <span class="caret"></span></a>
+            <ul class="dropdown-menu" style="background-color: #FEFCF3; border: none;">
+                <li><a href="{{ path('outils_prix')}}" style="color: #F9A936; text-decoration: none; font-size: 20px;">Tri par prix</a></li> 
+               
+            </ul>
+    </li>
 
     </div>
+   
 
+ 
 {% endblock %}

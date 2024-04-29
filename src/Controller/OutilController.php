@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 #[Route('/outil')]
@@ -27,7 +28,7 @@ class OutilController extends AbstractController
         $travaux = $paginator->paginate(
             $allTravaux, // Les données à paginer
             $request->query->getInt('page', 1), // Numéro de la page, par défaut 1
-            4 // Nombre d'éléments par page
+            10 // Nombre d'éléments par page
         );
         return $this->render('outil/index.html.twig', [
             'outils' => $travaux,
@@ -117,4 +118,18 @@ class OutilController extends AbstractController
 
         return $this->redirectToRoute('app_outil_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/', name: 'outils_prix')]
+    public function dossiersByEtat(OutilRepository $outilRepository): Response
+    {
+        $outils = $outilRepository->findBy(
+            [], // Aucun critère de recherche spécifié, donc tous les outils seront retournés
+            ['prix' => 'ASC'] // Trier par prix croissant
+        );
+    
+        return $this->render('outil/index.html.twig', [
+            'outils' => $outils,
+        ]);
+    }
+    
+    
 }

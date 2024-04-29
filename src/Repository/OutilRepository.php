@@ -44,5 +44,13 @@ class OutilRepository extends ServiceEntityRepository
 //            ->getQuery()
 //            ->getOneOrNullResult()
 //        ;
-//    }
+//  
+public function findByPrix()
+{
+    return $this->createQueryBuilder('o')
+        ->orderBy('o.prix', 'ASC')
+        ->getQuery()
+        ->getResult();
+}
+
 }
