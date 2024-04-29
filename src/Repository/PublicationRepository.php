@@ -21,6 +21,16 @@ class PublicationRepository extends ServiceEntityRepository
         parent::__construct($registry, Publication::class);
     }
 
+    public function findByDateCreationAndForum($idForum)
+{
+    return $this->createQueryBuilder('d')
+        ->andWhere('d.idforum = :idforum')
+        ->setParameter('idforum', $idForum)
+        ->orderBy('d.datecreation', 'ASC')
+        ->getQuery()
+        ->getResult();
+}
+
 //    /**
 //     * @return Publication[] Returns an array of Publication objects
 //     */

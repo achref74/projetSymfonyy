@@ -3,6 +3,14 @@
 {% block title %}Publication index{% endblock %}
 
 {% block body %}
+<h1 class="text-primary">Publications</h1>
+        <button type="button" class="btn btn-outline-secondary" id="toggleButton">
+    <i class="mdi mdi-format-vertical-align-top"></i>
+    <a href="{{ path('Back_publication_index_Trier', {'idUser': idUser, 'idForum': idForum, 'idformation': idformation}) }}">Trier</a>
+</button>
+<br>
+<br>
+
 
 <div class="container">
     <div class="row">
@@ -37,6 +45,8 @@
     </div>
     <a href="{{ path('app_forum_index', {'idformation': idformation,'idUser': idUser}) }}">back</a>
 </div>
+
+
 
 
 

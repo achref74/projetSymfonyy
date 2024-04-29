@@ -42,11 +42,25 @@ public function index(Request $request, PaginatorInterface $paginator, Publicati
     ]);
 }
     #[Route('/Back/{idUser}/{idForum}/{idformation}', name: 'Back_publication_index', methods: ['GET'])]
-    public function indexBack(PublicationRepository $publicationRepository, int $idUser, int $idForum, int $idformation): Response
-    {
-        // Retrieve publications based on $idForum
+    public function indexBack(
+        PublicationRepository $publicationRepository,int $idUser,int $idForum,int $idformation): Response {
+        // Retrieve publications based on $idForum using findBy()
         $publications = $publicationRepository->findBy(['idforum' => $idForum]);
-    
+
+        return $this->render('publication/indexBack.html.twig', [
+            'publications' => $publications,
+            'idUser' => $idUser,
+            'idForum' => $idForum,
+            'idformation' => $idformation,
+        ]);
+    }
+    #[Route('/Back/{idUser}/{idForum}/{idformation}/Trier', name: 'Back_publication_index_Trier', methods: ['GET'])]
+    public function indexBackTrier(
+        PublicationRepository $publicationRepository,int $idUser,int $idForum,int $idformation): Response {
+         // Récupérer les publications triées par date de création par ID de forum
+         $publications = $publicationRepository->findByDateCreationAndForum($idForum);
+
+
         return $this->render('publication/indexBack.html.twig', [
             'publications' => $publications,
             'idUser' => $idUser,
@@ -55,8 +69,6 @@ public function index(Request $request, PaginatorInterface $paginator, Publicati
         ]);
     }
     
-
-
     #[Route('/new/Client/{idUser}/{idForum}/{idformation}', name: 'app_publication_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, int $idUser, int $idForum, int $idformation): Response
     {
