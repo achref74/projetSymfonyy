@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Repository;
-
 use App\Entity\Reclamation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -30,7 +29,20 @@ class ReclamationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function calculStat()
+    {
+        return $this->createQueryBuilder('r')
+            ->select('f.nom AS formationName, COUNT(r) AS Nombre')
+            ->leftJoin('r.formation', 'f')
+            ->groupBy('f.nom')
+            ->getQuery()
+            ->getResult();
+    }
+    
 
+    
+    
+    
 //    /**
 //     * @return Reclamation[] Returns an array of Reclamation objects
 //     */
