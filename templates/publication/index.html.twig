@@ -55,20 +55,6 @@
                              <button type="submit" class="btn btn-outline-danger btn-fw ">Delete</button>
                              </form>
                         </div>
-                           
-        
-            
-                              {% set contenup = publication.contenup %}
-                              {% set imageUrl = publication.image %}
-
-                               {# Encode the contenup and image URL #}
-                             {% set encodedcontenup = contenup | url_encode %}
-                           {% set encodedImageUrl = imageUrl | url_encode %}
-
-
-                           {% set shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' ~ encodedImageUrl ~ '&quote=' ~ encodedcontenup %}
-
-                            <button><a href="{{ shareUrl }}" >Share </a></button>
                     </div>
                 </div>
             </div>
