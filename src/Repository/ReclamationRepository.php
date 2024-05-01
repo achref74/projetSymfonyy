@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 use App\Entity\Reclamation;
+use App\Controller\ReclamationController;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -29,16 +30,31 @@ class ReclamationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    public function calculStat()
-    {
-        return $this->createQueryBuilder('r')
-            ->select('f.nom AS formationName, COUNT(r) AS Nombre')
-            ->leftJoin('r.formation', 'f')
-            ->groupBy('f.nom')
-            ->getQuery()
-            ->getResult();
-    }
     
+   
+
+
+    public function calculStat()
+{
+    $entityManager = $this->getEntityManager();
+
+    $query = $entityManager->createQuery(
+        'SELECT 
+            f.nom AS formation_nom, 
+            COUNT(r.id) AS Nombre_Reclamations,
+            (COUNT(r.id) * 100.0 / (SELECT COUNT(r2.id) FROM reclamation r2)) AS Pourcentage_Total
+        FROM 
+            reclamation r 
+        JOIN 
+            r.user u 
+        JOIN 
+            r.formation f
+        GROUP BY 
+            f.nom'
+    );
+
+    return $query->getResult();
+}
 
     
     

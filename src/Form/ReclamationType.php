@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
+use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaV3Type;
 class ReclamationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -29,6 +29,7 @@ class ReclamationType extends AbstractType
                 'class' => User::class,
                 'choice_label' => 'idUser',
             ])
+            
         ;
     }
 
