@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Forum;
 use App\Repository\ForumRepository;
+use App\Repository\PublicationRepository;
 use App\Form\ForumType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -193,5 +194,28 @@ public function delete(Request $request, Forum $forum, EntityManagerInterface $e
     return $this->redirectToRoute('app_forum_index', ['idformation' => $idformation], Response::HTTP_SEE_OTHER);
 }
 
+
+#[Route("/stats/{idformation}/{idUser}", name: "stats", methods: ['GET'])]
+public function statistiques(ForumRepository $forumRepository, PublicationRepository $publicationRepository, int $idformation, int $idUser): Response
+{
+    $forums = $forumRepository->findAll();
+    $data = [];
+
+    // Récupérer le nombre de publications pour chaque forum
+    foreach ($forums as $forum) {
+        $publications = $publicationRepository->findBy(['idforum' => $forum]);
+        $data[] = [
+            'nom' => $forum->getTitre(),
+            'nombre_publications' => count($publications)
+        ];
+    }
+    
+
+    return $this->render('forum/chart.html.twig', [
+        'data' => json_encode($data),
+        'idformation' => $idformation,
+        'idUser' => $idUser,
+    ]);
+}
 
 }
