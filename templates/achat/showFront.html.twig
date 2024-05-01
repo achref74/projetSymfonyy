@@ -41,7 +41,13 @@
         </div>
 
         <!-- Action Buttons -->
+
         <div class="mt-4">
+            <form action="/checkout" method="POST" class="d-inline">
+                <!-- Ajoutez ici des champs cachés si nécessaire, par exemple : -->
+                <input type="hidden" name="achatId" value="{{ achat.id }}">
+                <button type="submit" class="btn btn-primary">Pay</button>
+            </form>
             <a href="{{ path('app_outil_indexFront') }}" class="btn btn-primary">Back to List Outil</a>
         </div>
         <div class="mt-4">

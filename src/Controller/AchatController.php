@@ -124,8 +124,5 @@ class AchatController extends AbstractController
             'Content-Disposition' => 'inline; filename="document.pdf"',
         ]);
 
-        
-
-
 }}
 

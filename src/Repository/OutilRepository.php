@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Outil;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -45,12 +46,22 @@ class OutilRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //  
-public function findByPrix()
-{
-    return $this->createQueryBuilder('o')
-        ->orderBy('o.prix', 'ASC')
-        ->getQuery()
-        ->getResult();
-}
+    public function findByPrix()
+    {
+        return $this->createQueryBuilder('o')
+            ->orderBy('o.prix', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
+    public function countByCategory()
+    {
+        // Assuming 'categorie' is a ManyToOne relation to a Category entity which has a 'nom' field
+        $qb = $this->createQueryBuilder('o')
+            ->select('c.nom AS category, COUNT(o.id) AS count')
+            ->join('o.categories', 'c')
+            ->groupBy('c.nom');
+
+        return $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
+    }
 }

@@ -3,115 +3,39 @@
 {% block title %}
     Outil index
 {% endblock %}
-
-{% block content %}
-<style>
-.pagination {
-    background-color: #007bff; /* Couleur de fond */
-    color: #fff; /* Couleur du texte */
-    border-color: #007bff; /* Couleur de la bordure */
-    display: inline-block; /* Affichage en ligne */
-    padding: 6px 12px; /* Espacement intérieur */
-    margin: 0; /* Marge extérieure */
-    border-radius: 4px; /* Rayon de la bordure */
-}
-
-.pagination a {
-    color: #fff; /* Couleur du texte des liens */
-    text-decoration: none; /* Supprimer le soulignement des liens */
-}
-
-.pagination a:hover {
-    background-color: #0056b3; /* Couleur de fond au survol */
-}
-
-.pagination .active {
-    background-color: #0056b3; /* Couleur de fond de l'élément actif */
-    border-color: #0056b3; /* Couleur de la bordure de l'élément actif */
-}
-</style>
-    <div class="main-panel">
-        <div class="row">
-            <h1>Outil index</h1>
-            <!-- Styled Table Following the "Basic Table" Example -->
-            <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Outils Overview</h4>
-                        <p class="card-description">
-                            Basic information about tools <code>.table</code>
-                        </p>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Nom</th>
-                                    <th>Description</th>
-                                    <th>Prix</th>
-                                    <th>Ressources</th>
-                                    <th>Stock</th>
-                                    <th>Etat</th>
-                                    <th>Image</th>
-                                    <th>Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for outil in outils %}
-                                    <tr>
-                                        <td>{{ outil.id }}</td>
-                                        <td>{{ outil.nom }}</td>
-                                        <td>{{ outil.description }}</td>
-                                        <td>{{ outil.prix }}</td>
-                                        <td>{{ outil.ressources }}</td>
-                                        <td>{{ outil.stock }}</td>
-                                        <td>
-                                            {% if outil.etat == 'Pending' %}
-                                                <label class="badge badge-danger">{{ outil.etat }}</label>
-                                            {% elseif outil.etat == 'In progress' %}
-                                                <label class="badge badge-warning">{{ outil.etat }}</label>
-                                            {% elseif outil.etat == 'Fixed' %}
-                                                <label class="badge badge-info">{{ outil.etat }}</label>
-                                            {% else %}
-                                                <label class="badge badge-success">{{ outil.etat }}</label>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            <img src="/uploads/images/{{ outil.image }}" style="width: 100px;" alt="Image of {{ outil.nom }}">
-                                        </td>                                        <td>
-                                            <a href="{{ path('app_outil_show', {'id': outil.id}) }}">show</a>
-                                            <a href="{{ path('app_outil_edit', {'id': outil.id}) }}">edit</a>
-                                        </td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td colspan="9">no records found</td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-      
-        <center><div class="pagination">
-    {{ knp_pagination_render(outils) }}
-</div></center>
-
-<div id="google_translate_element"></div> <script type="text/javascript"> function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en'},'google_translate_element'); } </script> <script type="text/javascript"src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-        <a href="{{ path('app_outil_new') }}">Create new</a>
-         <li class="dropdown" style="list-style: none; margin-bottom: 100px; display:flex; justify-content: center  ">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color: #91DAF0; font-size: 25px; ">Trier les outils <span class="caret"></span></a>
-            <ul class="dropdown-menu" style="background-color: #FEFCF3; border: none;">
-                <li><a href="{{ path('outils_prix')}}" style="color: #F9A936; text-decoration: none; font-size: 20px;">Tri par prix</a></li> 
-               
-            </ul>
-    </li>
-
-    </div>
+{% block recherche %}
+ 
    
 
- 
+<script>
+// Function to fetch clubs based on search input
+function fetchClubs(searchValue) {
+    fetch('{{ path('search') }}', {
+        method: 'POST',
+        body: JSON.stringify({ search: searchValue }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.text())
+      .then(data => document.getElementById('searchResults').innerHTML = data);
+}
+
+// Initial fetch to show all clubs
+fetchClubs('');
+
+// Listen for input on search input field
+document.getElementById('searchInput').addEventListener('input', function() {
+    var searchValue = this.value.trim();
+    fetchClubs(searchValue);
+});
+
+
+</script>
+  {% endblock %}
+{% block content %}
+   
+  <div id="searchResults"></div>
+
+             
+
 {% endblock %}

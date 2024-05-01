@@ -110,6 +110,14 @@
                     <span class="menu-title">Achat</span>
                 </a>
             </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="{{ path('outil_stats') }}">
+              <span class="menu-icon">
+                <i class="mdi mdi-speedometer"></i>
+              </span>
+                    <span class="menu-title">statistique</span>
+                </a>
+            </li>
 
         </ul>
     </nav>
@@ -128,7 +136,7 @@
                 <ul class="navbar-nav w-100">
                     <li class="nav-item w-100">
                         <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                            <input type="text" class="form-control" placeholder="Search products">
+                            <input  class="form-control"  id="searchInput"  type="search" placeholder="Search outils">
                         </form>
                     </li>
                 </ul>
@@ -178,6 +186,7 @@
             </div>
         </nav>
         <!-- partial -->
+        {% block recherche %} {% endblock %}
         {% block content %}
             <div class="main-panel">
                 <div class="content-wrapper">
