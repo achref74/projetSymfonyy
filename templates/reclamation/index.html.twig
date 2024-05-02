@@ -29,7 +29,34 @@
     
 
     <a href="{{ path('app_reclamation_new') }}" class="btn btn-success">Create new</a>
- 
+     <!-- Google Pie Chart -->
+    <div id="piechart" style="width: 100%; height: 400px;"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var jsonData = {{ chartData | json_encode | raw }};
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Formation');
+            data.addColumn('number', 'Reclamations');
+            data.addRows(jsonData);
+
+            var options = {
+                title: 'Reclamations by Formation',
+                          pieHole: 0.3,
+
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(data, options);
+        }
+    </script>
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -51,37 +78,7 @@
     </script>
 
 
-<!-- Include the Google Charts loader script -->
-<!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-<!-- Define a div element to hold the chart -->
-<!--<div id="chart_div" style="width: 100%; height: 400px;"></div>
-
-<!-- JavaScript to load Google Charts and draw the chart -->
-<!--<script>
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-        // Parse the JSON-encoded chartData passed from the controller
-    
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'formation_nom');
-        data.addColumn('number', 'Pourcentage_Total');
-        data.addRows(jsonData);
-
-        // Set chart options
-        var options = {
-            title: 'Reclamations by Formation',
-            is3D: true,
-        };
-
-        // Instantiate and draw the chart.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-    }
-</script>
 
       
 {% endblock %}

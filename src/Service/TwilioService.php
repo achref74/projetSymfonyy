@@ -12,7 +12,7 @@ class TwilioService
     public function __construct()
     {
         $this->sid = "AC4e5f1adcb461e2596f8393475dcc7cd1";
-        $this->token = "6d6f1d777e2b2db374c95071c27cc5aa";
+        $this->token = "475503393708dc083f3ff3b6058c8e57";
         $this->twilioClient = new Client($this->sid, $this->token);
     }
 

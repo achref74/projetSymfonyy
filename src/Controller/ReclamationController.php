@@ -14,10 +14,47 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Service\TwilioService;
 #[Route('/reclamation')]
 class ReclamationController extends AbstractController
-{
-
+{   
 #[Route('/', name: 'app_reclamation_index', methods: ['GET', 'POST'])]
-public function index(Request $request, ReclamationRepository $reclamationRepository ): Response
+public function index(Request $request, ReclamationRepository $reclamationRepository): Response
+{
+    // Retrieve all reclamations
+    $reclamations = $reclamationRepository->findAll();
+
+    // Calculate statistics
+    $formationCounts = [];
+    foreach ($reclamations as $reclamation) {
+        $formationName = $reclamation->getFormation()->getNom();
+        if (!isset($formationCounts[$formationName])) {
+            $formationCounts[$formationName] = 0;
+        }
+        $formationCounts[$formationName]++;
+    }
+
+    // Prepare data for the Google Pie Chart
+    $chartData = [];
+    foreach ($formationCounts as $formationName => $count) {
+        $chartData[] = [$formationName, $count];
+    }
+
+    // If it's an AJAX request, return only the reclamations list
+    if ($request->isXmlHttpRequest()) {
+        $searchTerm = $request->request->get('searchTerm');
+        $reclamations = $reclamationRepository->findBySearchTerm($searchTerm);
+
+        return $this->render('reclamation/_reclamation_list.html.twig', [
+            'reclamations' => $reclamations,
+        ]);
+    }
+
+    // Otherwise, return the reclamations list along with the statistics data
+    return $this->render('reclamation/index.html.twig', [
+        'reclamations' => $reclamations,
+        'chartData' => $chartData,
+    ]);
+}
+
+/*public function index(Request $request, ReclamationRepository $reclamationRepository ): Response
 {
     if ($request->isXmlHttpRequest()) {
         $searchTerm = $request->request->get('searchTerm');
@@ -26,15 +63,13 @@ public function index(Request $request, ReclamationRepository $reclamationReposi
 
         return $this->render('reclamation/_reclamation_list.html.twig', [
             'reclamations' => $reclamations,
-          //  'chartData' => json_encode($reclamationRepository->calculStat()), 
         ]);
     }
 
     return $this->render('reclamation/index.html.twig', [
         'reclamations' => $reclamationRepository->findAll(),
-       // 'chartData' => json_encode($reclamationRepository->calculStat()), 
     ]);
-}
+}*/
 
     #[Route('/new', name: 'app_reclamation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -92,7 +127,15 @@ public function edit(Request $request, Reclamation $reclamation, EntityManagerIn
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+        $reclamationText = $reclamation->getDescription();
+        $badWords = ['fuck', 'bitch','cancer','nigger','shit','badword'];
+        if ($this->containsBadWords($reclamationText, $badWords)) {
+            // Return a response indicating that the reclamation contains bad words
+            $this->addFlash('error', 'Your reclamation contains inappropriate language. Please revise.');
+            return $this->redirectToRoute('app_reclamation_edit');
+        }
         $entityManager->flush();
+        $this->addFlash('success', 'Reclamation created successfully.');
 
         return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
     }
@@ -106,6 +149,10 @@ public function edit(Request $request, Reclamation $reclamation, EntityManagerIn
     #[Route('/{id}', name: 'app_reclamation_delete', methods: ['POST'])]
     public function delete(Request $request, Reclamation $reclamation, EntityManagerInterface $entityManager): Response
     {
+        /*$reclamation = $entityManager->getRepository(Reclamation::class)->find($id);
+        if (!$reclamation){
+            throw $this->createNotFoundException('reclamtion not found');
+        }*/
         if ($this->isCsrfTokenValid('delete'.$reclamation->getId(), $request->request->get('_token'))) {
             $entityManager->remove($reclamation);
             $entityManager->flush();
@@ -135,4 +182,6 @@ public function edit(Request $request, Reclamation $reclamation, EntityManagerIn
         }
         return false;
     }
+
+   
 }
