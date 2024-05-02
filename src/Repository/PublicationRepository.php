@@ -30,7 +30,19 @@ class PublicationRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
 }
+public function findMostFrequentForumId()
+{
+    $result = $this->createQueryBuilder('p')
+        ->select('f.idforum, COUNT(p) AS nombre_de_publications')
+        ->leftJoin('p.idforum', 'f')
+        ->groupBy('f.idforum')
+        ->orderBy('nombre_de_publications', 'DESC')
+        ->setMaxResults(1)
+        ->getQuery()
+        ->getOneOrNullResult();
 
+    return $result['idforum'] ?? null;
+}
 //    /**
 //     * @return Publication[] Returns an array of Publication objects
 //     */

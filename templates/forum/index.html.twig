@@ -3,7 +3,15 @@
 {% block title %}Forum index{% endblock %}
 
 {% block body %}
+ {% if forum is not null %}
+    <h3 class="text-info text-center">Forum Plus Actif {{ forum.titre }}</h3>
+
+    
+{% else %}
+    <p>Forum non trouvé</p>
+{% endif %}
     <h1 class="text-primary">Forums</h1>
+   
        <button type="button" class="btn btn-inverse-primary btn-fw" onclick="window.location.href='{{ path('stats', {'idformation': idformation, 'idUser': idUser}) }}'">go to stats</button>
 
     
@@ -14,6 +22,7 @@
             </form>
         </li>
     </ul>
+
     <table class="table table-hover" id="forumTable">
         <thead>
             <tr>
@@ -31,11 +40,11 @@
                     <td>{{ forum.description }}</td>
                     
                     <td>
-                        <form method="post" action="{{ path('app_forum_delete', {'idforum': forum.idforum,'idformation': idformation}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ forum.idforum) }}">
-                            <button type="button" class="btn btn-inverse-danger btn-fw">Delete</button>
-                        </form>
-                        <button type="button" class="btn btn-inverse-primary btn-fw" onclick="window.location.href='{{ path('app_forum_edit', {'idforum': forum.idforum, 'idformation': idformation}) }}'">Edit</button>
+                        <form method="post" action="{{ path('app_forum_delete', {'idforum': forum.idforum,'idformation': idformation, 'idUser': idUser}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ forum.idforum) }}">
+    <button type="submit" class="btn btn-inverse-danger btn-fw">Delete</button>
+</form>
+                        <button type="button" class="btn btn-inverse-primary btn-fw" onclick="window.location.href='{{ path('app_forum_edit', {'idforum': forum.idforum, 'idformation': idformation, 'idUser': idUser}) }}'">Edit</button>
                         <td><a href="{{ path('Back_publication_index', {'idUser': idUser, 'idForum': forum.idForum, 'idformation': idformation}) }}">go to pub</a></td>
                     </td>
                 </tr>

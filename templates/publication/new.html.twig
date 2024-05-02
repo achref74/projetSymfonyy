@@ -44,13 +44,14 @@
             function containsBadWords(comment) {
                 // Votre logique de vérification des mots interdits ici
                 // Par exemple, utilisez une liste de mots interdits stockée dans une variable JavaScript
-                const badWords = ['badword1', 'badword2', 'badword3'];
+                const badWords = ['badword1', 'badword2', 'badword3', 'felhi', 'Felhi'];
                 for (const word of badWords) {
                     if (comment.includes(word)) {
                         return true;
                     }
                 }
                 return false;
+                
             }
         });
     </script>

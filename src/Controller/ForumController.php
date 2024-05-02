@@ -20,18 +20,28 @@ class ForumController extends AbstractController
 {
     
 #[Route('/{idformation}/{idUser}', name: 'app_forum_index', methods: ['GET'])]
-public function index(ForumRepository $forumRepository, int $idformation, int $idUser): Response
+public function index(PublicationRepository $publictionRepository,ForumRepository $forumRepository, int $idformation, int $idUser, Request $request): Response
 {
-    // Récupérer tous les forums
+    
+    $x=$publictionRepository->findMostFrequentForumId();
+    // Récupérer le forum par son ID
+    $forum = $forumRepository->find($x);
+
+    // Si aucun forum n'est trouvé avec cet ID, vous pouvez gérer cette condition
+    if (!$forum) {
+        throw $this->createNotFoundException('Forum non trouvé');
+    }
+
+    // Récupérer tous les forums (si nécessaire)
     $forums = $forumRepository->findAll();
 
     return $this->render('forum/index.html.twig', [
         'forums' => $forums,
         'idformation' => $idformation,
         'idUser' => $idUser,
+        'forum' => $forum,
     ]);
 }
-
 #[Route('/{idformation}/{idUser}/search', name: 'app_forum_search', methods: ['GET'])]
 public function search(ForumRepository $forumRepository, int $idformation, int $idUser, Request $request): Response
 {
@@ -147,8 +157,8 @@ public function indexFront(Request $request, ForumRepository $forumRepository, P
         ]);
     }
 
-    #[Route('/{idformation}/edit/{idforum}', name: 'app_forum_edit', methods: ['GET', 'POST'])]
-public function edit(Request $request, EntityManagerInterface $entityManager, int $idformation, int $idforum): Response
+    #[Route('/{idformation}/edit/{idforum}/{idUser}', name: 'app_forum_edit', methods: ['GET', 'POST'])]
+public function edit(Request $request, EntityManagerInterface $entityManager, int $idformation, int $idforum, int $idUser): Response
 {
     // Find the Forum entity by its identifier
     $forum = $entityManager->getRepository(Forum::class)->find($idforum);
@@ -166,6 +176,7 @@ public function edit(Request $request, EntityManagerInterface $entityManager, in
 
         return $this->redirectToRoute('app_forum_index', [
             'idformation' => $idformation, 
+            'idUser' => $idUser,
         ], Response::HTTP_SEE_OTHER);
     }
 
@@ -173,11 +184,12 @@ public function edit(Request $request, EntityManagerInterface $entityManager, in
         'forum' => $forum,
         'form' => $form,
         'idformation' => $idformation,
+        'idUser' => $idUser,
     ]);
 }
 
-#[Route('/{idformation}/delete/{idforum}', name: 'app_forum_delete', methods: ['POST'])]
-public function delete(Request $request, Forum $forum, EntityManagerInterface $entityManager, int $idformation, int $idforum): Response
+#[Route('/{idformation}/delete/{idforum}/{idUser}', name: 'app_forum_delete', methods: ['POST'])]
+public function delete(Request $request, Forum $forum, EntityManagerInterface $entityManager, int $idformation, int $idforum, int $idUser): Response
 {
     // Find the Forum entity by its identifier
     $forum = $entityManager->getRepository(Forum::class)->find($idforum);
@@ -191,7 +203,7 @@ public function delete(Request $request, Forum $forum, EntityManagerInterface $e
         $entityManager->flush();
     }
 
-    return $this->redirectToRoute('app_forum_index', ['idformation' => $idformation], Response::HTTP_SEE_OTHER);
+    return $this->redirectToRoute('app_forum_index', ['idformation' => $idformation,'idUser' => $idUser], Response::HTTP_SEE_OTHER);
 }
 
 
