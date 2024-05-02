@@ -11,6 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\MailerInterface;
 
 #[Route('/categorie')]
 class CategorieController extends AbstractController
@@ -32,7 +36,7 @@ class CategorieController extends AbstractController
     }
 
     #[Route('/new', name: 'app_categorie_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $categorie = new Categorie();
         $form = $this->createForm(CategorieType::class, $categorie);
@@ -41,6 +45,7 @@ class CategorieController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($categorie);
             $entityManager->flush();
+            $this->sendEmail($mailer);
 
             return $this->redirectToRoute('app_categorie_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -87,4 +92,30 @@ class CategorieController extends AbstractController
 
         return $this->redirectToRoute('app_categorie_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/email', name: 'app_email')]
+    public function sendEmail(MailerInterface $mailer)
+    {
+        $transport=Transport::fromDsn('smtp://davincisdata@gmail.com:vjyyzltfspajsbpf@smtp.gmail.com:587');
+        $mailer = new Mailer($transport);
+        
+        // Construire le contenu personnalisé du mail
+        $mailContent = "une catégorie a été ajouté ";
+    
+        // Créer l'email
+        $email = (new Email())
+            ->from('davincisdata@gmail.com')
+            ->to('naghmouchiy55@gmail.com')
+            ->subject('Notification d ajout d un Catégorie')
+            ->text($mailContent)
+            ->html('<p>' . $mailContent . '</p>');
+    
+        // Envoyer l'email
+        $mailer->send($email);
+    
+        
+       
+    }
+
+
+
 }
