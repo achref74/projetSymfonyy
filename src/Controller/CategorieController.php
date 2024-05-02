@@ -28,7 +28,7 @@ class CategorieController extends AbstractController
         $travaux = $paginator->paginate(
             $allTravaux, // Les données à paginer
             $request->query->getInt('page', 1), // Numéro de la page, par défaut 1
-            1 // Nombre d'éléments par page
+            3 // Nombre d'éléments par page
         );
         return $this->render('categorie/index.html.twig', [
             'categories' => $travaux,
