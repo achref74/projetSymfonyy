@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{{ asset('shared/assets/css/style.css') }}">
     <!-- End layout styles -->
 
-    <link rel="shortcut icon" href="{{ asset('shared/assets/images/favicon.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('shared/assets/shared/images/favicon.png') }}" />
 {% endblock %}
 
 {% block body %}
@@ -26,6 +26,12 @@
             {% endfor %}
         </div>
     {% endif %}
+    {% for flash_message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
+
 
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper full-page-wrapper">
@@ -38,6 +44,7 @@
                                     You are logged in as {{ app.user.getEmail() }}, <a href="{{ path('app_logout') }}">Logout</a>
                                 </div>
                             {% endif %}
+
 
                             <h3 class="card-title text-left mb-3">Login</h3>
                             <form method="post">
@@ -66,6 +73,7 @@
                                 </div>
 
                                     <p class="sign-up">Don't have an Account?<a href="{{ path('app_user_new') }}"> Sign Up</a></p>
+                                    <p class="sign-up"> Forgot password ?<a href="{{ path('forgot') }}"> Reset</a></p>
 
                             </form>
                         </div>

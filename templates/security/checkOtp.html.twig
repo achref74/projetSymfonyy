@@ -1,0 +1,74 @@
+{# 
+{% block body %}
+    <h1>Verify OTP</h1>
+    <form method="post">
+        <label for="otp">Enter OTP:</label>
+        <input type="text" id="otp" name="otp" required>
+        <button type="submit">Verify</button>
+    </form>
+{% endblock %} #}
+
+{% block stylesheets %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Connect Artisan</title>
+
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="{{ asset('shared/assets/vendors/mdi/css/materialdesignicons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('shared/assets/vendors/css/vendor.bundle.base.css') }}">
+    <!-- endinject -->
+
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="{{ asset('shared/assets/css/style.css') }}">
+    <!-- End layout styles -->
+
+    <link rel="shortcut icon" href="{{ asset('shared/assets/shared/images/favicon.png') }}" />
+{% endblock %}
+
+{% block body %}
+
+
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="row w-100 m-0">
+                <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
+                    <div class="card col-lg-4 mx-auto">
+                        <div class="card-body px-5 py-5">
+
+                            <h3 class="card-title text-left mb-3">insert code</h3>
+
+    <form method="post">
+
+                                <div class="form-group">
+                                    <label>Enter code</label>
+                                        <input type="text" id="otp" name="otp" class="form-control p_input" required>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary btn-block enter-btn">Verify</button>
+                                </div>
+    </form>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- content-wrapper ends -->
+            </div>
+            <!-- row ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+
+    <!-- plugins:js -->
+    <script src="{{ asset('shared/assets/vendors/js/vendor.bundle.base.js') }}"></script>
+    <!-- endinject -->
+    <!-- inject:js -->
+    <script src="{{ asset('shared/assets/js/off-canvas.js') }}"></script>
+    <script src="{{ asset('shared/assets/js/hoverable-collapse.js') }}"></script>
+    <script src="{{ asset('shared/assets/js/misc.js') }}"></script>
+    <script src="{{ asset('shared/assets/js/settings.js') }}"></script>
+    <script src="{{ asset('shared/assets/js/todolist.js') }}"></script>
+    <!-- endinject -->
+{% endblock %}

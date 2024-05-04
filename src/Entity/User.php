@@ -31,6 +31,10 @@ class User implements UserInterface
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $authCode;
+
     #[ORM\Column(type: Types::DATE_MUTABLE, name: "dateNaissance")]
     private ?\DateTimeInterface $dateNaissance = null;
     
@@ -42,9 +46,6 @@ class User implements UserInterface
     private ?int $numtel = null;
     #[ORM\Column(name: "imageProfil", length: 255)]
     private ?string $imageProfil = null;
-    
-    
-
     #[ORM\Column(length: 255)]
     private ?string $genre = null;
 
@@ -53,10 +54,13 @@ class User implements UserInterface
     #[ORM\Column]
     private ?int $role = null;
 
+    #[ORM\Column]
+    private ?int $activated = null;
     #[ORM\Column(length: 255)]
     private ?string $specialite = null;
 
-
+    #[ORM\Column(length: 180)]
+    private ?string $reset_token;
 
     #[ORM\Column(name: "niveauAcademique",length: 255)]
     private ?string $niveauAcademique = null;
@@ -67,12 +71,40 @@ class User implements UserInterface
     #[ORM\Column(length: 255)]
     private ?string $cv = null;
 
+    #[ORM\Column(length: 20)]
+    private ?string $otp = null;
+
     #[ORM\Column(length: 255)]
     private ?string $niveau_scolaire = null;
 
     public function getIdUser(): ?int
     {
         return $this->idUser;
+    }
+
+    
+    public function isEmailAuthEnabled(): bool
+    {
+        return true; // This can be a persisted field to switch email code authentication on/off
+    }
+
+    public function getEmailAuthRecipient(): string
+    {
+        return $this->email;
+    }
+
+    public function getEmailAuthCode(): string
+    {
+        if (null === $this->authCode) {
+            throw new \LogicException('The email authentication code was not set');
+        }
+
+        return $this->authCode;
+    }
+
+    public function setEmailAuthCode(string $authCode): void
+    {
+        $this->authCode = $authCode;
     }
 
     public function getNom(): ?string
@@ -97,6 +129,17 @@ class User implements UserInterface
         $this->prenom = $prenom;
 
         return $this;
+    }
+    public function setOtp(string $otp): static
+    {
+        $this->otp = $otp;
+
+        return $this;
+    }
+
+    public function getOtp(): ?string
+    {
+        return $this->otp;
     }
 
     public function getEmail(): ?string
@@ -182,7 +225,17 @@ class User implements UserInterface
 
         return $this;
     }
+  
+    public function getResetToken()
+    {
+        return $this->reset_token;
+    }
 
+
+    public function setResetToken($reset_token): void
+    {
+        $this->reset_token = $reset_token;
+    }
     public function getSpecialite(): ?string
     {
         return $this->specialite;
@@ -203,6 +256,18 @@ class User implements UserInterface
     public function setRole(int $role): static
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    public function getActivated(): ?int
+    {
+        return $this->activated;
+    }
+
+    public function setActivated(int $activated): static
+    {
+        $this->activated = $activated;
 
         return $this;
     }

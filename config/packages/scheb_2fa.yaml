@@ -1,0 +1,6 @@
+scheb_two_factor:
+    security_tokens:
+        Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken: ~
+    email:
+        enabled: true
+        sender_email: connectartisan6@gmail.com

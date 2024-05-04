@@ -20,6 +20,51 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+ /**
+     * Get the number of users with role = 0
+     *
+     * @return int
+     */
+    public function countUsersWithRoleZero(): int
+    {
+        return $this->createQueryBuilder('u')
+            ->select('COUNT(u)')
+            ->andWhere('u.role = :role')
+            ->setParameter('role', 0)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * Get the number of users with role = 1
+     *
+     * @return int
+     */
+    public function countUsersWithRoleOne(): int
+    {
+        return $this->createQueryBuilder('u')
+            ->select('COUNT(u)')
+            ->andWhere('u.role = :role')
+            ->setParameter('role', 1)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+
+    /**
+     * Finds users by their name containing the provided search term.
+     *
+     * @param string $searchTerm
+     * @return array
+     */
+    public function findByNomContaining(string $searchTerm): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.nom LIKE :searchTerm')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return User[] Returns an array of User objects

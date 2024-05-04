@@ -1,0 +1,51 @@
+{% for user in users %}
+    <!-- Your user card HTML code goes here -->
+    <!-- Example card -->
+    {# <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ user.nom }} {{ user.prenom }}</h5>
+            <!-- Include other user details as needed -->
+        </div>
+    </div> #}            {% if loop.index0 % 3 == 0 %}
+                <div class="row">
+            {% endif %}
+            <div class="col-sm-4 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                        <div class="d-flex d-sm-block d-md-flex align-items-center">
+                          <h4 class="mb-0">{{ user.nom }} {{ user.prenom }}</h4>
+                          <p class="text-success ms-2 mb-0 font-weight-medium">
+                            {% if user.role == 0 %}
+                                Client
+                            {% elseif user.role == 1 %}
+                                Formateur
+                            {% else %}
+                                Admin
+                            {% endif %}
+                          </p>
+                        </div>
+                        <h6 class="text-muted font-weight-normal">( {{ user.genre }} )</h6>
+                      </div>
+                      <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                        <img src="{{ asset(user.imageProfil) }}" class="rounded-circle" alt="Profile Image" width="100" height="100">
+                      </div>
+                        <div>
+							<a  href="{{ path('app_user_show', {'idUser': user.idUser}) }}" class="btn btn-outline-primary">Show</a>
+        <form method="post" action="{{ path('app_user_ban_unban', {'idUser': user.idUser}) }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('ban' ~ user.idUser) }}">
+    <button class="btn btn-outline-primary">    {% if user.getActivated() %}Ban{% else %}Unban{% endif %}
+</button>
+</form>
+        
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+            {% if loop.index0 % 3 == 2 or loop.last %}
+                </div>
+            {% endif %}
+{% endfor %}

@@ -19,8 +19,10 @@ use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
-
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 
 #[Route('/user')]
@@ -33,7 +35,28 @@ class UserController extends AbstractController
         $this->passwordEncoder = $passwordEncoder;
 
     }
-    
+
+    #[Route('/verify-otp', name: 'verify_otp', methods: ['GET'])]
+    public function verifyOTP(Request $request, TokenStorageInterface $tokenStorage)
+{
+    // Retrieve the OTP code entered by the user
+    $otpEntered = $request->request->get('otp');
+
+    // Compare with the OTP code stored in the session
+    $otpStored = $this->get('session')->get('otp_code');
+
+    // Check if OTPs match
+    if ($otpEntered === $otpStored) {
+        // OTP verification successful, redirect user to home page
+        return $this->redirectToRoute('home');
+    } else {
+        // OTP verification failed, log the user out
+        $this->get('security.token_storage')->setToken(null);
+        $this->get('session')->invalidate();
+        return $this->redirectToRoute('app_logout');
+    }
+}
+
     #[Route('/homeFront', name: 'user_home_front', methods: ['GET'])]
     public function indexFront(): Response
     {
@@ -41,11 +64,48 @@ class UserController extends AbstractController
     }
 
     #[Route('/homeBack', name: 'user_home_back', methods: ['GET'])]
-    public function indexBack(): Response
+    public function indexBack(UserRepository $userRepository): Response
     {
-        return $this->render('user/homeBack.html.twig');
+        $usersWithRoleZero = $userRepository->countUsersWithRoleZero();
+        $usersWithRoleOne = $userRepository->countUsersWithRoleOne();
+        $pieChart = new PieChart();
+        $pieChart->getData()->setArrayToDataTable(
+            [['Users', 'Users view'],
+             ['Clients',     $usersWithRoleZero],
+             ['Formateurs',      $usersWithRoleOne],
+
+            ]
+        );
+        $pieChart->getOptions()->setTitle('Users');
+        $pieChart->getOptions()->setHeight(500);
+        $pieChart->getOptions()->setWidth(900);
+        $pieChart->getOptions()->getTitleTextStyle()->setBold(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setColor('#009900');
+        $pieChart->getOptions()->getTitleTextStyle()->setItalic(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
+        $pieChart->getOptions()->getTitleTextStyle()->setFontSize(20);
+        return $this->render('user/homeBack.html.twig',array('piechart' => $pieChart)  );
     }
-    
+
+    #[Route('/search/users', name: 'search_users', methods: ['GET'])]
+public function searchUsers(Request $request, UserRepository $userRepository): Response
+{
+    $searchTerm = $request->query->get('searchTerm');
+
+    if ($searchTerm !== null && !empty($searchTerm)) {
+        // Use UserRepository to search users by name
+        $users = $userRepository->findByNomContaining($searchTerm);
+    } else {
+        // If no search term is provided, return all users
+        $users = $userRepository->findAll();
+    }
+
+    // Render the user cards template with filtered or all users
+    return $this->render('user/_user_cards.html.twig', [
+        'users' => $users,
+    ]);
+}
+
     #[Route('/app_user_index', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
@@ -81,6 +141,24 @@ class UserController extends AbstractController
         ]);
     }
     
+
+#[Route('/ban-unban/{idUser}', name: 'app_user_ban_unban', methods: ['POST'])]
+public function banUnbanUser(Request $request, User $user, EntityManagerInterface $entityManager): Response
+{
+
+        // Toggle the activated status
+        $user->setActivated(!$user->getActivated());
+
+        // Save the updated user status
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        // Set a flash message
+        $this->addFlash('success', $user->getActivated() ? 'Account activated successfully.' : 'Account banned successfully.');
+
+
+    return $this->redirectToRoute('app_user_show', ['idUser' => $user->getIdUser()]);
+}
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder): Response
@@ -155,7 +233,8 @@ public function additionalInfo(Request $request, EntityManagerInterface $entityM
     $user->setAdresse($userData['adresse'] ?? '');
     $user->setNumtel(isset($userData['numtel']) ? (int) $userData['numtel'] : 0);
     $user->setRole(isset($userData['role']) ? (int) $userData['role'] : 1);
-    
+    $user->setActivated(1);
+
     $form = $this->createForm(UserAdditionalInfoType::class, $user);
     $form->handleRequest($request);
     
@@ -263,7 +342,7 @@ public function clientAdditionalInfo(Request $request, EntityManagerInterface $e
     $user->setAdresse($userData['adresse'] ?? '');
     $user->setNumtel(isset($userData['numtel']) ? (int) $userData['numtel'] : 0);
     $user->setRole(isset($userData['role']) ? (int) $userData['role'] : 0);
-    
+    $user->setActivated(1);
     $form = $this->createForm(ClientAdditionalInfoType::class, $user);
     $form->handleRequest($request);
     
@@ -421,4 +500,5 @@ public function editClient(Request $request, User $user): Response
         'user' => $user,
     ]);
 }
-}   
+
+}

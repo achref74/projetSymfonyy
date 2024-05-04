@@ -2,3 +2,6 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
+verify_otp:
+    path: /verify-otp/{userId}
+    controller: App\Controller\OTPController::verifyOTP

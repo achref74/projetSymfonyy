@@ -10,7 +10,13 @@
               <div class="col-md-4 grid-margin">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Profil Image</h4>
+                    <h4 class="card-title">Profil Image  </h4>
+                    {% if user.getActivated() %}
+
+    <i class="mdi mdi-check-circle-outline text-success"> Activated</i> <!-- Green tick -->
+{% else %}
+    <i class="mdi mdi-close-circle-outline text-danger"> Blocked</i> <!-- Red cross -->
+{% endif %}
                         <div class="thumb-lg member-thumb mx-auto"><img src="{{ asset(user.imageProfil) }}" class="rounded img-thumbnail" alt="profile-image"></div>
 
                   </div>
