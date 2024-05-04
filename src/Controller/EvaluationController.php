@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Evaluation;
+use App\Entity\Cours;
 use App\Form\EvaluationType;
 use App\Repository\EvaluationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,27 +27,53 @@ class EvaluationController extends AbstractController
         ]);
     }
 
-    #[Route('/{evaluationId}/questions', name: 'evaluation_questions', methods: ['GET'])]
-    public function questions(QuestionRepository $questionRepository, int $evaluationId, Request $request): Response
+    #[Route('/{coursId}/questions', name: 'evaluation_questions', methods: ['GET'])]
+    public function questions(QuestionRepository $questionRepository, Request $request, int $coursId): Response
     {
-        $questions = $questionRepository->findAllByEvaluationId($evaluationId);
+        $entityManager = $this->getDoctrine()->getManager();
+        $cours = $entityManager->getRepository(Cours::class)->find($coursId);
+    
+        if (!$cours) {
+            throw $this->createNotFoundException('No cours found for id ' . $coursId);
+        }
+    
+        $evaluation = $entityManager->getRepository(Evaluation::class)->findOneBy(
+            ['cours' => $cours], // Filter by the specific course
+            ['id' => 'DESC'] // Order by evaluation ID in descending order
+        );    
+        if (!$evaluation) {
+            throw $this->createNotFoundException('No evaluation found for cours_id ' . $coursId);
+        }
+        $questions = $questionRepository->findByEvaluationAndCourseIds($coursId);
+    
+        // $questions = $questionRepository->findAllByEvaluationId($evaluation->getId());
         $totalQuestions = count($questions);
-
+    
         $currentQuestionIndex = $request->query->getInt('index', 0);
         $currentQuestion = $questions[$currentQuestionIndex] ?? null;
-
+    
         return $this->render('evaluation/test_evaluation.html.twig', [
             'currentQuestion' => $currentQuestion,
             'currentQuestionIndex' => $currentQuestionIndex,
             'totalQuestions' => $totalQuestions,
-            'evaluationId' => $evaluationId,
+            'evaluationId' => $evaluation->getId(),
+            'questionss' => $questions,
         ]);
     }
+    
 
-    #[Route('/new', name: 'app_evaluation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
-    {
+    #[Route('/new/{id}', name: 'app_evaluation_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, int $id): Response
+    {    
+        $entityManager = $this->getDoctrine()->getManager();
+        $course = $entityManager->getRepository(Cours::class)->find($id);
+    
+        if (!$course) {
+            throw $this->createNotFoundException('No course found for id ' . $id);
+        }
+
         $evaluation = new Evaluation();
+        $evaluation->setCours($course);
         $form = $this->createForm(EvaluationType::class, $evaluation);
         
         $form->handleRequest($request);
@@ -56,7 +83,7 @@ class EvaluationController extends AbstractController
             $entityManager->persist($evaluation);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_evaluation_show', ['id' => $evaluation->getId()]);
+            return $this->redirectToRoute('app_cours_index');
         }
 
         return $this->render('evaluation/new.html.twig', [
@@ -72,53 +99,56 @@ class EvaluationController extends AbstractController
         ]);
     }
 
-    // #[Route('/{id}/edit', name: 'app_evaluation_edit', methods: ['GET', 'POST'])]
-    // public function edit(Request $request, Evaluation $evaluation, EntityManagerInterface $entityManager): Response
-    // {
-    //     $form = $this->createForm(EvaluationType::class, $evaluation);
-    //     $form->handleRequest($request);
 
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $entityManager->flush();
+    #[Route('/{coursId}/edit', name: 'app_evaluation_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, EntityManagerInterface $entityManager, int $coursId): Response
+    {
+        // $evaluation = $entityManager->getRepository(Evaluation::class)->findOneBy(['cours' => $coursId]);
+        $evaluation = $entityManager->getRepository(Evaluation::class)
+    ->createQueryBuilder('e')
+    ->andWhere('e.cours = :coursId')
+    ->setParameter('coursId', $coursId)
+    ->orderBy('e.id', 'DESC') // Order by ID in descending order to get the latest
+    ->setMaxResults(1) // Limit the result to only one record (the latest)
+    ->getQuery()
+    ->getOneOrNullResult();
+        $cours = $entityManager->getRepository(Cours::class)->find($coursId);
+        $questions = $entityManager->getRepository(Question::class)->findBy(['evaluation' => $evaluation]);
 
-    //         return $this->redirectToRoute('app_evaluation_index', [], Response::HTTP_SEE_OTHER);
-    //     }
-
-    //     return $this->renderForm('evaluation/edit.html.twig', [
-    //         'evaluation' => $evaluation,
-    //         'form' => $form,
-    //     ]);
-    // }
-
-    #[Route('/{id}/edit', name: 'app_evaluation_edit', methods: ['GET', 'POST'])]
-public function edit(Request $request, Evaluation $evaluation, EntityManagerInterface $entityManager): Response
-{
-    $originalQuestions = new ArrayCollection();
-
-    foreach ($evaluation->getQuestions() as $question) {
-        $originalQuestions->add($question);
-    }
-
-    $form = $this->createForm(EvaluationType::class, $evaluation);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        foreach ($originalQuestions as $question) {
-            if (false === $evaluation->getQuestions()->contains($question)) {
-                $entityManager->remove($question);
-            }
+        if (!$evaluation) {
+            throw $this->createNotFoundException('No evaluation found for cours_id ' . $coursId);
         }
-
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_evaluation_index', [], Response::HTTP_SEE_OTHER);
+    
+        $originalQuestions = new ArrayCollection();
+    
+        foreach ($evaluation->getQuestions() as $question) {
+            $originalQuestions->add($question);
+        }
+    
+        $form = $this->createForm(EvaluationType::class, $evaluation);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($originalQuestions as $question) {
+                if (false === $evaluation->getQuestions()->contains($question)) {
+                    $entityManager->remove($question);
+                }
+            }
+    
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('app_cours_index', [], Response::HTTP_SEE_OTHER);
+        }
+    
+        return $this->renderForm('evaluation/edit.html.twig', [
+            'evaluation' => $evaluation,
+            'form' => $form,
+            'cour' =>$cours,
+            'questions'=>$questions,
+        ]);
     }
 
-    return $this->renderForm('evaluation/edit.html.twig', [
-        'evaluation' => $evaluation,
-        'form' => $form,
-    ]);
-}
+
 
     #[Route('/{id}', name: 'app_evaluation_delete', methods: ['POST'])]
     public function delete(Request $request, Evaluation $evaluation, EntityManagerInterface $entityManager): Response

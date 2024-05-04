@@ -30,10 +30,10 @@ class Cours
     #[ORM\Column(type: 'string', length: 255)]
     private string $prerequis;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'text', length: 255)]
     private string $ressource;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'text', length: 255)]
     private string $image;
 
     #[ORM\Column(type: 'integer', nullable: true)]

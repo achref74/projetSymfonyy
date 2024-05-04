@@ -36,6 +36,48 @@ class QuestionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findLastByEvaluationId(int $evaluationId): ?array
+    {
+        $query = $this->createQueryBuilder('q')
+            ->andWhere('q.evaluation = :evaluationId')
+            ->setParameter('evaluationId', $evaluationId)
+            ->orderBy('q.id', 'DESC') // Trie par ID de façon décroissante pour obtenir le dernier
+            ->setMaxResults(1) // Limite le résultat à un seul enregistrement (le dernier)
+            ->getQuery();
+    
+        // Exécutez la requête et récupérez le résultat sous forme de tableau associatif
+        $result = $query->getOneOrNullResult();
+    
+        // Si aucun résultat n'est trouvé, retournez simplement null
+        if (!$result) {
+            return null;
+        }
+    
+        // Retournez le résultat sous forme de tableau
+        return [$result];
+    }
+    public function findByEvaluationId(int $evaluationId): array
+    {
+        return $this->createQueryBuilder('q')
+            ->innerJoin('q.evaluation', 'e')
+            ->andWhere('e.id = :evaluationId')
+            ->setParameter('evaluationId', $evaluationId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByEvaluationAndCourseIds( int $courseId): array
+    {
+        return $this->createQueryBuilder('q')
+        ->join('q.evaluation', 'e')
+        ->join('e.cours', 'c')
+        ->andWhere('c.id = :courseId')
+        ->setParameter('courseId', $courseId)
+        ->orderBy('e.id', 'DESC') // Order by evaluation ID in descending order to get the latest
+        ->getQuery()
+        ->getResult();
+    }
 //    /**
 //     * @return Question[] Returns an array of Question objects
 //     */

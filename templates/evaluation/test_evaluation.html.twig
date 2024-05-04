@@ -3,44 +3,91 @@
 {% block title %}Evaluation{% endblock %}
 
 {% block body %}
-    <h1 class="mx-6 text-white">Question {{ currentQuestionIndex + 1 }} of {{ totalQuestions }}</h1>
 
 
+    {# <h1 class="mx-6 text-white">Question {{ currentQuestionIndex + 1 }} of {{ totalQuestions }}</h1> #}
 
+        <h1 class="mx-6 text-white">Questions </h1>
+{% for q in questionss %}
+{% if q.evaluation.id == evaluationId and app.user.getRole() == 1 or app.user.getRole() == 2 %}
 
     <div class="container d-flex align-items-stretch" style="text-align: center; background-image: url('{{ asset('uploads/q_bg.jpg') }}'); background-size: cover; background-position: center; height: 400px; width: 700px;">
      <div class="row w-100 py-5 px-5">
 <div class="col-md-7 d-flex align-items-center justify-content-center">
-    <p class="text-white">{{ currentQuestion.ressource }}</p>
+    <p class="text-white">{{ q.ressource }}</p>
 </div>
 <div class="col-md-5 d-flex flex-column">
     <div class="row flex-grow-1">
         <div class="col-md-12 d-flex align-items-center">
-            <p class="text-white px-4">{{ currentQuestion.choix1 }}</p>
+            <p class="text-white px-4">{{ q.choix1 }}</p>
         </div>
     </div>
     <div class="row flex-grow-1">
         <div class="col-md-12 d-flex align-items-center">
-            <p class="text-white px-4">{{ currentQuestion.choix2 }}</p>
+            <p class="text-white px-4">{{ q.choix2 }}</p>
         </div>
     </div>
     <div class="row flex-grow-1">
         <div class="col-md-12 d-flex align-items-center">
-            <p class="text-white px-4">{{ currentQuestion.choix3 }}</p>
+            <p class="text-white px-4">{{ q.choix3 }}</p>
         </div>
     </div>
 </div>
 
 	</div>
     </div>
-    
-<div class="d-flex justify-content-center">
+        {% endif %}
+{% if q.evaluation.id == evaluationId and app.user.getRole() == 0%}
+
+    <div class="container d-flex align-items-stretch" style="text-align: center; background-image: url('{{ asset('uploads/q_bg.jpg') }}'); background-size: cover; background-position: center; height: 400px; width: 700px;">
+     <div class="row w-100 py-5 px-5">
+<div class="col-md-7 d-flex align-items-center justify-content-center">
+    <p class="text-white">{{ q.ressource }}</p>
+</div>
+<div class="col-md-5 d-flex flex-column">
+    <div class="row flex-grow-1">
+        <div class="col-md-12 d-flex align-items-center">
+            <p class="text-white px-4">{{ q.choix1 }}</p>
+        </div>
+    </div>
+    <div class="row flex-grow-1">
+        <div class="col-md-12 d-flex align-items-center">
+            <p class="text-white px-4">{{ q.choix2 }}</p>
+        </div>
+    </div>
+    <div class="row flex-grow-1">
+        <div class="col-md-12 d-flex align-items-center">
+            <p class="text-white px-4">{{ q.choix3 }}</p>
+        </div>
+    </div>
+</div>
+
+	</div>
+    </div>
+{# <div class="d-flex justify-content-center">
 {% if currentQuestionIndex != 0 %}
     <a href="{{ path('evaluation_questions', { 'evaluationId': evaluationId, 'index': currentQuestionIndex - 1 }) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light mx-1">Back</a>
 {% endif %}
 
     <a href="{{ path('evaluation_questions', { 'evaluationId': evaluationId, 'index': currentQuestionIndex + 1 }) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light mx-1">Next</a>
-</div>
+</div>  #}
+
+        {% endif %}
+
+    {% endfor %}
+
+    
+{# <div class="d-flex justify-content-center">
+{% if currentQuestionIndex != 0 %}
+    <a href="{{ path('evaluation_questions', { 'evaluationId': evaluationId, 'index': currentQuestionIndex - 1 }) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light mx-1">Back</a>
+{% endif %}
+
+    <a href="{{ path('evaluation_questions', { 'evaluationId': evaluationId, 'index': currentQuestionIndex + 1 }) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light mx-1">Next</a>
+</div>  #}
+
+
+
+
 
 
 {% endblock %}

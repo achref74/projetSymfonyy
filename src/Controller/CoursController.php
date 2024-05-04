@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\Evaluation;
 use App\Entity\Cours;
 use App\Form\Cours1Type;
 use App\Repository\CoursRepository;
@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 #[Route('/cours')]
 class CoursController extends AbstractController
@@ -30,23 +31,39 @@ class CoursController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $ressourceFile = $form->get('ressource')->getData();
             $imageFile = $form->get('image')->getData();
-            if ($imageFile instanceof UploadedFile) {
-                // Déplacer le fichier vers le répertoire de destination sans changer son nom
+
+            if ($ressourceFile) {
+                $ressourceFileName = uniqid() . '.' . $ressourceFile->guessExtension();
+
+                try {
+                    $ressourceFile->move(
+                        $this->getParameter('ressource_directory'),
+                        $ressourceFileName
+                    );
+                } catch (FileException $e) {
+                    // Handle error
+                }
+
+                $cour->setRessource($ressourceFileName);
+            }
+
+            if ($imageFile) {
+                $imageFileName = uniqid() . '.' . $imageFile->guessExtension();
+
                 try {
                     $imageFile->move(
-                        $this->getParameter('kernel.project_dir') . '/public/images',
-                        $imageFile->getClientOriginalName()
+                        $this->getParameter('video_directory'),
+                        $imageFileName
                     );
-                    // Mettre à jour le chemin complet de l'image dans l'entité User
-                    $cour->setImage('/images/' . $imageFile->getClientOriginalName());
                 } catch (FileException $e) {
-                    // Gérer l'exception si le déplacement du fichier a échoué
-                    // Par exemple, enregistrer le message d'erreur dans les logs
+                    // Handle error
                 }
+
+                $cour->setImage($imageFileName);
             }
             
-            // Mettre à jour le chemin de l'image dans l'entité cours
             $entityManager->persist($cour);
             $entityManager->flush();
 
@@ -60,10 +77,12 @@ class CoursController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_cours_show', methods: ['GET'])]
-    public function show(Cours $cour): Response
+    public function show( EntityManagerInterface $entityManager,Cours $cour): Response
     {
+        $evaluation = $entityManager->getRepository(Evaluation::class)->findOneBy(['cours' => $cour->getId()]);
         return $this->render('cours/show.html.twig', [
             'cour' => $cour,
+            'evaluation'=>$evaluation,
         ]);
     }
 

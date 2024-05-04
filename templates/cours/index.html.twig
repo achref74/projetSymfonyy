@@ -6,7 +6,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
 {% if app.user.getRole() != 2 %}
-                    <a class="btn btn-primary btn-round ml-5" href="{{ path('app_cours_new') }}" class="btn btn-primary">New</a>
+                    <a class="btn btn-primary btn-round mx-5 mt-5" href="{{ path('app_cours_new') }}" class="btn btn-primary">New</a>
 {% endif %}
     <div class="container profile-page">
         <div class="col-xl-12 col-lg-12 col-md-12">
@@ -16,18 +16,31 @@
                 {% endif %}
                 
 <div class="col-lg-4 col-md-4 col-12">
-    <div class="card profile-header mt-3">
+    <div class="card profile-header mt-3" style="background-image: url('{{ asset('images/Capture.jpg') }}');">
         <div class="body text-center"> <!-- Updated class to text-center -->
 
             <h4 class="m-t-0 m-b-0"><strong>{{ cour.nom }}</strong></h4>
             <p>{{ cour.description }}</p>
             <ul>
-                <li><strong>Duration:</strong> {{ cour.duree }} hours</li>
-                <li><strong>Prerequis:</strong> {{ cour.prerequis }}</li>
-                <li><strong>Resources:</strong> {{ cour.ressource }}</li>
+                <video controls width="300" class="my-2">
+                <source src="{{ asset('uploads/videos/' ~ cour.image) }}" type="video/mp4">
+                </video>
+                <li class="my-2"><strong>Duration:</strong> {{ cour.duree }} hours</li>
+                <li class="my-2"><strong>Prerequis:</strong> {{ cour.prerequis }}</li>
+                <li class="my-2"><strong>Resources:</strong> {{ cour.ressource }}</li>
             </ul>
-            <div>
-                <a class="btn btn-primary btn-round" href="{{ path('app_cours_show', {'id': cour.id}) }}" class="btn btn-primary">Show</a>
+            <div class="my-2">
+                <a class="btn btn-primary btn-round" href="{{ path('app_cours_show', {'id': cour.id}) }}" >Show</a>
+                {% if app.user.getRole() == 1 %}
+
+                <a class="btn btn-success btn-round" href="{{ path('app_evaluation_new', {'id': cour.id}) }}" >new evaluation</a>
+                <a href="{{ path('app_evaluation_edit', {'coursId': cour.id}) }}" class="btn btn-primary">
+                    Edit Evaluation
+                </a>
+                {% endif %}
+                <a href="{{ path('evaluation_questions', {'coursId': cour.id}) }}" class="btn btn-primary">Test</a>
+
+
             </div>
         </div>
     </div>
