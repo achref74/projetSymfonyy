@@ -1,0 +1,18 @@
+{# reclamation/_reclamation_list.html.twig #}
+{% for reclamation in reclamations %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Username: {{ reclamation.user.idUser }}</h5>
+            <p class="card-title">Description: {{ reclamation.description }}</p>
+            <p class="card-title">Formation: {{ reclamation.formation.nom }}</p>
+            <p class="card-title">Outil: {{ reclamation.outil.nom }}</p>
+            <p class="card-title">Date: {{ reclamation.date ? reclamation.date|date('Y-m-d H:i:s') : '' }}</p>
+            <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}" class="btn btn-primary">Show</a>
+            <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}" class="btn btn-warning">Edit</a>
+            <a href="{{ path('app_reponse_new', {'reclamationId': reclamation.id}) }}" class="btn btn-success">Add Response</a>
+            {{ include('reclamation/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% else %}
+    <p>No records found</p>
+{% endfor %}

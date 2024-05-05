@@ -6,6 +6,7 @@ use App\Entity\Reponse;
 use App\Entity\Reclamation;
 
 use App\Form\ReponseType;
+use App\Repository\ReclamationRepository;
 use App\Repository\ReponseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +22,15 @@ class ReponseController extends AbstractController
     {
         return $this->render('reponse/index.html.twig', [
             'reponses' => $reponseRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/list/{reclamationId}', name: 'app_reponse_sh', methods: ['GET'])]
+    public function indexreponse(ReponseRepository $reponseRepository,ReclamationRepository $reclamationRepository,$reclamationId ): Response
+    {        $reclamation = $reclamationRepository->find($reclamationId);
+
+        return $this->render('reponse/reponseByreclamation.html.twig', [
+            'reponses' => $reponseRepository->findby(['reclamation' => $reclamation]),
         ]);
     }
 

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Reclamation;
 use App\Form\ReclamationType;
 use App\Repository\ReclamationRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -84,8 +85,11 @@ public function index(Request $request, ReclamationRepository $reclamationReposi
             $reclamationUser = $reclamation->getUser()->getNom();
             $reclamationDate = $reclamation->getDate() ? $reclamation->getDate()->format('Y-m-d H:i:s') : '';
             $reclamationFormation = $reclamation->getFormation()->getNom();
+            $reclamationUserid = $reclamation->getUser()->getIduser();
+
             $userPhone = '+21655756823';
             $twilioNumber = '+14155238886';
+       
             
             if ($this->containsBadWords($reclamationText, $badWords)) {
                 // Return a response indicating that the reclamation contains bad words
@@ -95,10 +99,10 @@ public function index(Request $request, ReclamationRepository $reclamationReposi
     
             $entityManager->persist($reclamation);
             $entityManager->flush();
-            $twilioService->sendWhatsAppMessage($userPhone, $twilioNumber, "The user ".$reclamationUser." has sent a claim saying ".$reclamationText." about ".$reclamationFormation." at : ".$reclamationDate);
+            $twilioService->sendWhatsAppMessage($userPhone, $twilioNumber, "The user ".$reclamationUser." has sent a claim saying \n ".$reclamationText."\n about the formation :".$reclamationFormation);
 
             $this->addFlash('success', 'Reclamation created successfully.');
-            return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_reclamation_client', ['id_user' => $reclamationUserid], Response::HTTP_SEE_OTHER);
         }
     
         return $this->renderForm('reclamation/new.html.twig', [
@@ -182,6 +186,53 @@ public function edit(Request $request, Reclamation $reclamation, EntityManagerIn
         }
         return false;
     }
-
+    #[Route('/user/{id_user}', name: 'app_reclamation_client', methods: ['GET', 'POST'])]
+    public function indexClient(Request $request, ReclamationRepository $reclamationRepository, int $id_user,UserRepository $userRepository): Response
+    {
+        // Retrieve the user object
+        $user = $userRepository->find($id_user);
+    
+        if (!$user) {
+            throw $this->createNotFoundException('User not found');
+        }
+    
+        // Retrieve all reclamations associated with the user
+        $reclamations = $reclamationRepository->findBy(['user' => $user]);
+    
+        // Calculate statistics
+        $formationCounts = [];
+        foreach ($reclamations as $reclamation) {
+            $formationName = $reclamation->getFormation()->getNom();
+            if (!isset($formationCounts[$formationName])) {
+                $formationCounts[$formationName] = 0;
+            }
+            $formationCounts[$formationName]++;
+        }
+    
+        // Prepare data for the Google Pie Chart
+        $chartData = [];
+        foreach ($formationCounts as $formationName => $count) {
+            $chartData[] = [$formationName, $count];
+        }
+    
+        // If it's an AJAX request, return only the reclamations list
+        if ($request->isXmlHttpRequest()) {
+            $searchTerm = $request->request->get('searchTerm');
+            $reclamations = $reclamationRepository->findBySearchTermAndUserId($searchTerm,$id_user);
+    
+            return $this->render('reclamation/_reclamation_list_foruser.html.twig', [
+                'reclamations' => $reclamations,
+                'id_user' => $id_user,
+            ]);
+        }
+    
+        // Otherwise, return the reclamations list along with the statistics data
+        return $this->render('reclamation/indexClient.html.twig', [
+            'reclamations' => $reclamations,
+            'chartData' => $chartData,
+            'id_user' => $id_user,
+        ]);
+    }
+    
    
 }

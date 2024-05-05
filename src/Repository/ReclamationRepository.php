@@ -30,6 +30,17 @@ class ReclamationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findBySearchTermAndUserId($searchTerm, $userId)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.description LIKE :searchTerm ')
+            ->andWhere('r.user = :userId')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult();
+    }
     
    
 
