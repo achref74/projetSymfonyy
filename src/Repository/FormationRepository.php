@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Formation;
+use App\Entity\Offre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
+use App\Repository\OffreRepository;
 
 /**
  * @extends ServiceEntityRepository<Formation>
@@ -20,15 +23,29 @@ class FormationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Formation::class);
     }
-    public function findAllWithOffres(): array
+    // public function findAllWithOffres(): array
+    // {
+    //     return $this->createQueryBuilder('f')
+    //         ->leftJoin('App\Entity\Offre', 'o', 'WITH', 'o.formation = f.idFormation')
+    //         ->addSelect('o')
+    //         ->getQuery()
+    //         ->getResult();
+    // }
+    public function findAllWithOffres()
     {
-        return $this->createQueryBuilder('f')
-            ->leftJoin('App\Entity\Offre', 'o', 'WITH', 'o.formation = f.idFormation')
-            ->addSelect('o')
-            ->getQuery()
-            ->getResult();
+        $formations = $this->createQueryBuilder('f')
+        ->getQuery()
+        ->getResult();
+
+    $offreRepository = $this->getEntityManager()->getRepository(Offre::class);
+
+    foreach ($formations as $formation) {
+        $offres = $offreRepository->findBy(['formation' => $formation]);
+        $formation->setOffres($offres);
     }
 
+    return $formations;
+    }
 
     // Inside your FormationRepository.php
     public function findBySearchTerm($searchTerm)

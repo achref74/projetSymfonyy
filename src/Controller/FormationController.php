@@ -66,9 +66,16 @@ class FormationController extends AbstractController
     #[Route('/formation', name: 'app_formation_index2', methods: ['GET'])]
     public function index2(EntityManagerInterface $entityManager,Request $request, PaginatorInterface $paginator): Response
     {
-        $formation = new Formation();
+        // $formation = new Formation();
         $formations = $entityManager->getRepository(Formation::class)->findAll();
 
+
+        $offers = [];
+    
+        foreach ($formations as $formation) {
+            // Fetch corresponding offers for each formation
+            $offers[$formation->getIdFormation()] = $entityManager->getRepository(Offre::class)->findBy(['formation' => $formation]);
+        }
   
         $form = $this->createForm(FormationType::class, $formation);
 
@@ -82,6 +89,8 @@ class FormationController extends AbstractController
         return $this->render('formation/Formation.html.twig', [
             'formations' => $formations,
             'form' => $form->createView(),
+            'offers' => $offers,
+
         ]);
     }
     #[Route('/formationOffre', name: 'app_formation_index3', methods: ['GET'])]

@@ -50,7 +50,11 @@
                         <div class="meeting-item">
                             <div class="thumb">
                                 <div class="price">
-                                    <span>${{ formation.prix }}</span>
+                                    <span>${{ formation.prix }}</span>        
+                                            {% for offre in offers[formation.getIdFormation()] %}
+
+            <span> {{ offre.prixOffre }} $ (special Offre)</span> 
+        {% endfor %}
                                 </div>
                                 <a href="{{ path('formation_details', { id: formation.idFormation }) }}">
                                     <img src="{{ formation.imageUrl }}" alt="">
