@@ -1,0 +1,173 @@
+{% set baseTemplate = app.user.getRole() == 0 or app.user.getRole() == 1 ? 'frontBase.html.twig' : 'backBase.html.twig' %}
+{% extends baseTemplate %}
+{% block title %}Edit Evaluation{% endblock %}
+
+{% block body %}*
+<style>
+li {
+    color: white;}
+</style>
+    <h1 class="text-white mx-2">Edit Evaluation</h1>
+
+<div class="row mx-1">
+
+        
+        <div class="col-4 my-5">
+            <div class="card profile-header">
+            {% for eva in questions %}
+                <div class="container d-flex align-items-stretch" style="text-align: center; background-image: url('{{ asset('uploads/q_bg.jpg') }}'); background-size: cover; background-position: center; height: 400px; width: 700px;">
+                    <div class="row w-100 py-5 px-5">
+                        <div class="col-md-7 d-flex align-items-center justify-content-center">
+                            <p class="text-white">{{ eva.ressource }}</p>
+                        </div>
+                        <div class="col-md-5 d-flex flex-column">
+                            <div class="row flex-grow-1">
+                                <div class="col-md-12 d-flex align-items-center">
+                                    <p class="text-white px-4">{{ eva.choix1 }}</p>
+                                </div>
+                            </div>
+                            <div class="row flex-grow-1">
+                                <div class="col-md-12 d-flex align-items-center">
+                                    <p class="text-white px-4">{{ eva.choix2 }}</p>
+                                </div>
+                            </div>
+                            <div class="row flex-grow-1">
+                                <div class="col-md-12 d-flex align-items-center">
+                                    <p class="text-white px-4">{{ eva.choix3 }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    <div class="col-4 my-5" style="margin-left: 300px;">
+            <div class="text-center card profile-header mt-3">
+                <div class="member-card pt-2 pb-2">
+                    <div class="thumb-lg member-thumb mx-auto">    
+                    <video controls width="400">
+                        <source src="{{ asset('uploads/videos/' ~ cour.image) }}" type="video/mp4">
+                    </video>
+                    <div class="">
+                        <h5 style="color: black;">{{ cour.nom }}</h5>
+                        <p class="text-muted">{{ cour.description }}</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="mt-3">
+                                    <h5 style="color: black;">{{ cour.duree }} hours</h5>
+                                    <p class="mb-0 text-muted">Duration</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="mt-3">
+                                    <h5 style="color: black;">{{ cour.prerequis }}</h5>
+                                    <p class="mb-0 text-muted">Prerequis</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                {% if cour.ressource %}
+                                    <a href="{{ asset('uploads/ressources/' ~ cour.ressource) }}" target="_blank">Download Ressource</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+
+          
+                </div>
+            </div>
+        </div>
+</div>
+
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+<div class="row mb-3 mx-3">
+    <div class="col-4">
+        {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'control-label text-white'}}) }}
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.nom) }}
+    </div>
+
+    <div class="col-4">
+        {{ form_label(form.note, 'Note', {'label_attr': {'class': 'control-label text-white'}}) }}
+        {{ form_widget(form.note, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.note) }}
+    </div>
+
+</div>
+
+<h4 class="text-white">Questions : </h4>
+
+<div class="questions row"
+    data-index="{{ form.questions|length }}"
+    data-prototype="{{ form_widget(form.questions.vars.prototype)|e('html_attr') }}"
+>
+    {{ form_errors(form.questions) }}
+
+</div>
+
+<button type="button" class="btn btn-primary mx-2 add_item_link" data-collection-holder-class="questions">Add a Question</button>
+
+<form action="{{ path('app_evaluation_edit', {'coursId': cour.id}) }}" method="POST">
+   {{ form_start(form) }}
+    <button type="submit" class="btn btn-success">{{ button_label|default('Save') }}</button>
+    {{ form_errors(form, {'attr': {'class': 'text-white'}}) }}
+    {{ form_end(form) }}</form>
+{{ form_end(form) }}
+
+{#  #}
+
+<script>
+document
+  .querySelectorAll('.add_item_link')
+  .forEach(btn => {
+      btn.addEventListener("click", addFormToCollection)
+  });
+
+document
+    .querySelectorAll('div.questions div')
+    .forEach((question) => {
+        addTagFormDeleteLink(question)
+    });
+
+function addFormToCollection(e) {
+    const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+    const item = document.createElement('div');
+    item.classList.add('col-4'); 
+
+    item.innerHTML = collectionHolder
+        .dataset
+        .prototype
+        .replace(
+            /__name__/g,
+            collectionHolder.dataset.index
+        );
+
+    collectionHolder.appendChild(item);
+
+    collectionHolder.dataset.index++;
+
+    addTagFormDeleteLink(item);
+}
+
+function addTagFormDeleteLink(item) {
+    const removeFormButton = document.createElement('button');
+    removeFormButton.innerText = 'Delete this question';
+    removeFormButton.classList.add('btn', 'btn-danger', 'my-3','mx-3','w-20'); 
+
+    item.append(removeFormButton);
+
+    removeFormButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        item.remove();
+    });
+}
+</script>
+
+{% endblock %}

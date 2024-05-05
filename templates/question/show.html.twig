@@ -1,0 +1,54 @@
+{% set baseTemplate = app.user.getRole() == 0 or app.user.getRole() == 1 ? 'frontBase.html.twig' : 'backBase.html.twig' %}
+{% extends baseTemplate %}
+{% block title %}Question{% endblock %}
+
+{% block body %}
+    <h1>Question</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ question.id }}</td>
+            </tr>
+            <tr>
+                <th>Ressource</th>
+                <td>{{ question.ressource }}</td>
+            </tr>
+            <tr>
+                <th>Duree</th>
+                <td>{{ question.duree }}</td>
+            </tr>
+            <tr>
+                <th>Point</th>
+                <td>{{ question.point }}</td>
+            </tr>
+            <tr>
+                <th>Choix1</th>
+                <td>{{ question.choix1 }}</td>
+            </tr>
+            <tr>
+                <th>Choix2</th>
+                <td>{{ question.choix2 }}</td>
+            </tr>
+            <tr>
+                <th>Choix3</th>
+                <td>{{ question.choix3 }}</td>
+            </tr>
+            <tr>
+                <th>Reponse</th>
+                <td>{{ question.reponse }}</td>
+            </tr>
+            <tr>
+                <th>Crx</th>
+                <td>{{ question.crx }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_question_index') }}">back to list</a>
+
+    <a href="{{ path('app_question_edit', {'id': question.id}) }}">edit</a>
+
+    {{ include('question/_delete_form.html.twig') }}
+{% endblock %}

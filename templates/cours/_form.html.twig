@@ -1,0 +1,71 @@
+
+{# 
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }} #}
+<section class="contact-us" id="contact">
+    <div class="container  ">
+        <div class="row">
+            <div class="col-lg-9 align-self-center">
+                <div class="row" >
+                    <div class="col-lg-12"  style="background-image: url('{{ asset('images/Capture.jpg') }}');">
+{{ form_start(form, {'attr': {'id': 'contact', 'class': 'contact-form', 'method': 'post', 'style': 'background-image: url("' ~ asset('images/Capture.jpg') ~ '"); background-size: cover;'}}) }}
+                            <div class="row" style="background-image: url('{{ asset('images/Capture.jpg') }}');"w >
+                                <div class="col-lg-12"  style="background-image: url('{{ asset('images/Capture.jpg') }}');">
+                                    <h2>Cours     <a href="{{ path('app_cours_index') }}" class="btn btn-secondary">Back to List</a></h2> 
+
+                                </div>
+                                <div class="col-lg-4">
+                                    <fieldset>
+                                        {{ form_widget(form.nom, {'attr': {'placeholder': 'Nom du cours ...', 'required': 'required'}}) }}
+                                        {{ form_errors(form.nom, {'attr': {'class': 'text-red'}}) }}
+
+                                    </fieldset>
+                                </div>
+                                <div class="col-lg-4">
+                                    <fieldset>
+                                        {{ form_widget(form.description, {'attr': {'placeholder': 'DESCRIPTION...', 'required': 'required'}}) }}
+                                    </fieldset>
+                                </div>
+                                <div class="col-lg-4">
+                                    <fieldset>
+                                        {{ form_widget(form.date, {'attr': {'placeholder': 'DATE...', 'required': 'required'}}) }}
+                                    </fieldset>
+                                </div>
+                                <div class="col-lg-4">
+                                    <fieldset>
+                                        {{ form_widget(form.duree, {'attr': {'placeholder': 'DUREE...', 'required': 'required'}}) }}
+                                    </fieldset>
+                                </div>
+                                <div class="col-lg-4">
+                                    <fieldset>
+                                        {{ form_widget(form.prerequis, {'attr': {'placeholder': 'PREREQUIS...', 'required': 'required'}}) }}
+                                    </fieldset>
+                                </div>
+                                <div class="col-lg-4">
+                                    <fieldset>
+                                        {{ form_widget(form.ressource, {'attr': {'placeholder': 'RESSOURCE...', 'required': 'required'}}) }}
+                                    </fieldset>
+                                </div>
+                                         <div class="col-lg-4">
+                                    <fieldset>
+                                        {{ form_widget(form.image) }}
+                                    </fieldset>
+                                </div>
+                                <div class="col-lg-12">
+                                    <fieldset>
+                                        {{ form_widget(form._token) }}
+                                        <button type="submit" id="form-submit" class="button">Ajouter</button>
+                                    </fieldset>
+
+                                </div>
+
+                            </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

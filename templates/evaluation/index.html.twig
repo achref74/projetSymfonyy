@@ -1,0 +1,85 @@
+{% set baseTemplate = app.user.getRole() == 0 or app.user.getRole() == 1 ? 'frontBase.html.twig' : 'backBase.html.twig' %}
+{% extends baseTemplate %}
+{% block title %}Evaluation index{% endblock %}
+
+{% block body %}
+
+    <div class="container d-flex justify-content-center">
+        <div class="col-lg-8 my-5">
+            <div class="text-center card-box">
+                <div class="member-card pt-2 pb-2">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Cours</th>
+                                <th>Note</th>                                
+                                <th>Nom</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for evaluation in evaluations %}
+                            <tr>
+                                <td>{{ evaluation.id }}</td>
+                                <td>{{ evaluation.cours }}</td>
+                                <td>{{ evaluation.note }}</td>
+                                <td>{{ evaluation.nom }}</td>
+                                <td>
+                                
+                                    <a href="{{ path('evaluation_questions', {'evaluationId': evaluation.id}) }}" class="btn btn-primary">Test</a>
+                                    <a href="{{ path('app_evaluation_edit', {'id': evaluation.id}) }}" class="btn btn-secondary">Edit</a>
+                                    {% if app.user.getRole() == 1 %}
+                                    <a href="{{ path('app_evaluation_delete', {'id': evaluation.id}) }}" class="btn btn-danger">Delete</a>
+                                    {% endif %}
+
+
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">No records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+{% if app.user.getRole() == 1 %}
+                    <a href="{{ path('app_evaluation_new') }}" class="btn btn-success">Create new</a>
+{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .card-box {
+            padding: 20px;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            background-color: #fff;
+        }
+
+        .thumb-lg {
+            height: 88px;
+            width: 88px;
+        }
+
+        .img-thumbnail {
+            padding: .25rem;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: .25rem;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .btn-rounded {
+            border-radius: 2em;
+        }
+
+        .text-muted {
+            color: #98a6ad!important;
+        }
+
+    </style>
+{% endblock %}

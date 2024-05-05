@@ -1,0 +1,12 @@
+{% set baseTemplate = app.user.getRole() == 0 or app.user.getRole() == 1 ? 'frontBase.html.twig' : 'backBase.html.twig' %}
+{% extends baseTemplate %}
+{% block title %}New Evaluation{% endblock %}
+
+{% block body %}
+    <h1 class="text-white my-3">Create new Evaluation</h1>
+
+    {{ include('evaluation/_form.html.twig') }}
+
+
+{% endblock %}
+

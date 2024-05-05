@@ -14,8 +14,8 @@ class ClientAdditionalInfoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('imageProfil', FileType::class, [
-            'label' => 'Image de profil',
+        ->add('image', FileType::class, [
+            'label' => 'Image',
             'mapped' => false, // Indique à Symfony de ne pas mapper ce champ à une propriété de l'entité
             'required' => false, // Rend le champ facultatif
         ])     

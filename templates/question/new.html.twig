@@ -1,0 +1,11 @@
+{% set baseTemplate = app.user.getRole() == 0 or app.user.getRole() == 1 ? 'frontBase.html.twig' : 'backBase.html.twig' %}
+{% extends baseTemplate %}
+{% block title %}New Question{% endblock %}
+
+{% block body %}
+    <h1>Create new Question</h1>
+
+    {{ include('question/_form.html.twig') }}
+
+    <a href="{{ path('app_question_index') }}">back to list</a>
+{% endblock %}

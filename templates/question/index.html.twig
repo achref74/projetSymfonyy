@@ -1,0 +1,49 @@
+{% set baseTemplate = app.user.getRole() == 0 or app.user.getRole() == 1 ? 'frontBase.html.twig' : 'backBase.html.twig' %}
+{% extends baseTemplate %}
+{% block title %}Question index{% endblock %}
+
+{% block body %}
+    <h1>Question index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Ressource</th>
+                <th>Duree</th>
+                <th>Point</th>
+                <th>Choix1</th>
+                <th>Choix2</th>
+                <th>Choix3</th>
+                <th>Reponse</th>
+                <th>Crx</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for question in questions %}
+            <tr>
+                <td>{{ question.id }}</td>
+                <td>{{ question.ressource }}</td>
+                <td>{{ question.duree }}</td>
+                <td>{{ question.point }}</td>
+                <td>{{ question.choix1 }}</td>
+                <td>{{ question.choix2 }}</td>
+                <td>{{ question.choix3 }}</td>
+                <td>{{ question.reponse }}</td>
+                <td>{{ question.crx }}</td>
+                <td>
+                    <a href="{{ path('app_question_show', {'id': question.id}) }}">show</a>
+                    <a href="{{ path('app_question_edit', {'id': question.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_question_new') }}">Create new</a>
+{% endblock %}
