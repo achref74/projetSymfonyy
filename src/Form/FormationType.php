@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType; // Add this line
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+
 
 class FormationType extends AbstractType
 {
@@ -59,6 +61,18 @@ class FormationType extends AbstractType
                 'required' => false,
                 'label' => 'Image',
                 'data_class' => null,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '100024k',
+                        'mimeTypes' => [
+                            'video/mp4',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid MP4 video',
+                    ]),
+                ],
+                'attr' => [
+                    'accept' => 'video/mp4',
+                ],
                 
                 // Add more options here as needed
             ])

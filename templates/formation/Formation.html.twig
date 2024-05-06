@@ -44,6 +44,17 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
+              <div class="filters">
+                <ul>
+                  <li  id="showAllBtn" onclick="showAllFormations()">All</li>
+                  <li  id="sortOldToNewBtn" onclick="sortFormationsOldToNew()">Sort ASC</li>
+                  <li  id="filterOffersBtn" onclick="filterFormations()">Offers</li>
+                </ul>
+              </div>
+            </div>
+        <div class="row">
+            <div class="col-lg-12">
+            
                 <div class="row grid">
                     {% for formation in formations %}
                     <div class="col-lg-4 templatemo-item-col all soon">
@@ -57,12 +68,17 @@
         {% endfor %}
                                 </div>
                                 <a href="{{ path('formation_details', { id: formation.idFormation }) }}">
-                                    <img src="{{ formation.imageUrl }}" alt="">
+                                    {# <img src="{{ formation.imageUrl }}" alt=""> #}
+                                                               <video controls width="375" >
+                                                <source src="{{ asset(formation.imageurl) }}" type="video/mp4">
+                                                </video>
                                 </a>
                             </div>
                             <div class="down-content">
                                 <div class="date">
                                     <h6>{{ formation.dated|date('M d') }}</h6>
+                                    <h6 hidden>{{ formation.datef|date() }}</h6>
+
                                 </div>
                                 <a href="{{ path('formation_details', { id: formation.idFormation }) }}">
                                     <h4>{{ formation.nom }}</h4>
@@ -80,7 +96,59 @@
             </div>
         </div>
     </div>
+
 </section>
+<!-- Add a button to filter formations with offers -->
+<script>
+    function sortFormationsOldToNew() {
+        // Get all formations
+        var formationsContainer = document.querySelector('.row.grid');
+        var formations = Array.from(formationsContainer.querySelectorAll('.templatemo-item-col'));
+        
+        // Sort formations by date (ascending)
+        formations.sort(function(a, b) {
+            var dateA = new Date(a.querySelector('.date h6').innerText);
+            var dateB = new Date(b.querySelector('.date h6').innerText);
+            return dateA - dateB;
+        });
+        
+        // Re-append formations to container in sorted order
+        formations.forEach(function(formation) {
+            formationsContainer.appendChild(formation);
+        });
+    }
+</script>
+<script>
+    function showAllFormations() {
+        // Get all formations
+        var formations = document.querySelectorAll('.templatemo-item-col');
+        
+        // Loop through formations and show each one
+        formations.forEach(function(formation) {
+            formation.style.display = 'block';
+        });
+    }
+</script>
+
+<script>
+    function filterFormations() {
+        // Get all formations
+        var formations = document.querySelectorAll('.templatemo-item-col');
+        
+        // Loop through formations
+        formations.forEach(function(formation) {
+            // Check if formation has offers
+            var hasOffers = formation.querySelector('.price span:nth-child(2)');
+            
+            // If formation has offers, show it, otherwise hide it
+            if (hasOffers) {
+                formation.style.display = 'block';
+            } else {
+                formation.style.display = 'none';
+            }
+        });
+    }
+</script>
 
 <!-- Button to trigger modal -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -150,4 +218,5 @@
 <div class="pagination-container">
     {{ knp_pagination_render(formations) }}
 </div>
+
 {% endblock %}

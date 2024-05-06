@@ -7,7 +7,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
-
 class CheckFormationScheduleCommand extends Command
 {
     protected static $defaultName = 'app:check-formation-schedule';

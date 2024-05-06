@@ -71,7 +71,7 @@ class CertificatController extends AbstractController
                         'certificat'  => $certificat
                     )
                 ),
-                'C:/Users/Secondary/Desktop/output.pdf'
+                'C:/Users/Public/output.pdf'
             ));
     }
     #[Route('/new', name: 'app_certificat_new', methods: ['GET', 'POST'])]

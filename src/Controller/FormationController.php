@@ -18,12 +18,19 @@ use Symfony\Component\VarDumper\VarDumper;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
-
-
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Mailer;
 
 #[Route('/formation')]
 class FormationController extends AbstractController
 {
+    private $entityManager;
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     #[Route('/', name: 'app_formation_index', methods: ['GET'])]
     public function index(FormationRepository $formationRepository): Response
     {
@@ -66,21 +73,75 @@ class FormationController extends AbstractController
     #[Route('/formation', name: 'app_formation_index2', methods: ['GET'])]
     public function index2(EntityManagerInterface $entityManager,Request $request, PaginatorInterface $paginator): Response
     {
-        // $formation = new Formation();
-        $formations = $entityManager->getRepository(Formation::class)->findAll();
+        $twoDaysBefore = new \DateTime();
+        $twoDaysBefore->modify('+2 days');
+        $targetDate = new \DateTime();
+        $targetDate->modify('+2 days');
 
 
-        $offers = [];
+        $formations = $this->entityManager
+            ->getRepository('App\Entity\Offre')
+            ->createQueryBuilder('f')
+            ->where('f.dateF = :date')
+            ->setParameter('date', $targetDate->format('Y-m-d'))
+            ->getQuery()
+            ->getResult();
+
+            $formationNames = [];
+        if($formations){
+            foreach ($formations as $formation) {
+                $formationNames[] = $formation->getDescription();
+            }
+            
+            $concatenatedNames = implode(", ", $formationNames);
+        // Do something with $formations, like logging or sending notifications.
+        $transport = Transport::fromDsn('smtp://api:628e6781c06dae54e0a5c75db7ade8de@live.smtp.mailtrap.io:587');
+
+        $mailer = new Mailer($transport);
+        //BUNDLE MAILER
+        $email = (new Email())
+        ->from('mailtrap@demomailtrap.com')
+        ->to('yasminebousselmi5t@gmail.com')
+        ->subject('Foramations disponible')
+        ->html("<p>Bonjour,</p><p>Les offres suivantes exipre dans moins de 2 jours,  : <a>$concatenatedNames</a></p>");
+
+        // Send mail
+        $mailer->send($email);}
     
+    
+
+        //--------------------------------------------
+
+        $todayDate = new \DateTime();
+        $todayDate->setTime(0, 0, 0); // Set time to midnight
+        $todayDate->format('Y-m-d');
+
+        $formations = $entityManager->getRepository(Formation::class)->findAll();
+        $offers = [];
         foreach ($formations as $formation) {
+            $formationdatefString = $formation->getDatef()->format('Y-m-d'); // Format date to string
+            $formationdatef = new \DateTime($formationdatefString); // Create a new DateTime object
+            $formationdatef->setTime(0, 0, 0); // Set time to midnight
+            if($formationdatef == $todayDate){
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($formation);
+                $entityManager->flush();   
+         
+            }else{
             // Fetch corresponding offers for each formation
             $offers[$formation->getIdFormation()] = $entityManager->getRepository(Offre::class)->findBy(['formation' => $formation]);
         }
-  
+    }
+    $formations = $entityManager->getRepository(Formation::class)->findAll();
+foreach($formations as $formation){
+    $offers[$formation->getIdFormation()] = $entityManager->getRepository(Offre::class)->findBy(['formation' => $formation]);
+
+}
+
         $form = $this->createForm(FormationType::class, $formation);
 
         $formations = $paginator->paginate(
-            $formations, /* query NOT result */
+            $formations, 
             $request->query->getInt('page', 1),
             3
         );
@@ -114,8 +175,23 @@ class FormationController extends AbstractController
      */
     public function displayOffers(): Response
     {
-        // Assuming you have access to the EntityManager
         $entityManager = $this->getDoctrine()->getManager();
+
+        $offers = $entityManager->getRepository(Offre::class)->findAll();
+        $todayDate = new \DateTime();
+        $todayDate->format('Y-m-d');
+        $todayDate->setTime(0, 0, 0); // Set time to midnight
+
+        foreach ($offers as $offer) {
+            $formationdatefString = $offer->getDateF()->format('Y-m-d'); // Format date to string
+            $offerdatef = new \DateTime($formationdatefString); // Create a new DateTime object
+            $offerdatef->setTime(0, 0, 0); // Set time to midnight
+            if($offerdatef == $todayDate){
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($offer);
+                $entityManager->flush();   
+            }
+        }
 
         // Retrieve all offers from the database
         $offers = $entityManager->getRepository(Offre::class)->findAll();
@@ -146,6 +222,8 @@ class FormationController extends AbstractController
         // Render the template with the data
         return $this->render('formation/display_offers.html.twig', [
             'formationsWithOffers' => $formationsWithOffers,
+            'todayd'=>$todayDate
+
         ]);
     }
      /**
@@ -186,12 +264,18 @@ class FormationController extends AbstractController
     #[Route('/formation/{id}', name: 'formation_details')]
     public function formationDetails(FormationRepository $formationRepository, $id): Response
     {
+        $todayDate = new \DateTime();
+        $todayDate->format('Y-m-d');
         // Fetch the formation details from the database based on the provided ID
         $formation = $formationRepository->find($id);
-    
+        $formationdatef= $formation->getDatef()->format('Y-m-d');
+
         // Render the template and pass the formation details as variables
         return $this->render('formation/meetingdetail.html.twig', [
             'formation' => $formation,
+            'today'=>$todayDate,
+            'todayf'=>$formationdatef
+
         ]);
     }
 
