@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Reclamation
  *
- * @ORM\Table(name="reclamation", indexes={@ORM\Index(name="id_formation", columns={"id_formation"}), @ORM\Index(name="id_outil", columns={"id_outil"}), @ORM\Index(name="id_user", columns={"id_user"})})
- * @ORM\Entity(repositoryClass=App\Repository\ReclamationRepository::class)
+ * @ORM\Table(name="reclamation", indexes={@ORM\Index(name="id_user", columns={"id_user"}), @ORM\Index(name="id_formation", columns={"id_formation"}), @ORM\Index(name="id_outil", columns={"id_outil"})})
+ * @ORM\Entity
  */
 class Reclamation
 {
@@ -37,6 +37,16 @@ class Reclamation
     private $date;
 
     /**
+     * @var \Formation
+     *
+     * @ORM\ManyToOne(targetEntity="Formation")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_formation", referencedColumnName="idFormation")
+     * })
+     */
+    private $idFormation;
+
+    /**
      * @var \Outil
      *
      * @ORM\ManyToOne(targetEntity="Outil")
@@ -55,16 +65,6 @@ class Reclamation
      * })
      */
     private $idUser;
-
-    /**
-     * @var \Formation
-     *
-     * @ORM\ManyToOne(targetEntity="Formation")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_formation", referencedColumnName="idFormation")
-     * })
-     */
-    private $idFormation;
 
     public function getIdReclamation(): ?int
     {
@@ -95,6 +95,18 @@ class Reclamation
         return $this;
     }
 
+    public function getIdFormation(): ?Formation
+    {
+        return $this->idFormation;
+    }
+
+    public function setIdFormation(?Formation $idFormation): static
+    {
+        $this->idFormation = $idFormation;
+
+        return $this;
+    }
+
     public function getIdOutil(): ?Outil
     {
         return $this->idOutil;
@@ -115,18 +127,6 @@ class Reclamation
     public function setIdUser(?User $idUser): static
     {
         $this->idUser = $idUser;
-
-        return $this;
-    }
-
-    public function getIdFormation(): ?Formation
-    {
-        return $this->idFormation;
-    }
-
-    public function setIdFormation(?Formation $idFormation): static
-    {
-        $this->idFormation = $idFormation;
 
         return $this;
     }

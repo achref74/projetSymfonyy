@@ -2,79 +2,77 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Offre
  *
- * @ORM\Table(name="offre")
- * @ORM\Entity(repositoryClass="App\Repository\OffreRepository")
+ * @ORM\Table(name="offre", indexes={@ORM\Index(name="idFormation", columns={"idFormation"})})
+ * @ORM\Entity
  */
 class Offre
 {
     /**
      * @var int
      *
+     * @ORM\Column(name="idOffre", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @ORM\Column(name="idOffre", type="integer", nullable=false)
      */
-    private  $idOffre;
+    private $idoffre;
 
     /**
      * @var float
-     * @Assert\NotBlank(message="The price is required")
-     * @Assert\Type(type="numeric", message="The price must be a number")
-     * @Assert\GreaterThanOrEqual(value=1, message="The price must be a positive number ")
-     * @ORM\Column(name="prixOffre", type="float", nullable=false)
+     *
+     * @ORM\Column(name="prixOffre", type="float", precision=10, scale=0, nullable=false)
      */
-    private  $prixOffre;
+    private $prixoffre;
 
     /**
      * @var string
-     * @Assert\NotBlank(message="The description is required")
+     *
      * @ORM\Column(name="description", type="string", length=255, nullable=false)
      */
-    private  $description;
+    private $description;
 
     /**
-     * @var \DateTimeInterface
-     * @Assert\NotBlank(message="The start date is required")
-     * @Assert\GreaterThan("today", message="The start date must be in the future")
+     * @var \DateTime
+     *
      * @ORM\Column(name="dateD", type="date", nullable=false)
      */
-    private  $dateD;
+    private $dated;
 
     /**
-     * @var \DateTimeInterface
-     * @Assert\NotBlank(message="The end date is required")
-     * @Assert\GreaterThan("today", message="The end date must be in the future")
-     
-     * @Assert\GreaterThan(propertyPath="dateD", message="The end date must be greater than the start date")
+     * @var \DateTime
+     *
      * @ORM\Column(name="dateF", type="date", nullable=false)
      */
-    private  $dateF;
+    private $datef;
 
     /**
+     * @var \Formation
+     *
      * @ORM\ManyToOne(targetEntity="Formation")
-     * @ORM\JoinColumn(name="idFormation", referencedColumnName="idFormation")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idFormation", referencedColumnName="idFormation")
+     * })
      */
-    private ?Formation $formation;
+    private $idformation;
 
-    public function getIdOffre(): ?int
+    public function getIdoffre(): ?int
     {
-        return $this->idOffre;
+        return $this->idoffre;
     }
 
-    public function getPrixOffre(): ?float
+    public function getPrixoffre(): ?float
     {
-        return $this->prixOffre;
+        return $this->prixoffre;
     }
 
-    public function setPrixOffre(?float $prixOffre): self
+    public function setPrixoffre(float $prixoffre): static
     {
-        $this->prixOffre = $prixOffre;
+        $this->prixoffre = $prixoffre;
 
         return $this;
     }
@@ -84,46 +82,48 @@ class Offre
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(string $description): static
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getDateD(): ?\DateTimeInterface
+    public function getDated(): ?\DateTimeInterface
     {
-        return $this->dateD;
+        return $this->dated;
     }
 
-    public function setDateD(?\DateTimeInterface $dateD): self
+    public function setDated(\DateTimeInterface $dated): static
     {
-        $this->dateD = $dateD;
+        $this->dated = $dated;
 
         return $this;
     }
 
-    public function getDateF(): ?\DateTimeInterface
+    public function getDatef(): ?\DateTimeInterface
     {
-        return $this->dateF;
+        return $this->datef;
     }
 
-    public function setDateF(?\DateTimeInterface $dateF): self
+    public function setDatef(\DateTimeInterface $datef): static
     {
-        $this->dateF = $dateF;
+        $this->datef = $datef;
 
         return $this;
     }
 
-    public function getFormation(): ?Formation
+    public function getIdformation(): ?Formation
     {
-        return $this->formation;
+        return $this->idformation;
     }
 
-    public function setFormation(?Formation $formation): self
+    public function setIdformation(?Formation $idformation): static
     {
-        $this->formation = $formation;
+        $this->idformation = $idformation;
 
         return $this;
     }
+
+
 }

@@ -3,11 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Formation;
-use App\Entity\Offre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\Query\Expr\Join;
-use App\Repository\OffreRepository;
 
 /**
  * @extends ServiceEntityRepository<Formation>
@@ -23,51 +20,6 @@ class FormationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Formation::class);
     }
-    // public function findAllWithOffres(): array
-    // {
-    //     return $this->createQueryBuilder('f')
-    //         ->leftJoin('App\Entity\Offre', 'o', 'WITH', 'o.formation = f.idFormation')
-    //         ->addSelect('o')
-    //         ->getQuery()
-    //         ->getResult();
-    // }
-    public function findAllWithOffres()
-    {
-        $formations = $this->createQueryBuilder('f')
-        ->getQuery()
-        ->getResult();
-
-    $offreRepository = $this->getEntityManager()->getRepository(Offre::class);
-
-    foreach ($formations as $formation) {
-        $offres = $offreRepository->findBy(['formation' => $formation]);
-        $formation->setOffres($offres);
-    }
-
-    return $formations;
-    }
-
-    // Inside your FormationRepository.php
-    public function findBySearchTerm($searchTerm)
-    {
-        $queryBuilder = $this->createQueryBuilder('f');
-    
-        if ($searchTerm) {
-            $queryBuilder->andWhere($queryBuilder->expr()->orX(
-                $queryBuilder->expr()->like('f.nom', ':searchTerm'),
-                $queryBuilder->expr()->like('f.description', ':searchTerm'),
-                $queryBuilder->expr()->like('f.dated', ':searchTerm'),
-                $queryBuilder->expr()->like('f.datef', ':searchTerm'),
-                $queryBuilder->expr()->like('f.prix', ':searchTerm'),
-                $queryBuilder->expr()->like('f.nbrcours', ':searchTerm')
-            ))
-            ->setParameter('searchTerm', '%' . $searchTerm . '%');
-        }
-    
-        return $queryBuilder->getQuery()->getResult();
-    }
-    
-
 
 //    /**
 //     * @return Formation[] Returns an array of Formation objects
