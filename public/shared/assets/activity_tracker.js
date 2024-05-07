@@ -1,4 +1,4 @@
-var inactivityTimeout = 10 * 1000; // 30 seconds of inactivity
+var inactivityTimeout = 120 * 1000; // 30 seconds of inactivity
 var logoutUrl = '/logout'; // Replace with your logout URL
 
 var logoutTimer;

@@ -80,7 +80,7 @@ class Cours1Type extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k',
+                        'maxSize' => '100024k',
                         'mimeTypes' => [
                             'video/mp4',
                         ],

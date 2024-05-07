@@ -12,7 +12,7 @@ class Achat
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: "idAchat")]
     private ?int $id = null;
 
     #[ORM\Column]
@@ -26,6 +26,7 @@ class Achat
     private ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'achats')]
+    #[ORM\JoinColumn(name: "idOutil", referencedColumnName: "id")]
     #[Assert\NotNull(message: "The associated tool must be provided.")]
     private ?Outil $outil = null;
 

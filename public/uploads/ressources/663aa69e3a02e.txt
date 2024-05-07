@@ -1,0 +1,54 @@
+Sous WindowsPowerShell(administrateur):
+
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+o
+irm get.scoop.sh | iex
+ irm get.scoop.sh -outfile 'install.ps1'
+.\install.ps1 -RunAsAdmin
+iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+scoop install symfony-cli
+ scoop list
+//////////////////////////////////////////
+CMD :
+symfony new FirstPSymfony --version=5.4 --webapp
+cd FirstPSymfony
+code .
+ symfony serve
+ composer require doctrine/annotations
+ symfony server:start
+symfony server:status
+////////////////////////////////////
+ php bin\console make:controller HomeController
+
+/////////////////////////////
+BD: 
+DATABASE_URL="mysql://root@127.0.0.1:3306/biblio_esprit"
+php bin/console make:entity 
+ctrl to stop adding
+ php bin/console doctrine:database:create
+php bin/console make:migration
+ php bin/console doctrine:migrations:migrate
+!!!!!!!!!! ajouter use 
+App\Form\AuthorType;
+use App\Entity\Author;
+use App\Repository\AuthorRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
+/////////////
+to make a form 
+php bin/console make:form     
+use App\Form\AuthorType;
+////////////////
+php bin/console make:crud
+////////////////
+template:
+creer 2 dossiers sous public (frontoffice/backoffice)
+glisser les dossier de mon template sous publi c
+///////////////////
+pour les css et JS
+link href libraries twali link href asset
+ba3d tsalah les parentheses 
+
+
+

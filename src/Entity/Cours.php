@@ -12,7 +12,7 @@ class Cours
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name:"id_cours",type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -36,7 +36,7 @@ class Cours
     #[ORM\Column(type: 'text', length: 255)]
     private string $image;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(name: "idFormation",type: 'integer', nullable: true)]
     private ?int $idFormation;
 
     #[ORM\OneToMany(mappedBy: 'cours', targetEntity: Evaluation::class, cascade: ['persist', 'remove'])]
