@@ -4,37 +4,71 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\AuthorRepository;
-use App\Repository\PublicationRepository;
 
-#[ORM\Entity(repositoryClass: PublicationRepository::class)]
+/**
+ * Publication
+ *
+ * @ORM\Table(name="publication", indexes={@ORM\Index(name="idUser", columns={"idUser"}), @ORM\Index(name="idForum", columns={"idForum"})})
+ * @ORM\Entity(repositoryClass=App\Repository\PublicationRepository::class)
+ */
 class Publication
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(name:"idP",type:"integer")]
-    private ?int $idp= null;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idP", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idp;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)] 
-    private ?\DateTimeInterface $datecreation = null;
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateCreation", type="datetime", nullable=false)
+     */
+    private $datecreation;
 
-    #[ORM\Column(length: 255)]
-    private ?string $contenup=null;
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="contenuP", type="text", length=65535, nullable=true)
+     */
+    private $contenup;
 
-    #[ORM\Column(length: 255)]
-    private ?string $image=null;
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     */
+    private $image;
 
-    #[ORM\Column]
-    private ?int $nblike=null;
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="nbLike", type="integer", nullable=true)
+     */
+    private $nblike;
 
-    
-    #[ORM\ManyToOne(targetEntity: Forum::class)] // Spécifiez targetEntity pour la relation ManyToOne
-    #[ORM\JoinColumn(name: "idForum", referencedColumnName: "idForum", nullable: false)]
-    private ?Forum $idforum=null;
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idUser", referencedColumnName="idUser")
+     * })
+     */
+    private $iduser;
 
-    #[ORM\ManyToOne(targetEntity: User::class)] // Spécifiez targetEntity pour la relation ManyToOne
-    #[ORM\JoinColumn(name: "idUser", referencedColumnName: "idUser", nullable: false)]
-    private ?User $iduser = null;
+    /**
+     * @var \Forum
+     *
+     * @ORM\ManyToOne(targetEntity="Forum")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idForum", referencedColumnName="idForum")
+     * })
+     */
+    private $idforum;
 
     public function getIdp(): ?int
     {
@@ -89,18 +123,6 @@ class Publication
         return $this;
     }
 
-    public function getIdforum(): ?Forum
-    {
-        return $this->idforum;
-    }
-
-    public function setIdforum(?Forum $idforum): static
-    {
-        $this->idforum = $idforum;
-
-        return $this;
-    }
-
     public function getIduser(): ?User
     {
         return $this->iduser;
@@ -109,6 +131,18 @@ class Publication
     public function setIduser(?User $iduser): static
     {
         $this->iduser = $iduser;
+
+        return $this;
+    }
+
+    public function getIdforum(): ?Forum
+    {
+        return $this->idforum;
+    }
+
+    public function setIdforum(?Forum $idforum): static
+    {
+        $this->idforum = $idforum;
 
         return $this;
     }

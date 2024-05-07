@@ -44,6 +44,15 @@
     "knplabs/knp-paginator-bundle": {
         "version": "v5.9.0"
     },
+    "knplabs/knp-snappy-bundle": {
+        "version": "1.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.5",
+            "ref": "c81bdcf4a9d4e7b1959071457f9608631865d381"
+        }
+    },
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {
@@ -79,6 +88,8 @@
             "./config/packages/scheb_2fa.yaml",
             "./config/routes/scheb_2fa.yaml"
         ]
+    "rewieer/taskschedulerbundle": {
+        "version": "0.13.0"
     },
     "sensio/framework-extra-bundle": {
         "version": "6.2",
@@ -322,6 +333,18 @@
         "files": [
             "./config/packages/web_profiler.yaml",
             "./config/routes/web_profiler.yaml"
+        ]
+    },
+    "symfony/webapp-pack": {
+        "version": "1.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "7d5c5e282f7e2c36a2c3bbb1504f78456c352407"
+        },
+        "files": [
+            "./config/packages/messenger.yaml"
         ]
     },
     "twig/extra-bundle": {

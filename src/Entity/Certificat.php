@@ -6,10 +6,10 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Certificat
+ * Achat
  *
  * @ORM\Table(name="certificat", indexes={@ORM\Index(name="idUser", columns={"idUser"}), @ORM\Index(name="idFormation", columns={"idFormation"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=App\Repository\CertificatRepository::class)
  */
 class Certificat
 {
@@ -20,67 +20,41 @@ class Certificat
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idcertificat;
+    private $idCertificat;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="titre", type="integer", nullable=false)
-     */
-    private $titre;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255, nullable=false)
-     */
-    private $description;
+    #[ORM\Column(name: "titre", type: "string", length: 255, nullable: false)]
+    private string $titre;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateObtention", type="date", nullable=false)
-     */
-    private $dateobtention;
+    #[ORM\Column(name: "description", type: "string", length: 255, nullable: false)]
+    private string $description;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="nbrCours", type="integer", nullable=false)
-     */
-    private $nbrcours;
+    #[ORM\Column(name: "dateObtention", type: "date", nullable: false)]
+    private \DateTimeInterface $dateObtention;
 
-    /**
-     * @var \Formation
-     *
-     * @ORM\ManyToOne(targetEntity="Formation")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idFormation", referencedColumnName="idFormation")
-     * })
-     */
-    private $idformation;
+    #[ORM\Column(name: "nbrCours", type: "integer", nullable: false)]
+    private int $nbrCours;
 
-    /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idUser", referencedColumnName="idUser")
-     * })
-     */
-    private $iduser;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "idUser", referencedColumnName: "idUser")]
+    private ?User $user;
 
+    #[ORM\ManyToOne(targetEntity: Formation::class)]
+    #[ORM\JoinColumn(name: "idFormation", referencedColumnName: "idFormation")]
+    private ?Formation $formation;
+
+    
     public function getIdcertificat(): ?int
     {
-        return $this->idcertificat;
+        return $this->idCertificat;
     }
 
-    public function getTitre(): ?int
+    public function getTitre(): ?string
     {
         return $this->titre;
     }
 
-    public function setTitre(int $titre): static
+    public function setTitre(string $titre): static
     {
         $this->titre = $titre;
 
@@ -123,18 +97,6 @@ class Certificat
         return $this;
     }
 
-    public function getIdformation(): ?Formation
-    {
-        return $this->idformation;
-    }
-
-    public function setIdformation(?Formation $idformation): static
-    {
-        $this->idformation = $idformation;
-
-        return $this;
-    }
-
     public function getIduser(): ?User
     {
         return $this->iduser;
@@ -143,6 +105,18 @@ class Certificat
     public function setIduser(?User $iduser): static
     {
         $this->iduser = $iduser;
+
+        return $this;
+    }
+
+    public function getIdformation(): ?Formation
+    {
+        return $this->idformation;
+    }
+
+    public function setIdformation(?Formation $idformation): static
+    {
+        $this->idformation = $idformation;
 
         return $this;
     }
