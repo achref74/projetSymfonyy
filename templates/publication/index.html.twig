@@ -1,0 +1,75 @@
+{% extends 'frontbase.html.twig' %}
+
+{% block title %}Publication index{% endblock %}
+
+
+{% block body %}
+<style> .pagination {
+    background-color: #007bff; /* Couleur de fond */
+    color: #fff; /* Couleur du texte */
+    border-color: #007bff; /* Couleur de la bordure */
+    display: inline-block; /* Affichage en ligne */
+    padding: 6px 12px; /* Espacement intérieur */
+    margin: 0; /* Marge extérieure */
+    border-radius: 4px; /* Rayon de la bordure */
+}
+
+.pagination a {
+    color: #fff; /* Couleur du texte des liens */
+    text-decoration: none; /* Supprimer le soulignement des liens */
+}
+
+.pagination a:hover {
+    background-color: #0056b3; /* Couleur de fond au survol */
+}
+
+.pagination .active {
+    background-color: #0056b3; /* Couleur de fond de l'élément actif */
+    border-color: #0056b3; /* Couleur de la bordure de l'élément actif */
+}
+</style>
+
+<div class="container">
+    <div class="row">
+        {% for publication in publications %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card mb-4">
+                {% if publication.image %}
+                <img  class="card-img-top"  src="{{ asset('uploads/' ~ publication.image) }}" alt="Publication Image">
+                {% else %}
+                <div class="no-image-placeholder">No Image Available</div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ publication.contenup }}</h5>
+                    <p class="card-text">Date de Modification: {{ publication.datecreation ? publication.datecreation|date('Y-m-d H:i:s') : 'N/A' }}</p>
+                    <p class="card-text">likes: {{ publication.nblike }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <form >
+                              <button type="button" class="btn btn-sm btn-outline-primary" onclick="window.location.href='{{ path('app_publication_edit', {'idp':publication.idp,'idForum': idForum, 'idUser': idUser,'idformation': idformation}) }}'">Edit</button>
+                            </form>
+                        </div>
+                        <div class="btn-group">
+                            <form method="post" action="{{ path('app_publication_delete', {'idp':publication.idp,'idForum': idForum,'idUser': idUser,'idformation': idformation}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                              <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ publication.idp) }}">
+                             <button type="submit" class="btn btn-outline-danger btn-fw ">Delete</button>
+                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-lg-12">
+            <p>No publications found.</p>
+        </div>
+        {% endfor %}
+    </div>
+    <center><div class="pagination">
+    {{ knp_pagination_render(publications) }}
+</div></center>
+</div>
+<button type="button" class="btn btn-outline-light btn-fw" onclick="window.location.href='{{ path('app_publication_new', {'idUser': idUser,'idForum': idForum,'idformation': idformation}) }}'">Create new</button>
+<a href="{{ path('Front_forum_index', {'idformation': idformation,'idUser': idUser}) }}">back</a>
+
+{% endblock %}

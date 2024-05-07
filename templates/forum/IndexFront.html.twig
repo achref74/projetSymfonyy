@@ -1,0 +1,59 @@
+{% extends 'frontBase.html.twig' %}
+
+{% block title %}Forum index{% endblock %}
+
+{% block body %}
+<style> .pagination {
+    background-color: #007bff; /* Couleur de fond */
+    color: #fff; /* Couleur du texte */
+    border-color: #007bff; /* Couleur de la bordure */
+    display: inline-block; /* Affichage en ligne */
+    padding: 6px 12px; /* Espacement intérieur */
+    margin: 0; /* Marge extérieure */
+    border-radius: 4px; /* Rayon de la bordure */
+}
+
+.pagination a {
+    color: #fff; /* Couleur du texte des liens */
+    text-decoration: none; /* Supprimer le soulignement des liens */
+}
+
+.pagination a:hover {
+    background-color: #0056b3; /* Couleur de fond au survol */
+}
+
+.pagination .active {
+    background-color: #0056b3; /* Couleur de fond de l'élément actif */
+    border-color: #0056b3; /* Couleur de la bordure de l'élément actif */
+}
+</style>
+    <h1>Forum index</h1>
+    <div class="col-lg-12">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="color: white;">Titre</th>
+                <th style="color: white;">Date de création</th>
+                <th style="color: white;">Description</th>
+                <th style="color: white;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for forum in forums %}
+            <tr>
+                <td style="color: white;">{{ forum.titre }}</td>
+                <td style="color: white;">{{ forum.datecreation ? forum.datecreation|date('Y-m-d H:i:s') : '' }}</td>
+                <td style="color: white;">{{ forum.description }}</td>
+                <td><a href="{{ path('app_publication_index', {'idUser': idUser, 'idForum': forum.idForum, 'idformation': idformation}) }}">go to pub</a></td>
+            </tr>
+        {% else %}
+            <tr><td colspan="4">No records found</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <center><div class="pagination">
+    {{ knp_pagination_render(forums) }}
+</div></center>
+    </div>
+{% endblock %}

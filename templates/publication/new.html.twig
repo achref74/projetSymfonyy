@@ -1,0 +1,63 @@
+{% extends 'frontBase.html.twig' %}
+
+{% block title %}New Publication{% endblock %}
+
+{% block body %}
+<section class="contact-us" id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 align-self-center">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Create new Publication</h1>
+
+                        {{ include('publication/_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="{{ path('app_publication_index', {'idUser': idUser, 'idForum': idForum, 'idformation': idformation }) }}">back to list</a>
+
+{{ parent() }}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sélectionnez le champ de commentaire
+            const commentField = document.getElementById('publication_contenup');
+
+            // Ajoutez un écouteur d'événement pour vérifier le commentaire lorsqu'il est modifié
+            commentField.addEventListener('input', function() {
+                const comment = commentField.value;
+                if (containsBadWords(comment)) {
+                    // Afficher un message d'alerte à côté du champ de commentaire
+                    commentField.insertAdjacentHTML('afterend', '<div class="alert alert-danger" role="alert">Votre commentaire contient des mots interdits.</div>');
+                } else {
+                    // Supprimer le message d'alerte s'il existe
+                    const alert = commentField.nextElementSibling;
+                    if (alert && alert.classList.contains('alert-danger')) {
+                        alert.remove();
+                    }
+                }
+            });
+
+            // Fonction pour vérifier si le commentaire contient des mots interdits
+            function containsBadWords(comment) {
+                // Votre logique de vérification des mots interdits ici
+                // Par exemple, utilisez une liste de mots interdits stockée dans une variable JavaScript
+                const badWords = ['badword1', 'badword2', 'badword3', 'felhi', 'Felhi'];
+                for (const word of badWords) {
+                    if (comment.includes(word)) {
+                        return true;
+                    }
+                }
+                return false;
+                
+            }
+        });
+    </script>
+    </div>
+    
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,19 @@
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Saisie les données</h4>
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_row(form.titre) }}
+        {{ form_row(form.description) }}
+        <br>
+        <br>
+        <button  class="btn btn-inverse-primary btn-fw" >{{ button_label|default('Save') }}</button>
+        {{ form_end(form) }}
+      </div>
+    
+    </div>
+</div>  
+
+
+
+    

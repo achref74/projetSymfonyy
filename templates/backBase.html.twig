@@ -63,6 +63,23 @@
           </li>
           
 
+            <a class="nav-link" href="{{ path('user_home_front') }}">
+              <span class="menu-icon">
+                <i class="mdi mdi-account"></i>
+              </span>
+              <span class="menu-title">Users</span>
+            </a>
+          </li>
+          
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{{ path('app_forum_index' , {'idformation': idformation,'idUser': idUser}) }}" >
+              <span class="menu-icon">
+                <i class="mdi mdi-playlist-play"></i>
+              </span>
+              <span class="menu-title">Forums</span>
+            </a>
+          </li>
+          
 
         </ul>
       </nav>
@@ -141,6 +158,10 @@
       </div>
       <!-- page-body-wrapper ends -->
     </div>
+    <div id="google_translate_element"> </div> <script type="text/javascript">
+     function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en'},'google_translate_element'); } 
+     </script>
+     <script type="text/javascript"src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   </body>
 </html>
