@@ -1,81 +1,85 @@
 <?php
 
+
 namespace App\Entity;
 
+use App\Repository\OutilRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Outil
- *
- * @ORM\Table(name="outil", indexes={@ORM\Index(name="idCategorie", columns={"idCategorie"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: OutilRepository::class)]
 class Outil
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idoutils", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idoutils;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=255, nullable=false)
-     */
-    private $nom;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "The name cannot be empty.")]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "The name must be at most 255 characters long."
+    )]
+    private ?string $nom = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255, nullable=false)
-     */
-    private $description;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "The description cannot be empty.")]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "The description must be at most 255 characters long."
+    )]
+    private ?string $description = null;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $prix;
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "The price cannot be empty.")]
+    #[Assert\Positive(message: "The price must be a positive number.")]
+    private ?float $prix = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="ressources", type="string", length=255, nullable=false)
-     */
-    private $ressources;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "The ressources cannot be empty.")]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "The resources field must be at most 255 characters long."
+    )]
+    private ?string $ressources = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="stock", type="string", length=255, nullable=false)
-     */
-    private $stock;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "The stock cannot be empty.")]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "The stock must be at most 255 characters long."
+    )]
+    private ?string $stock = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="etat", type="string", length=255, nullable=false)
-     */
-    private $etat;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "The etat cannot be empty.")]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "The state must be at most 255 characters long."
+    )]
+    private ?string $etat = null;
 
-    /**
-     * @var \Categorie
-     *
-     * @ORM\ManyToOne(targetEntity="Categorie")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idCategorie", referencedColumnName="idCategorie")
-     * })
-     */
-    private $idcategorie;
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
 
-    public function getIdoutils(): ?int
+    #[ORM\ManyToOne(inversedBy: 'outils')]
+    #[Assert\NotBlank(message: "The categorie cannot be empty.")]
+    private ?Categorie $categories = null;
+    #[ORM\OneToMany(targetEntity: Achat::class, mappedBy: 'outil')]
+    
+    private Collection $achats;
+
+    public function __construct()
     {
-        return $this->idoutils;
+        $this->achats = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getNom(): ?string
@@ -83,7 +87,7 @@ class Outil
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(?string $nom): self
     {
         $this->nom = $nom;
 
@@ -95,7 +99,7 @@ class Outil
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -107,7 +111,7 @@ class Outil
         return $this->prix;
     }
 
-    public function setPrix(float $prix): static
+    public function setPrix(?float $prix): self
     {
         $this->prix = $prix;
 
@@ -119,7 +123,7 @@ class Outil
         return $this->ressources;
     }
 
-    public function setRessources(string $ressources): static
+    public function setRessources(?string $ressources): self
     {
         $this->ressources = $ressources;
 
@@ -131,7 +135,7 @@ class Outil
         return $this->stock;
     }
 
-    public function setStock(string $stock): static
+    public function setStock(?string $stock): self
     {
         $this->stock = $stock;
 
@@ -143,24 +147,70 @@ class Outil
         return $this->etat;
     }
 
-    public function setEtat(string $etat): static
+    public function setEtat(?string $etat): self
     {
         $this->etat = $etat;
 
         return $this;
     }
 
-    public function getIdcategorie(): ?Categorie
+    public function getImage(): ?string
     {
-        return $this->idcategorie;
+        return $this->image;
     }
 
-    public function setIdcategorie(?Categorie $idcategorie): static
+    public function setImage(?string $image): self
     {
-        $this->idcategorie = $idcategorie;
+        $this->image = $image;
 
         return $this;
     }
 
+    public function getCategories(): ?Categorie
+    {
+        return $this->categories;
+    }
+
+    public function setCategories(?Categorie $categories): self
+    {
+        $this->categories = $categories;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Achat>
+     */
+    public function getAchats(): Collection
+    {
+        return $this->achats;
+    }
+
+    public function addAchat(Achat $achat): self
+    {
+        if (!$this->achats->contains($achat)) {
+            $this->achats->add($achat);
+            $achat->setOutil($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAchat(Achat $achat): self
+    {
+        if ($this->achats->removeElement($achat)) {
+            // set the owning side to null (unless already changed)
+            if ($achat->getOutil() === $this) {
+                $achat->setOutil(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->nom ;
+    }
 
 }

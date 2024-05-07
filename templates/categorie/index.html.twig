@@ -1,0 +1,83 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Categorie Index{% endblock %}
+
+{% block content %}
+<style>
+.pagination {
+    background-color: #007bff; /* Couleur de fond */
+    color: #fff; /* Couleur du texte */
+    border-color: #007bff; /* Couleur de la bordure */
+    display: inline-block; /* Affichage en ligne */
+    padding: 6px 12px; /* Espacement intérieur */
+    margin: 0; /* Marge extérieure */
+    border-radius: 4px; /* Rayon de la bordure */
+}
+
+.pagination a {
+    color: #fff; /* Couleur du texte des liens */
+    text-decoration: none; /* Supprimer le soulignement des liens */
+}
+
+.pagination a:hover {
+    background-color: #0056b3; /* Couleur de fond au survol */
+}
+
+.pagination .active {
+    background-color: #0056b3; /* Couleur de fond de l'élément actif */
+    border-color: #0056b3; /* Couleur de la bordure de l'élément actif */
+}
+</style>
+    <div class="container mt-4">
+        <h1 class="mb-4">Categorie Index</h1>
+
+        <!-- Card for Table Display -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Categories Overview</h4>
+                <p class="card-description">
+                    List of all categories. You can show or edit details from here.
+                </p>
+
+                <!-- Table inside card -->
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nom</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for categorie in categories %}
+                            <tr>
+                                <td>{{ categorie.id }}</td>
+                                <td>{{ categorie.nom }}</td>
+                                <td>{{ categorie.description }}</td>
+                                <td>
+                                    <a href="{{ path('app_categorie_show', {'id': categorie.id}) }}" class="btn btn-info btn-sm">Show</a>
+                                    <a href="{{ path('app_categorie_edit', {'id': categorie.id}) }}" class="btn btn-primary btn-sm">Edit</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">No records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <center><div class="pagination">
+    {{ knp_pagination_render(categories) }}
+</div></center>
+<div id="google_translate_element"></div> <script type="text/javascript"> function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en'},'google_translate_element'); } </script> <script type="text/javascript"src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <!-- Button to create new category -->
+        <div class="mt-4">
+            <a href="{{ path('app_categorie_new') }}" class="btn btn-success">Create New Category</a>
+        </div>
+    </div>
+{% endblock %}

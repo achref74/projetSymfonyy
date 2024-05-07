@@ -2,63 +2,36 @@
 
 namespace App\Entity;
 
+use App\Repository\AchatRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Achat
- *
- * @ORM\Table(name="achat", indexes={@ORM\Index(name="idFormation", columns={"idFormation"}), @ORM\Index(name="idOutil", columns={"idOutil"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: AchatRepository::class)]
 class Achat
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idAchat", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idachat;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="total", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $total;
+    #[ORM\Column]
+    #[Assert\NotNull(message: "The total amount must be provided.")]
+    #[Assert\Positive(message: "The total amount must be a positive number.")]
+    private ?float $total = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date", type="date", nullable=false)
-     */
-    private $date;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotNull(message: "The date must be provided.")]
+    #[Assert\Type(\DateTimeInterface::class)]
+    private ?\DateTimeInterface $date = null;
 
-    /**
-     * @var \Formation
-     *
-     * @ORM\ManyToOne(targetEntity="Formation")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idFormation", referencedColumnName="idFormation")
-     * })
-     */
-    private $idformation;
+    #[ORM\ManyToOne(inversedBy: 'achats')]
+    #[Assert\NotNull(message: "The associated tool must be provided.")]
+    private ?Outil $outil = null;
 
-    /**
-     * @var \Outil
-     *
-     * @ORM\ManyToOne(targetEntity="Outil")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idOutil", referencedColumnName="idoutils")
-     * })
-     */
-    private $idoutil;
-
-    public function getIdachat(): ?int
+    public function getId(): ?int
     {
-        return $this->idachat;
+        return $this->id;
     }
 
     public function getTotal(): ?float
@@ -66,7 +39,7 @@ class Achat
         return $this->total;
     }
 
-    public function setTotal(float $total): static
+    public function setTotal(?float $total): self
     {
         $this->total = $total;
 
@@ -78,36 +51,22 @@ class Achat
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setDate(?\DateTimeInterface $date): self
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getIdformation(): ?Formation
+    public function getOutil(): ?outil
     {
-        return $this->idformation;
+        return $this->outil;
     }
 
-    public function setIdformation(?Formation $idformation): static
+    public function setOutil(?outil $outil): self
     {
-        $this->idformation = $idformation;
+        $this->outil = $outil;
 
         return $this;
     }
-
-    public function getIdoutil(): ?Outil
-    {
-        return $this->idoutil;
-    }
-
-    public function setIdoutil(?Outil $idoutil): static
-    {
-        $this->idoutil = $idoutil;
-
-        return $this;
-    }
-
-
 }

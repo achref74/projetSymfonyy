@@ -15,7 +15,7 @@
         ]
     },
     "doctrine/doctrine-bundle": {
-        "version": "2.11",
+        "version": "2.12",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
@@ -322,6 +322,18 @@
         "files": [
             "./config/packages/web_profiler.yaml",
             "./config/routes/web_profiler.yaml"
+        ]
+    },
+    "symfony/webapp-pack": {
+        "version": "1.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "7d5c5e282f7e2c36a2c3bbb1504f78456c352407"
+        },
+        "files": [
+            "./config/packages/messenger.yaml"
         ]
     },
     "twig/extra-bundle": {

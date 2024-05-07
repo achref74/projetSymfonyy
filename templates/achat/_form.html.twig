@@ -1,0 +1,27 @@
+<div class="main-panel">
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                {{ form_start(form, {'attr': {'class': 'forms-sample', 'novalidate': 'novalidate'}}) }}
+                <div class="form-group">
+                    {{ form_label(form.total) }}
+                    {{ form_widget(form.total, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.total) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.date) }}
+                    {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.date) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.outil) }}
+                    {{ form_widget(form.outil, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.outil) }}
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">{{ button_label|default('Save') }}</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>

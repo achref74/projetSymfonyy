@@ -2,57 +2,104 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 use App\Repository\CategorieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
 class Categorie
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name:"idCategorie",type:"integer")]
-    private $idCategorie;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $nom;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "The name cannot be empty.")]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "The name must be at most 255 characters long."
+    )]
+    private ?string $nom = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $description;
-    // Getter et setter pour l'ID
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "The description cannot be empty.")]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "The description must be at most 255 characters long."
+    )]
+    private ?string $description = null;
+
+    #[ORM\OneToMany(targetEntity: Outil::class, mappedBy: 'categories')]
+    private Collection $outils;
+
+    public function __construct()
+    {
+        $this->outils = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
-    // Getter et setter pour le nom
+
     public function getNom(): ?string
     {
         return $this->nom;
     }
-    public function setNom(string $nom): self
+
+    public function setNom(?string $nom): self
     {
         $this->nom = $nom;
 
         return $this;
     }
-    // Getter et setter pour la description
+
     public function getDescription(): ?string
     {
         return $this->description;
     }
-    public function setDescription(string $description): self
+
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getIdCategorie(): ?int
+    /**
+     * @return Collection<int, Outil>
+     */
+    public function getOutils(): Collection
     {
-        return $this->idCategorie;
+        return $this->outils;
+    }
+
+    public function addOutil(Outil $outil): self
+    {
+        if (!$this->outils->contains($outil)) {
+            $this->outils->add($outil);
+            $outil->setCategories($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOutil(Outil $outil): self
+    {
+        if ($this->outils->removeElement($outil)) {
+            // set the owning side to null (unless already changed)
+            if ($outil->getCategories() === $this) {
+                $outil->setCategories(null);
+            }
+        }
+
+        return $this;
+    }
+    public function __toString(): string
+    {
+        return $this->nom ;
     }
 }
