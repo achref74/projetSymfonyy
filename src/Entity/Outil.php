@@ -14,7 +14,7 @@ class Outil
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: "idoutils")]
+    #[ORM\Column(name:"idoutils")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -66,12 +66,10 @@ class Outil
     private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'outils')]
-    #[ORM\JoinColumn(name: "idCategorie", referencedColumnName: "idCategorie")]
     #[Assert\NotBlank(message: "The categorie cannot be empty.")]
     private ?Categorie $categories = null;
-    
-    #[ORM\OneToMany(targetEntity: Achat::class, mappedBy: 'outil')]
-    
+
+    #[ORM\OneToMany(targetEntity: Achat::class, mappedBy: 'idOutil')]
     private Collection $achats;
 
     public function __construct()
