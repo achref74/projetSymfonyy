@@ -25,10 +25,7 @@ class ReclamationType extends AbstractType
                 'class' => Outil::class,
                 'choice_label' => 'nom',
             ])
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'idUser',
-            ])
+
             
         ;
     }
