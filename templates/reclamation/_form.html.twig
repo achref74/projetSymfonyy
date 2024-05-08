@@ -1,0 +1,33 @@
+{{ form_start(form, { 'attr': { 'novalidate': 'novalidate' } }) }}
+
+<div class="count-title">
+    {{ form_label(form.description, null, {'attr': {'class': 'count-digit'}}) }}  <!-- Description label with white class -->
+    {{ form_widget(form.description) }} 
+</div>
+<div class="alert-danger">
+    {{ form_errors(form.description) }}  <!-- Description input -->
+
+</div>
+
+<div class="count-title">
+    {{ form_label(form.formation, null, {'attr': {'class': 'white-label'}}) }}  <!-- Formation label with white class -->
+    {{ form_widget(form.formation) }}  <!-- Formation input -->
+</div>
+
+<div class="count-title">
+    {{ form_label(form.outil, null, {'attr': {'class': 'white-label'}}) }}  <!-- Outil label with white class -->
+    {{ form_widget(form.outil) }}  <!-- Outil input -->
+</div>
+
+<div class="count-title">
+    {{ form_label(form.user, null, {'attr': {'class': 'white-label'}}) }}  <!-- User label with white class -->
+    {{ form_widget(form.user) }}  <!-- User input -->
+</div>
+
+<div class="g-recaptcha" data-sitekey="6LeQ9IkpAAAAAIqRjZvZxuDP2ETAbFo6zapNz9KO" data-action="your_action_name"></div>
+
+
+<button class="button">{{ button_label|default('Save') }}</button>
+
+{{ form_end(form) }}
+<script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>

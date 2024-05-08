@@ -1,0 +1,16 @@
+{% extends 'frontBase.html.twig' %}
+
+{% block title %}New Reclamation{% endblock %}
+
+{% block body %}
+{% for message in app.flashes('error') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+    <h1>Create new Reclamation</h1>
+
+    {{ include('reclamation/_form.html.twig') }}
+
+    <a href="{{ path('app_reclamation_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'backBase.html.twig' %}
+
+{% block body %}
+    <h1>Reclamation index</h1>
+
+    <!-- Search input -->
+    <input type="text" id="searchInput" placeholder="Search...">
+
+    <div class="card-container">
+       {% for reclamation in reclamations %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Username: {{ reclamation.user.idUser }}</h5>
+            <p class="card-text">Description: {{ reclamation.description }}</p>
+            <p class="card-text">Formation: {{ reclamation.formation.nom }}</p>
+            <p class="card-text">Outil: {{ reclamation.outil.nom }}</p>
+            <p class="card-text">Date: {{ reclamation.date ? reclamation.date|date('Y-m-d H:i:s') : '' }}</p>
+            <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}" class="btn btn-primary">Show</a>
+            <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}" class="btn btn-warning">Edit</a>
+            <a href="{{ path('app_reponse_new', {'reclamationId': reclamation.id}) }}" class="btn btn-success">Add Response</a>
+            <a class ="btn btn-danger">{{ include('reclamation/_delete_form.html.twig') }}</a>
+        </div>
+    </div>
+
+{% else %}
+    <p>No records found</p>
+{% endfor %}
+    </div>
+    
+
+    <a href="{{ path('app_reclamation_new') }}" class="btn btn-success">Create new</a>
+
+  
+
+     <!-- Google Pie Chart -->
+    <div id="piechart" style="width: 100%; height: 400px;"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var jsonData = {{ chartData | json_encode | raw }};
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Formation');
+            data.addColumn('number', 'Reclamations');
+            data.addRows(jsonData);
+
+            var options = {
+                title: 'Reclamations by Formation',
+                          is3D: true,
+
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(data, options);
+        }
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#searchInput').on('input', function() {
+                var searchTerm = $(this).val();
+                $.ajax({
+                    url: '{{ path('app_reclamation_index') }}',
+                    type: 'POST',
+                    data: { searchTerm: searchTerm },
+                    success: function(response) {
+                        $('.card-container').html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>      
+{% endblock %}

@@ -1,0 +1,9 @@
+/* Define border for .bordered-card */
+.bordered-card {
+    border: 1px solid #000000; /* Add your desired border style */
+}
+.speaking {
+    background-color: #ff0000; /* Change the background color to red when speaking */
+    color: #ffffff; /* Change the text color to white when speaking */
+    font-weight: bold; /* Make the text bold when speaking */
+}
