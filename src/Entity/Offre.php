@@ -5,53 +5,30 @@ use App\Repository\OffreRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="offre")
- * @ORM\Entity
- */
 
+#[ORM\Table(name:"offre")]
 #[ORM\Entity(repositoryClass: OffreRepository::class)]
 
 class Offre
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(name="idOffre", type="integer")
-     */
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: "idOffre", type: "integer")]
     private  $idOffre;
 
-    /**
-     * @ORM\Column(name="prixOffre", type="float", precision=10, scale=0)
-     */
     #[ORM\Column(name: "prixOffre", type: "float", precision: 10, scale: 0)]
     private  $prixOffre;
 
-    /**
-     * @ORM\Column(name="description", type="string", length=255)
-     */
     #[ORM\Column(name: "description", type: "string", length: 255)]
     private  $description;
 
-    /**
-     * @ORM\Column(name="dateD", type="date")
-     */
     #[ORM\Column(name: "dateD", type: "date")]
     private  $dateD;
 
-    /**
-     * @ORM\Column(name="dateF", type="date")
-     */
     #[ORM\Column(name: "dateF", type: "date")]
     private  $dateF;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Formation")
-     * @ORM\JoinColumn(name="idFormation", referencedColumnName="idFormation")
-     */
     #[ORM\ManyToOne(targetEntity: Formation::class)]
     #[ORM\JoinColumn(name: "idFormation", referencedColumnName: "idFormation")]
     private  $formation;

@@ -5,11 +5,9 @@ namespace App\Entity;
 use App\Repository\FormationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Table(name:"formation")]
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
-/**
- * @ORM\Entity(repositoryClass=FormationRepository::class)
- */
 class Formation
 {
     public function __construct(

@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Snappy\Pdf;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
-
+use Knp\Bundle\SnappyBundle;
 #[Route('/certificat')]
 class CertificatController extends AbstractController
 {

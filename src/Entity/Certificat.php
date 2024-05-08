@@ -5,21 +5,15 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Achat
- *
- * @ORM\Table(name="certificat", indexes={@ORM\Index(name="idUser", columns={"idUser"}), @ORM\Index(name="idFormation", columns={"idFormation"})})
- * @ORM\Entity(repositoryClass=App\Repository\CertificatRepository::class)
- */
+
+#[ORM\Table(name:"certificat")]
+#[ORM\Entity(repositoryClass: CertificatRepository::class)]
 class Certificat
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idCertificat", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "idCertificat", type: "integer")]
     private $idCertificat;
 
 
