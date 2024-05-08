@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
@@ -76,7 +77,7 @@ public function index(Request $request, PaginatorInterface $paginator, Publicati
     }
     
     #[Route('/new/Client/{idUser}/{idForum}/{idformation}', name: 'app_publication_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, int $idUser, int $idForum, int $idformation, MailerInterface $mailer, ForumRepository $forumRepository): Response
+    public function new(AuthenticationUtils $authenticationUtils,Request $request, EntityManagerInterface $entityManager, int $idUser, int $idForum, int $idformation, MailerInterface $mailer, ForumRepository $forumRepository): Response
     {
         $user = $entityManager->getRepository(User::class)->find($idUser);
         if (!$user) {
@@ -87,6 +88,9 @@ public function index(Request $request, PaginatorInterface $paginator, Publicati
         if (!$forum) {
             throw $this->createNotFoundException('Forum not found');
         } 
+        $userRepository = $entityManager->getRepository(User::class);
+        $uEmail = $user->getEmailAuthRecipient();
+        $user = $userRepository->findOneBy(['email' => $uEmail]);
 
         $publication = new Publication();
         $publication->setIduser($user);
