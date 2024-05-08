@@ -103,7 +103,7 @@ class FormationController extends AbstractController
         ->from('mailtrap@demomailtrap.com')
         ->to('yasminebousselmi5t@gmail.com')
         ->subject('Foramations disponible')
-        ->html("<p>Bonjour,</p><p>Les offres suivantes exipre dans moins de 2 jours,  : <a>$concatenatedNames</a></p>");
+        ->html("<p>Bonjour,</p><p>Les formations suivantes exipre dans moins de 2 jours,  : <a>$concatenatedNames</a></p>");
 
         // Send mail
         $mailer->send($email);}
