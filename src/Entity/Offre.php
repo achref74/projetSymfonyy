@@ -1,78 +1,74 @@
 <?php
 
 namespace App\Entity;
-
+use App\Repository\OffreRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Offre
- *
- * @ORM\Table(name="offre", indexes={@ORM\Index(name="idFormation", columns={"idFormation"})})
+ * @ORM\Table(name="offre")
  * @ORM\Entity
  */
+
+#[ORM\Entity(repositoryClass: OffreRepository::class)]
+
 class Offre
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="idOffre", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(name="idOffre", type="integer")
      */
-    private $idoffre;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "idOffre", type: "integer")]
+    private  $idOffre;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="prixOffre", type="float", precision=10, scale=0, nullable=false)
+     * @ORM\Column(name="prixOffre", type="float", precision=10, scale=0)
      */
-    private $prixoffre;
+    #[ORM\Column(name: "prixOffre", type: "float", precision: 10, scale: 0)]
+    private  $prixOffre;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255, nullable=false)
+     * @ORM\Column(name="description", type="string", length=255)
      */
-    private $description;
+    #[ORM\Column(name: "description", type: "string", length: 255)]
+    private  $description;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateD", type="date", nullable=false)
+     * @ORM\Column(name="dateD", type="date")
      */
-    private $dated;
+    #[ORM\Column(name: "dateD", type: "date")]
+    private  $dateD;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateF", type="date", nullable=false)
+     * @ORM\Column(name="dateF", type="date")
      */
-    private $datef;
+    #[ORM\Column(name: "dateF", type: "date")]
+    private  $dateF;
 
     /**
-     * @var \Formation
-     *
-     * @ORM\ManyToOne(targetEntity="Formation")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idFormation", referencedColumnName="idFormation")
-     * })
+     * @ORM\ManyToOne(targetEntity="App\Entity\Formation")
+     * @ORM\JoinColumn(name="idFormation", referencedColumnName="idFormation")
      */
-    private $idformation;
+    #[ORM\ManyToOne(targetEntity: Formation::class)]
+    #[ORM\JoinColumn(name: "idFormation", referencedColumnName: "idFormation")]
+    private  $formation;
 
-    public function getIdoffre(): ?int
+    public function getIdOffre(): ?int
     {
-        return $this->idoffre;
+        return $this->idOffre;
     }
 
-    public function getPrixoffre(): ?float
+    public function getPrixOffre(): ?float
     {
-        return $this->prixoffre;
+        return $this->prixOffre;
     }
 
-    public function setPrixoffre(float $prixoffre): static
+    public function setPrixOffre(float $prixOffre): self
     {
-        $this->prixoffre = $prixoffre;
+        $this->prixOffre = $prixOffre;
 
         return $this;
     }
@@ -82,48 +78,46 @@ class Offre
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getDated(): ?\DateTimeInterface
+    public function getDateD(): ?\DateTimeInterface
     {
-        return $this->dated;
+        return $this->dateD;
     }
 
-    public function setDated(\DateTimeInterface $dated): static
+    public function setDateD(\DateTimeInterface $dateD): self
     {
-        $this->dated = $dated;
+        $this->dateD = $dateD;
 
         return $this;
     }
 
-    public function getDatef(): ?\DateTimeInterface
+    public function getDateF(): ?\DateTimeInterface
     {
-        return $this->datef;
+        return $this->dateF;
     }
 
-    public function setDatef(\DateTimeInterface $datef): static
+    public function setDateF(\DateTimeInterface $dateF): self
     {
-        $this->datef = $datef;
+        $this->dateF = $dateF;
 
         return $this;
     }
 
-    public function getIdformation(): ?Formation
+    public function getFormation(): ?Formation
     {
-        return $this->idformation;
+        return $this->formation;
     }
 
-    public function setIdformation(?Formation $idformation): static
+    public function setFormation(?Formation $formation): self
     {
-        $this->idformation = $idformation;
+        $this->formation = $formation;
 
         return $this;
     }
-
-
 }
