@@ -1,74 +1,57 @@
 <?php
-
 namespace App\Entity;
 
+use App\Repository\ReclamationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert; // Use the correct namespace
 
-/**
- * Reclamation
- *
- * @ORM\Table(name="reclamation", indexes={@ORM\Index(name="id_user", columns={"id_user"}), @ORM\Index(name="id_formation", columns={"id_formation"}), @ORM\Index(name="id_outil", columns={"id_outil"})})
- * @ORM\Entity
- */
+
+#[ORM\Entity(repositoryClass: ReclamationRepository::class)]
 class Reclamation
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_reclamation", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idReclamation;
+    
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "id_reclamation", type: "integer")]
+    private $id_reclamation;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=500, nullable=false)
-     */
+    
+    #[ORM\Column(type: "string", length: 500)]
+    #[Assert\NotBlank(message: "Description must not be blank")]
+    #[Assert\Length(
+        max: 500,
+        maxMessage: "Description cannot be longer than {{ limit }} characters"
+    )]
     private $description;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date", type="datetime", nullable=false)
-     */
+   
+    #[ORM\Column(type: "datetime")]
     private $date;
 
-    /**
-     * @var \Formation
-     *
-     * @ORM\ManyToOne(targetEntity="Formation")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_formation", referencedColumnName="idFormation")
-     * })
-     */
-    private $idFormation;
+    
+    #[ORM\OneToOne(targetEntity: Formation::class)]
+    #[ORM\JoinColumn(name: "id_formation", referencedColumnName: "idFormation", nullable: false)]
+    #[Assert\NotNull(message: "Formation must not be null")]
+    private $formation;
 
-    /**
-     * @var \Outil
-     *
-     * @ORM\ManyToOne(targetEntity="Outil")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_outil", referencedColumnName="idoutils")
-     * })
-     */
-    private $idOutil;
+   
+    #[ORM\OneToOne(targetEntity: Outil::class)]
+    #[ORM\JoinColumn(name: "id_outil", referencedColumnName: "idoutils")]
+    #[Assert\NotNull(message: "Outil must not be null")]
+    private $outil;
 
-    /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_user", referencedColumnName="idUser")
-     * })
-     */
-    private $idUser;
+    
+    #[ORM\OneToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "id_user", referencedColumnName: "idUser")]
+    #[Assert\NotNull(message: "User must not be null")]
+    private $user;
 
-    public function getIdReclamation(): ?int
+    public function getId(): ?int
     {
-        return $this->idReclamation;
+        return $this->id_reclamation;
     }
 
     public function getDescription(): ?string
@@ -76,7 +59,7 @@ class Reclamation
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -88,48 +71,46 @@ class Reclamation
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getIdFormation(): ?Formation
+    public function getFormation(): ?Formation
     {
-        return $this->idFormation;
+        return $this->formation;
     }
 
-    public function setIdFormation(?Formation $idFormation): static
+    public function setFormation(?Formation $formation): self
     {
-        $this->idFormation = $idFormation;
+        $this->formation = $formation;
 
         return $this;
     }
 
-    public function getIdOutil(): ?Outil
+    public function getOutil(): ?Outil
     {
-        return $this->idOutil;
+        return $this->outil;
     }
 
-    public function setIdOutil(?Outil $idOutil): static
+    public function setOutil(?Outil $outil): self
     {
-        $this->idOutil = $idOutil;
+        $this->outil = $outil;
 
         return $this;
     }
 
-    public function getIdUser(): ?User
+    public function getUser(): ?User
     {
-        return $this->idUser;
+        return $this->user;
     }
 
-    public function setIdUser(?User $idUser): static
+    public function setUser(?User $user): self
     {
-        $this->idUser = $idUser;
+        $this->user =$user;
 
         return $this;
     }
-
-
 }

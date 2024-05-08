@@ -1,66 +1,76 @@
 <?php
 
 namespace App\Entity;
-
+use App\Repository\ReponseRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert; // Use the correct namespace
+
 
 /**
- * Reponse
- *
- * @ORM\Table(name="reponse", indexes={@ORM\Index(name="id_reclamation", columns={"id_reclamation"}), @ORM\Index(name="id_user", columns={"id_user"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ReponseRepository")
  */
+#[ORM\Entity(repositoryClass: ReponseRepository::class)]
 class Reponse
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_reponse", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
-    private $idReponse;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "id_reponse",type: "integer")]
+    private  $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255, nullable=false)
-     */
-    private $description;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date_reponse", type="datetime", nullable=false)
-     */
-    private $dateReponse;
-
-    /**
-     * @var \Reclamation
-     *
-     * @ORM\ManyToOne(targetEntity="Reclamation")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_reclamation", referencedColumnName="id_reclamation")
-     * })
-     */
-    private $idReclamation;
-
-    /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_user", referencedColumnName="idUser")
-     * })
-     */
-    private $idUser;
-
-    public function getIdReponse(): ?int
+    #[ORM\OneToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "id_user", referencedColumnName: "idUser")]
+    private  $user;
+    
+    // ...
+    
+    public function getUser(): ?User
     {
-        return $this->idReponse;
+        return $this->user;
+    }
+    
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+    
+        return $this;
     }
 
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank(message: "Description must not be blank")]
+
+    private  $description;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    #[ORM\Column(type: "datetime")]
+    private  $dateReponse;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Reclamation")
+     * @ORM\JoinColumn(nullable=false)
+     */
+   
+    #[ORM\OneToOne(targetEntity: Reclamation::class)]
+    #[ORM\JoinColumn(name: "id_reclamation", referencedColumnName: "id_reclamation")]
+    private  $reclamation;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+   
     public function getDescription(): ?string
     {
         return $this->description;
@@ -69,6 +79,7 @@ class Reponse
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -80,28 +91,19 @@ class Reponse
     public function setDateReponse(\DateTimeInterface $dateReponse): self
     {
         $this->dateReponse = $dateReponse;
+
         return $this;
     }
 
-    public function getIdReclamation(): ?Reclamation
+    public function getReclamation(): ?Reclamation
     {
-        return $this->idReclamation;
+        return $this->reclamation;
     }
 
-    public function setIdReclamation(?Reclamation $idReclamation): self
+    public function setReclamation(?Reclamation $reclamation): self
     {
-        $this->idReclamation = $idReclamation;
-        return $this;
-    }
+        $this->reclamation = $reclamation;
 
-    public function getIdUser(): ?User
-    {
-        return $this->idUser;
-    }
-
-    public function setIdUser(?User $idUser): self
-    {
-        $this->idUser = $idUser;
         return $this;
     }
 }
