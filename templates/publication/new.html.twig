@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <a href="{{ path('app_publication_index', {'idUser': idUser, 'idForum': idForum, 'idformation': idformation }) }}">back to list</a>
+        <a href="{{ path('app_publication_index', {'idUser': app.user.idUser, 'idForum': idForum, 'idformation': idformation }) }}">back to list</a>
 
 {{ parent() }}
 

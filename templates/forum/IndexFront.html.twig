@@ -45,7 +45,7 @@
                 <td style="color: white;">{{ forum.titre }}</td>
                 <td style="color: white;">{{ forum.datecreation ? forum.datecreation|date('Y-m-d H:i:s') : '' }}</td>
                 <td style="color: white;">{{ forum.description }}</td>
-                <td><a href="{{ path('app_publication_index', {'idUser': idUser, 'idForum': forum.idForum, 'idformation': idformation}) }}">go to pub</a></td>
+                <td><a href="{{ path('app_publication_index', {'idUser': app.user.idUser, 'idForum': forum.idForum, 'idformation': idformation}) }}">go to pub</a></td>
             </tr>
         {% else %}
             <tr><td colspan="4">No records found</td></tr>

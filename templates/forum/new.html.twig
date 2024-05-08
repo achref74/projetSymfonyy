@@ -7,5 +7,5 @@
 
     {{ include('forum/_form.html.twig') }}
 
-    <a href="{{ path('app_forum_index' , {'idformation': idformation,'idUser': idUser}) }}">back to list</a>
+    <a href="{{ path('app_forum_index' , {'idformation': idformation,'idUser': app.user.idUser}) }}">back to list</a>
 {% endblock %}

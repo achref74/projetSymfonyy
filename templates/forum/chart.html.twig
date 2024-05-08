@@ -36,7 +36,7 @@
     <h2>Titer des forums</h2>
     <canvas id="commentChart" width="400" height="200"></canvas>
     <div class="footer-link">
-        <a href="{{ path('app_forum_index' , {'idformation': idformation,'idUser': idUser}) }}">Retour à la liste des forums</a>
+        <a href="{{ path('app_forum_index' , {'idformation': idformation,'idUser': app.user.idUser}) }}">Retour à la liste des forums</a>
     </div>
 </div>
 {% endblock %}

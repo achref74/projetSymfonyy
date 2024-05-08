@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use App\Entity\Publication;
 use App\Entity\formation;
 use App\Entity\Forum;
@@ -52,7 +52,15 @@ public function index(Request $request, PaginatorInterface $paginator, Publicati
     public function indexBack(
         PublicationRepository $publicationRepository,int $idUser,int $idForum,int $idformation): Response {
         // Retrieve publications based on $idForum using findBy()
+
+        // $user = $token->getUser();
+
+        // // Get the user ID and role
+        // $idUser = $user->getIdUser();
+        // $user = $this->userRepository->find($userId);
+        
         $publications = $publicationRepository->findBy(['idforum' => $idForum]);
+
 
         return $this->render('publication/indexBack.html.twig', [
             'publications' => $publications,
