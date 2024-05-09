@@ -17,8 +17,9 @@
 
 <section class="meetings-page" id="meetings">
     <div class="container">
+    {% if app.user.getRole() == 1 %}
         <a href="{{ path('app_formation_add') }}" class="btn btn-primary" role="button">Add Formation</a>
-        
+    {% endif %}
         <div class="col" style="text-align: right; margin-top: -40px;">
             <a href="{{ path('display_offers') }}" class="btn btn-primary" role="button">Display Offers</a>
         </div>
@@ -68,7 +69,6 @@
         {% endfor %}
                                 </div>
                                 <a href="{{ path('formation_details', { id: formation.idFormation }) }}">
-                                    {# <img src="{{ formation.imageUrl }}" alt=""> #}
                                                                <video controls width="375" >
                                                 <source src="{{ asset(formation.imageurl) }}" type="video/mp4">
                                                 </video>
@@ -85,10 +85,12 @@
                                 </a>
                                 <p>{{ formation.description }}</p>
                             </div>
-                            <button href="{{ path('app_cours_new', { idFormation: formation.idFormation }) }}" class="btn btn-primary">new cours</button>
+                            {% if app.user.getRole() == 1 %}
+                            <a href="{{ path('app_cours_new', { idFormation: formation.idFormation }) }}" class="btn btn-primary">new cours</a>
                             <form action="{{ path('delete_formation', { id: formation.idFormation }) }}" method="post">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
+                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}

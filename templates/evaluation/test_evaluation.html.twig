@@ -5,11 +5,12 @@
 {% block body %}
 
 
-    {# <h1 class="mx-6 text-white">Question {{ currentQuestionIndex + 1 }} of {{ totalQuestions }}</h1> #}
+     <h1 class="mx-6 text-white">Question {{ currentQuestionIndex + 1 }} of {{ totalQuestions }}</h1> 
 
-        <h1 class="mx-6 text-white">Questions </h1>
-{% for q in questionss %}
-{% if q.evaluation.id == evaluationId and app.user.getRole() == 1 or app.user.getRole() == 2 %}
+        {% if app.user.getRole() == 1 or app.user.getRole() == 2 %}
+        {% for q in questionss %}
+{% if q.evaluation.id == evaluationId %}
+
 
     <div class="container d-flex align-items-stretch" style="text-align: center; background-image: url('{{ asset('uploads/q_bg.jpg') }}'); background-size: cover; background-position: center; height: 400px; width: 700px;">
      <div class="row w-100 py-5 px-5">
@@ -36,60 +37,72 @@
 
 	</div>
     </div>
+
         {% endif %}
-{% if q.evaluation.id == evaluationId and app.user.getRole() == 0%}
+                {% endfor %}
+                        {% endif %}
+
+
+{% if currentQuestion.evaluation.id == evaluationId and app.user.getRole() == 0%}
 
     <div class="container d-flex align-items-stretch" style="text-align: center; background-image: url('{{ asset('uploads/q_bg.jpg') }}'); background-size: cover; background-position: center; height: 400px; width: 700px;">
      <div class="row w-100 py-5 px-5">
 <div class="col-md-7 d-flex align-items-center justify-content-center">
-    <p class="text-white">{{ q.ressource }}</p>
+    <p class="text-white">{{ currentQuestion.ressource }}</p>
 </div>
 <div class="col-md-5 d-flex flex-column">
-    <div class="row flex-grow-1">
-        <div class="col-md-12 d-flex align-items-center">
-            <p class="text-white px-4">{{ q.choix1 }}</p>
-        </div>
+ <div class="row flex-grow-1">
+    <div class="col-md-12 d-flex align-items-center">
+        <input type="radio" name="choice" value="{{ currentQuestion.choix1 }}">
+        <p class="text-white px-4">{{ currentQuestion.choix1 }}</p>
     </div>
-    <div class="row flex-grow-1">
-        <div class="col-md-12 d-flex align-items-center">
-            <p class="text-white px-4">{{ q.choix2 }}</p>
-        </div>
+</div>
+<div class="row flex-grow-1">
+    <div class="col-md-12 d-flex align-items-center">
+        <input type="radio" name="choice" value="{{ currentQuestion.choix2 }}">
+        <p class="text-white px-4">{{ currentQuestion.choix2 }}</p>
     </div>
-    <div class="row flex-grow-1">
-        <div class="col-md-12 d-flex align-items-center">
-            <p class="text-white px-4">{{ q.choix3 }}</p>
-        </div>
+</div>
+<div class="row flex-grow-1">
+    <div class="col-md-12 d-flex align-items-center">
+        <input type="radio" name="choice" value="{{ currentQuestion.choix3 }}">
+        <p class="text-white px-4">{{ currentQuestion.choix3 }}</p>
     </div>
+</div>
+
 </div>
 
 	</div>
     </div>
-{# <div class="d-flex justify-content-center">
+ <div class="d-flex justify-content-center">
 {% if currentQuestionIndex != 0 %}
-    <a href="{{ path('evaluation_questions', { 'evaluationId': evaluationId, 'index': currentQuestionIndex - 1 }) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light mx-1">Back</a>
+    <a href="{{ path('evaluation_questions', { 'evaluationId': evaluationId, 'index': currentQuestionIndex - 1, 'coursId': cours.id }) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light mx-1">Back</a>
 {% endif %}
+{% if currentQuestionIndex < totalQuestions - 1 %}
 
-    <a href="{{ path('evaluation_questions', { 'evaluationId': evaluationId, 'index': currentQuestionIndex + 1 }) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light mx-1">Next</a>
-</div>  #}
+            <a href="{{ path('evaluation_questions', { 'evaluationId': evaluationId, 'index': currentQuestionIndex + 1, 'coursId': cours.id, 'selectedValue': 'placeholder' }) }}" id="nextButton" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light mx-1">Next</a>
+{% endif %}
+</div>  
 
         {% endif %}
 
-    {% endfor %}
 
     
-{# <div class="d-flex justify-content-center">
-{% if currentQuestionIndex != 0 %}
-    <a href="{{ path('evaluation_questions', { 'evaluationId': evaluationId, 'index': currentQuestionIndex - 1 }) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light mx-1">Back</a>
-{% endif %}
-
-    <a href="{{ path('evaluation_questions', { 'evaluationId': evaluationId, 'index': currentQuestionIndex + 1 }) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light mx-1">Next</a>
-</div>  #}
-{% if currentQuestionIndex <= totalQuestions %}
-    <a href="{{ path('resultat', { 'evaluationId': evaluationId, 'note': note }) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light mx-1">Resultat</a>
+{% if currentQuestionIndex == totalQuestions-1 %}
+    <a href="{{ path('resultat', { 'id': evaluationId, 'note': note }) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light mx-1">Resultat</a>
 
 {% endif %}
 
 
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const nextButton = document.getElementById("nextButton");
+        nextButton.addEventListener("click", function() {
+            const selectedValue = document.querySelector('input[name="choice"]:checked').value;
+            const nextUrl = nextButton.href.replace('placeholder', selectedValue);
+            nextButton.href = nextUrl;
+        });
+    });
+</script>
 
 {% endblock %}

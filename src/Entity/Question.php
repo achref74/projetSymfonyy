@@ -11,7 +11,7 @@ class Question
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name:"id_q",type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -39,7 +39,7 @@ class Question
     private string $crx;
 
     #[ORM\ManyToOne(targetEntity: Evaluation::class, inversedBy: 'questions')]
-    #[ORM\JoinColumn(name: 'id_e', referencedColumnName: 'id')] 
+    #[ORM\JoinColumn(name: 'id_e', referencedColumnName: 'id_e')] 
     private Evaluation $evaluation;
 
     public function getId(): ?int

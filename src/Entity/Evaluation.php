@@ -25,7 +25,6 @@ class Evaluation
     #[ORM\JoinColumn(name: 'id_cours', referencedColumnName: 'id_cours', nullable: false)]
     private ?Cours $cours;
     
-    
 
     #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'evaluation', cascade: ['persist', 'remove'])]
     private Collection $questions;

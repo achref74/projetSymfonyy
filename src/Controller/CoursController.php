@@ -22,7 +22,57 @@ class CoursController extends AbstractController
             'cours' => $coursRepository->findAll(),
         ]);
     }
+    #[Route('/newc', name: 'app_cours_newc', methods: ['GET', 'POST'])]
+    public function newc(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $cour = new Cours();
+        $form = $this->createForm(Cours1Type::class, $cour);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $ressourceFile = $form->get('ressource')->getData();
+            $imageFile = $form->get('image')->getData();
+
+            if ($ressourceFile) {
+                $ressourceFileName = uniqid() . '.' . $ressourceFile->guessExtension();
+
+                try {
+                    $ressourceFile->move(
+                        $this->getParameter('ressource_directory'),
+                        $ressourceFileName
+                    );
+                } catch (FileException $e) {
+                    // Handle error
+                }
+
+                $cour->setRessource($ressourceFileName);
+            }
+
+            if ($imageFile) {
+                $imageFileName = uniqid() . '.' . $imageFile->guessExtension();
+
+                try {
+                    $imageFile->move(
+                        $this->getParameter('video_directory'),
+                        $imageFileName
+                    );
+                } catch (FileException $e) {
+                    // Handle error
+                }
+
+                $cour->setImage($imageFileName);
+            }
+            $entityManager->persist($cour);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_cours_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('cours/new.html.twig', [
+            'cour' => $cour,
+            'form' => $form,
+        ]);
+    }
     #[Route('/new/{idFormation}', name: 'app_cours_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager,int $idFormation): Response
     {
