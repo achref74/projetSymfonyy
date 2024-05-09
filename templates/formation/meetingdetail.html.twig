@@ -16,11 +16,13 @@
 {% block body2 %}
 <section class="meetings-page" id="meetings">
     <div class="container">
-        
+            {% if app.user.getRole() == 1 %}
+
         <a href="{{ path('editFormation', {'id': formation.idFormation}) }}" class="btn btn-primary" role="button">Edit Formation</a>
         <div class="col" style="text-align: right; margin-top: -40px;">
         <a href="{{ path('create_offer', { id: formation.idFormation }) }}" class="btn btn-primary">Add Offer</a>
     </div>
+    {% endif %}
 
 
         <div class="row">

@@ -70,21 +70,34 @@ https://templatemo.com/tm-569-edu-meeting
                       <!-- ***** Logo End ***** -->
                       <!-- ***** Menu Start ***** -->
                       <ul class="nav">
-                          <li class="scroll-to-section"><a href="{{ path('app_formation_index') }}" class="active">Home</a></li>
 
-                          <li><a href="{{ path('app_formation_index2') }}">Fomation</a></li>
+ <li class="scroll-to-section"><a href="{{ path('user_home_front') }}" class="active">Home</a></li>
+                            <li class="has-sub"><a>{{ app.user.getEmail() }}
 
-                          <li class="scroll-to-section"><a href="#apply">Apply Now</a></li>
-                          <li class="has-sub">
-                              <a href="javascript:void(0)">Pages</a>
-                              <ul class="sub-menu">
-                                  <li><a href="meetings.html">Upcoming Meetings</a></li>
-                                  <li><a href="meeting-details.html">Meeting Details</a></li>
-                              </ul>
-                          </li>
-                          <li class="scroll-to-section"><a href="#courses">Courses</a></li> 
-                          <li class="scroll-to-section"><a href="#contact">Contact Us</a></li> 
-                      </ul>        
+                            </a>
+                                
+                                <ul class="sub-menu">                            
+
+                                    <li><a href="{{ path('app_user_show', {'idUser': app.user.getIdUser()}) }}" >Mon Profil</a></li>
+                                    <li><a href="{{ path('modify_password') }}">Modifier le mot de passe</a></li>
+                                    <li>
+                                                              <li><a href="{{ path('app_formation_index2') }}">Fomation</a></li>
+
+                                    {% if app.user.getRole() == 1 %}
+    <a href="{{ path('app_user_edit_formateur', {'idUser': app.user.getIdUser()}) }}">Modifier</a>
+{% elseif app.user.getRole() == 0 %}
+    <a href="{{ path('app_user_edit_client', {'idUser': app.user.getIdUser()}) }}">Modifer</a>
+{% endif %}</li>
+                                </ul>
+                            </li>
+                                                        <li class="scroll-to-section"><a href="{{ path('app_cours_index') }}" class="active">Cours</a></li>
+                                                        <li class="scroll-to-section"><a href="{{ path('Front_forum_index', {'idUser': app.user.getIdUser(),'idformation': 2}) }}" class="active">Forums</a></li>
+
+                                                        <li class="scroll-to-section"><a href="{{ path('app_formation_index2') }}" class="active">Formation</a></li>
+
+                            <li class="scroll-to-section"><a href="{{ path('app_logout') }}" class="active">Logout</a></li>
+
+                        </ul>       
                       <a class='menu-trigger'>
                           <span>Menu</span>
                       </a>

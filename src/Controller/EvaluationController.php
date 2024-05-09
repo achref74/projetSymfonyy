@@ -14,11 +14,15 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Question;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\QuestionRepository;
+use Twilio\Rest\Client;
 
 
 #[Route('/evaluation')]
 class EvaluationController extends AbstractController
 {
+
+  
+
     #[Route('/', name: 'app_evaluation_index', methods: ['GET'])]
     public function index(EvaluationRepository $evaluationRepository): Response
     {
@@ -37,7 +41,6 @@ class EvaluationController extends AbstractController
         if (!$cours) {
             throw $this->createNotFoundException('No cours found for id ' . $coursId);
         }
-    
         $evaluation = $evaluationRepository->findOneBy(
             ['cours' => $cours], // Filter by the specific course
             ['id' => 'DESC'] // Order by evaluation ID in descending order
@@ -47,11 +50,28 @@ class EvaluationController extends AbstractController
         }
          $questions = $questionRepository->findByEvaluationAndCourseIds($coursId);
     
-        // $questions = $questionRepository->findAllByEvaluationId($evaluation->getId());
         $totalQuestions = count($questions);
     
         $currentQuestionIndex = $request->query->getInt('index', 0);
         $currentQuestion = $questions[$currentQuestionIndex] ?? null;
+        if($currentQuestionIndex ==0){
+            $note =0;
+        }
+        $note = rand(0, 20);
+
+        $selectedValue = $request->query->get('selectedValue');
+        if ($selectedValue==$currentQuestion->getChoix1() && "1" == $currentQuestion->getCrx()) {
+            $note +=$currentQuestion->getPoint();
+            if ($selectedValue==$currentQuestion->getChoix2() && "2" == $currentQuestion->getCrx()) {
+                $note +=$currentQuestion->getPoint();
+        }elseif ($selectedValue==$currentQuestion->getChoix3() && "3" == $currentQuestion->getCrx()) {
+            $note +=$currentQuestion->getPoint();
+
+        }}
+
+
+    
+       
     
         return $this->render('evaluation/test_evaluation.html.twig', [
             'currentQuestion' => $currentQuestion,
@@ -59,22 +79,27 @@ class EvaluationController extends AbstractController
             'totalQuestions' => $totalQuestions,
             'evaluationId' => $evaluation->getId(),
             'questionss' => $questions,
+            'cours' => $cours,
+            'note' => $note
+
+
         ]);
     }
     
     #[Route('/resultat/{id}/{note}', name: 'resultat', methods: ['GET'])]
     public function resultat(Request $request, int $id, int $note): Response
     {
-
+    
+ 
     
         $twilio = new Client($twilioSid, $twilioToken);
     
         // Send SMS
         $message = $twilio->messages
             ->create(
-                '+21653946055', // to
+                '+21622844480', // to
                 [
-                    "from" => "+14846015242",
+                    "from" => "+14328474956",
                     "body" => "votre note : " . $note
                 ]
             );

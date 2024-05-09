@@ -6,7 +6,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
 {% if app.user.getRole() != 2 %}
-                    <a class="btn btn-primary btn-round mx-5 mt-5" href="{{ path('app_cours_new') }}" class="btn btn-primary">New</a>
+                    <a class="btn btn-primary btn-round mx-5 mt-5" href="{{ path('app_cours_newc') }}" class="btn btn-primary">New</a>
 {% endif %}
     <div class="container profile-page">
         <div class="col-xl-12 col-lg-12 col-md-12">
@@ -30,6 +30,7 @@
                 <li class="my-2"><strong>Resources:</strong> {{ cour.ressource }}</li>
             </ul>
             <div class="my-2">
+            
                 <a class="btn btn-primary btn-round" href="{{ path('app_cours_show', {'id': cour.id}) }}" >Show</a>
                 {% if app.user.getRole() == 1 %}
 
@@ -38,7 +39,10 @@
                     Edit Evaluation
                 </a>
                 {% endif %}
+                {% if app.user.getRole() == 0 %}
+
                 <a href="{{ path('evaluation_questions', {'coursId': cour.id}) }}" class="btn btn-primary">Test</a>
+                {% endif %}
 
 
             </div>

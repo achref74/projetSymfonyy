@@ -120,15 +120,16 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     function sendOTPviaSMS(string $phoneNumber, string $otp, TokenInterface $token): void
 {
     // Initialize Twilio client
-   
+
+
     $twilio = new Client($twilioSid, $twilioToken);
 
     // Send SMS
     $message = $twilio->messages
         ->create(
-            '+21653946055', // to
+            '+21622844480', // to
             [
-                "from" => "+14846015242",
+                "from" => "+14328474956",
                 "body" => "Your OTP is: " . $otp
             ]
         );
