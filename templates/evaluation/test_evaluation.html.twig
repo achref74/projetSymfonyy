@@ -84,8 +84,10 @@
 
     <a href="{{ path('evaluation_questions', { 'evaluationId': evaluationId, 'index': currentQuestionIndex + 1 }) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light mx-1">Next</a>
 </div>  #}
+{% if currentQuestionIndex <= totalQuestions %}
+    <a href="{{ path('resultat', { 'evaluationId': evaluationId, 'note': note }) }}" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light mx-1">Resultat</a>
 
-
+{% endif %}
 
 
 

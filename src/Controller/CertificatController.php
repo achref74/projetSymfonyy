@@ -26,12 +26,12 @@ class CertificatController extends AbstractController
         ]);
     }
 
-    #[Route('/new/{idFormation}', name: 'app_certificat_new_formation', methods: ['GET', 'POST'])]
+    #[Route('/new/{idFormation}/', name: 'app_certificat_new_formation', methods: ['GET', 'POST'])]
     public function new_certif_formation(Request $request, EntityManagerInterface $entityManager,$idFormation,Pdf $knpSnappyPdf): Response
     {
              // Fetch the Formation entity by its ID
              $formation = $entityManager->getRepository(Formation::class)->find($idFormation);
-
+            
              // Check if Formation exists
              if (!$formation) {
                  throw $this->createNotFoundException('Formation not found');

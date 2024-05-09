@@ -39,7 +39,7 @@ class Question
     private string $crx;
 
     #[ORM\ManyToOne(targetEntity: Evaluation::class, inversedBy: 'questions')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: 'id_e', referencedColumnName: 'id')] 
     private Evaluation $evaluation;
 
     public function getId(): ?int

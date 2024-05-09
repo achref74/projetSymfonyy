@@ -59,7 +59,7 @@ class User implements UserInterface
     #[ORM\Column(length: 255)]
     private ?string $specialite = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 180,name:"reset_token")]
     private ?string $reset_token;
 
     #[ORM\Column(name: "niveauAcademique",length: 255)]

@@ -23,10 +23,11 @@ class CoursController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_cours_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{idFormation}', name: 'app_cours_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager,int $idFormation): Response
     {
         $cour = new Cours();
+        $cour -> setIdFormation($idFormation);
         $form = $this->createForm(Cours1Type::class, $cour);
         $form->handleRequest($request);
 
@@ -63,7 +64,6 @@ class CoursController extends AbstractController
 
                 $cour->setImage($imageFileName);
             }
-            
             $entityManager->persist($cour);
             $entityManager->flush();
 

@@ -42,11 +42,22 @@ class Cours
     #[ORM\OneToMany(mappedBy: 'cours', targetEntity: Evaluation::class, cascade: ['persist', 'remove'])]
     private Collection $evaluations;
 
+    
     public function __construct()
     {
         $this->evaluations = new ArrayCollection();
     }
+    public function getIdFormation(): ?int
+    {
+        return $this->idFormation;
+    }
 
+    public function setIdFormation(?int $idFormation): self
+    {
+        $this->idFormation = $idFormation;
+
+        return $this;
+    }
     public function getId(): ?int
     {
         return $this->id;

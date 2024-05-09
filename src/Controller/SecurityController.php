@@ -117,6 +117,8 @@ class SecurityController extends AbstractController
      */
     public function resetpassword(Request $request,string $token, UserPasswordEncoderInterface  $passwordEncoder,UserRepository $userRepository)
     {
+
+
         $user = $userRepository->findOneBy(['reset_token'=>$token]);
 
         if($user == null ) {

@@ -28,7 +28,8 @@ class EvaluationController extends AbstractController
     }
 
     #[Route('/{coursId}/questions', name: 'evaluation_questions', methods: ['GET'])]
-    public function questions(QuestionRepository $questionRepository, Request $request, int $coursId): Response
+    public function questions(QuestionRepository $questionRepository, Request $request, int $coursId,
+    EvaluationRepository $evaluationRepository): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $cours = $entityManager->getRepository(Cours::class)->find($coursId);
@@ -37,14 +38,14 @@ class EvaluationController extends AbstractController
             throw $this->createNotFoundException('No cours found for id ' . $coursId);
         }
     
-        $evaluation = $entityManager->getRepository(Evaluation::class)->findOneBy(
+        $evaluation = $evaluationRepository->findOneBy(
             ['cours' => $cours], // Filter by the specific course
             ['id' => 'DESC'] // Order by evaluation ID in descending order
         );    
         if (!$evaluation) {
             throw $this->createNotFoundException('No evaluation found for cours_id ' . $coursId);
         }
-        $questions = $questionRepository->findByEvaluationAndCourseIds($coursId);
+         $questions = $questionRepository->findByEvaluationAndCourseIds($coursId);
     
         // $questions = $questionRepository->findAllByEvaluationId($evaluation->getId());
         $totalQuestions = count($questions);
@@ -61,6 +62,29 @@ class EvaluationController extends AbstractController
         ]);
     }
     
+    #[Route('/resultat/{id}/{note}', name: 'resultat', methods: ['GET'])]
+    public function resultat(Request $request, int $id, int $note): Response
+    {
+
+    
+        $twilio = new Client($twilioSid, $twilioToken);
+    
+        // Send SMS
+        $message = $twilio->messages
+            ->create(
+                '+21653946055', // to
+                [
+                    "from" => "+14846015242",
+                    "body" => "votre note : " . $note
+                ]
+            );
+    
+        return $this->render('evaluation/resultat.html.twig', [
+            'note' => $note,
+        ]);
+    }
+
+
 
     #[Route('/new/{id}', name: 'app_evaluation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, int $id): Response

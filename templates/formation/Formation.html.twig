@@ -85,7 +85,7 @@
                                 </a>
                                 <p>{{ formation.description }}</p>
                             </div>
-                            <!-- Delete Button -->
+                            <button href="{{ path('app_cours_new', { idFormation: formation.idFormation }) }}" class="btn btn-primary">new cours</button>
                             <form action="{{ path('delete_formation', { id: formation.idFormation }) }}" method="post">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>

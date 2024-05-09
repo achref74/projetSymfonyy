@@ -10,9 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 class Evaluation
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(type: "integer",name: "id_e" )]
     private ?int $id = null;
+    
 
     #[ORM\Column(type: 'integer')]
     private int $note;
@@ -21,8 +22,10 @@ class Evaluation
     private string $nom;
 
     #[ORM\ManyToOne(targetEntity: Cours::class, inversedBy: 'evaluations')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: 'id_cours', referencedColumnName: 'id_cours', nullable: false)]
     private ?Cours $cours;
+    
+    
 
     #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'evaluation', cascade: ['persist', 'remove'])]
     private Collection $questions;
