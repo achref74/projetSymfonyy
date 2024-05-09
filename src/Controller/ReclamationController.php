@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Reclamation;
 use App\Form\ReclamationType;
 use App\Repository\ReclamationRepository;
+use App\Entity\User;
+
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Service\TwilioService;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -84,12 +87,21 @@ public function index(Request $request, ReclamationRepository $reclamationReposi
     ]);
 }*/
 
-    #[Route('/new', name: 'app_reclamation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{idUser}', name: 'app_reclamation_new', methods: ['GET', 'POST'])]
+    public function new(AuthenticationUtils $authenticationUtils,Request $request, EntityManagerInterface $entityManager, int $idUser): Response
     {   $twilioService = new TwilioService();
+        $user = $entityManager->getRepository(User::class)->find($idUser);
+        if (!$user) {
+            throw $this->createNotFoundException('User not found');
+        }
+        $userRepository = $entityManager->getRepository(User::class);
+        $uEmail = $user->getEmailAuthRecipient();
+        $user = $userRepository->findOneBy(['email' => $uEmail]);
         $reclamation = new Reclamation();
+        $reclamation->setUser($user);
         $form = $this->createForm(ReclamationType::class, $reclamation);
         $form->handleRequest($request);
+
 
         // $token = $this->tokenStorage->getToken();
         // $connecteduser = $token->getUser();
@@ -110,7 +122,7 @@ public function index(Request $request, ReclamationRepository $reclamationReposi
             if ($this->containsBadWords($reclamationText, $badWords)) {
                 // Return a response indicating that the reclamation contains bad words
                 $this->addFlash('error', 'Your reclamation contains inappropriate language. Please revise.');
-                return $this->redirectToRoute('app_reclamation_new');
+                return $this->redirectToRoute('app_reclamation_new',['idUser' => $idUser,]);
             }
     
             $entityManager->persist($reclamation);

@@ -12,16 +12,16 @@
             <th style="color:#009CFF;">Id</th>
             <th style="color:#009CFF;">total</th>
             <th style="color:#009CFF;">date</th>        
-             <th style="color:#009CFF;">Nom de l outil</th>
+    
         </tr>
     </thead>
     <tbody>
-        {% for achats in achats %}
+        {% for achat in achats %}
             <tr>
-                <td>{{ achats.id }}</td>
-                <td>{{ achats.total }}</td>
-               <td>{{ achats.date ? achats.date|date('Y-m-d') : '' }}</td>
-                 <td>{{ achats.outil.nom }}</td>
+                <td>{{ achat.id }}</td>
+                <td>{{ achat.total }}</td>
+               <td>{{ achat.date ? achat.date|date('Y-m-d') : '' }}</td>
+               
             </tr>  
         {% endfor %}
     </tbody>

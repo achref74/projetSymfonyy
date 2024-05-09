@@ -33,7 +33,7 @@
                                     </li>
                                 </ul>
                                 <div class="main-button-red">
-                                    <a href="{{ path('app_achat_new', {'outilId': outil.id, 'total': outil.prix}) }}">Acheter</a>
+                                    <a href="{{ path('app_achat_new', {'outilId': outil.id, 'total': outil.prix,'idUser': app.user.idUser}) }}">Acheter</a>
                                 </div>
                             </div>
                         </div>

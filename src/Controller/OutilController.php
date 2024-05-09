@@ -86,19 +86,22 @@ class OutilController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('image')->getData();
 
+            // Vérifier s'il y a un fichier uploadé
             if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+                // Définir un nouveau nom de fichier pour éviter les collisions
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
 
+                // Déplacer le fichier dans le dossier public/uploads
                 try {
                     $imageFile->move(
-                        $this->getParameter('image_directory'),
+                        $this->getParameter('uploads_directory'),
                         $newFilename
                     );
                 } catch (FileException $e) {
+                    // Gérer l'erreur, par exemple, afficher un message ou rediriger avec une erreur
                 }
 
+                // Mettre à jour le champ image de la publication avec le nom du fichier
                 $outil->setImage($newFilename);
             }
             $entityManager->persist($outil);
@@ -128,7 +131,30 @@ class OutilController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('image')->getData();
+
+            // Vérifier s'il y a un fichier uploadé
+            if ($imageFile) {
+                // Définir un nouveau nom de fichier pour éviter les collisions
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+
+                // Déplacer le fichier dans le dossier public/uploads
+                try {
+                    $imageFile->move(
+                        $this->getParameter('uploads_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Gérer l'erreur, par exemple, afficher un message ou rediriger avec une erreur
+                }
+
+                // Mettre à jour le champ image de la publication avec le nom du fichier
+                $outil->setImage($newFilename);
+            }
+
+           
             $entityManager->flush();
+            
 
             return $this->redirectToRoute('app_outil_index', [], Response::HTTP_SEE_OTHER);
         }
