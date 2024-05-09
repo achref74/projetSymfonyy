@@ -4,7 +4,9 @@ namespace App\Controller;
 use App\Entity\PdfGeneratorService;
 use App\Entity\Achat;
 use App\Entity\Outil;
+use App\Entity\User;
 use App\Form\AchatType;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Repository\AchatRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,10 +39,19 @@ class AchatController extends AbstractController
 
 
 
-    #[Route('/new', name: 'app_achat_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{idUser}', name: 'app_achat_new', methods: ['GET', 'POST'])]
+    public function new(AuthenticationUtils $authenticationUtils,Request $request, EntityManagerInterface $entityManager, int $idUser): Response
     {
+        $user = $entityManager->getRepository(User::class)->find($idUser);
+        if (!$user) {
+            throw $this->createNotFoundException('User not found');
+        }
+        $userRepository = $entityManager->getRepository(User::class);
+        $uEmail = $user->getEmailAuthRecipient();
+        $user = $userRepository->findOneBy(['email' => $uEmail]);
+
         $achat = new Achat();
+        $achat->setIduser($user);
         $outilId = $request->query->get('outilId');  // Get outilId from query parameters
         $total = $request->query->get('total');  // Get total from query parameters
 
@@ -108,7 +119,7 @@ class AchatController extends AbstractController
     }
     #[Route('/pdf/reservation', name: 'generator_service_reservation')]
     public function pdfEvenement(): Response
-    {
+    { 
         $achats= $this->getDoctrine()
             ->getRepository(Achat::class)
             ->findAll();
@@ -123,6 +134,6 @@ class AchatController extends AbstractController
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="document.pdf"',
         ]);
-
-}}
+    }
+}
 

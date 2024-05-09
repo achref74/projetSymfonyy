@@ -25,10 +25,21 @@ class Achat
     #[Assert\Type(\DateTimeInterface::class)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'achats')]
+  //  #[ORM\ManyToOne(inversedBy: 'achats')]
     #[ORM\JoinColumn(name: "idOutil", referencedColumnName: "id")]
     #[Assert\NotNull(message: "The associated tool must be provided.")]
     private ?Outil $outil = null;
+
+    
+   
+    #[ORM\JoinColumn(name: "idFormation", referencedColumnName: "idFormation")]
+    #[Assert\NotNull(message: "The associated tool must be provided.")]
+    private ?Formation $Formation = null;
+    
+    #[ORM\ManyToOne(targetEntity: User::class)] // Spécifiez targetEntity pour la relation ManyToOne
+    #[ORM\JoinColumn(name: "idUser", referencedColumnName: "idUser", nullable: false, columnDefinition: "integer")]
+
+    private ?User $iduser = null; 
 
     public function getId(): ?int
     {
@@ -70,4 +81,27 @@ class Achat
 
         return $this;
     }
+    public function getFormation(): ?Formation
+    {
+        return $this->Formation;
+    }
+
+    public function setFormation(?Formation $Formation): self
+    {
+        $this->Formation = $Formation;
+
+        return $this;
+    }
+    public function getIduser(): ?User
+    {
+        return $this->iduser;
+    }
+
+    public function setIduser(?User $iduser): static
+    {
+        $this->iduser = $iduser;
+
+        return $this;
+    }
+
 }

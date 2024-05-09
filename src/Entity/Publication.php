@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\AuthorRepository;
+use App\Repository\AuthorRepository; 
 use App\Repository\PublicationRepository;
 
 #[ORM\Entity(repositoryClass: PublicationRepository::class)]
@@ -34,7 +34,7 @@ class Publication
 
     #[ORM\ManyToOne(targetEntity: User::class)] // Spécifiez targetEntity pour la relation ManyToOne
     #[ORM\JoinColumn(name: "idUser", referencedColumnName: "idUser", nullable: false)]
-    private ?User $iduser = null;
+    private ?User $iduser = null;   
 
     public function getIdp(): ?int
     {

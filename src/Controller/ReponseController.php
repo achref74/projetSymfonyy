@@ -4,7 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Reponse;
 use App\Entity\Reclamation;
-
+use App\Entity\User;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Form\ReponseType;
 use App\Repository\ReclamationRepository;
 use App\Repository\ReponseRepository;
@@ -34,14 +35,22 @@ class ReponseController extends AbstractController
         ]);
     }
 
-    #[Route('/new/{reclamationId}', name: 'app_reponse_new', methods: ['GET', 'POST'])]
-public function new(Request $request, EntityManagerInterface $entityManager, $reclamationId): Response
+    #[Route('/new/{reclamationId}/{idUser}', name: 'app_reponse_new', methods: ['GET', 'POST'])]
+public function new(AuthenticationUtils $authenticationUtils,Request $request, EntityManagerInterface $entityManager, $reclamationId, int $idUser): Response
 {
+    $user = $entityManager->getRepository(User::class)->find($idUser);
+        if (!$user) {
+            throw $this->createNotFoundException('User not found');
+        }
+        $userRepository = $entityManager->getRepository(User::class);
+        $uEmail = $user->getEmailAuthRecipient();
+        $user = $userRepository->findOneBy(['email' => $uEmail]);
     // Fetch the Reclamation entity by its ID
     $reclamation = $this->getDoctrine()->getRepository(Reclamation::class)->find($reclamationId);
 
     // Create a new Reponse entity
     $reponse = new Reponse();
+    $reponse->setuser($user);
     $reponse->setReclamation($reclamation); // Set the Reclamation entity
 
     $form = $this->createForm(ReponseType::class, $reponse);

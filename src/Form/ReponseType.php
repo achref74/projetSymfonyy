@@ -17,15 +17,9 @@ class ReponseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('user', EntityType::class, [
-            'class' => User::class,
-            'choice_label' => 'idUser',
-        ])
+    
             ->add('description')
-            ->add('reclamation', EntityType::class, [
-                'class' => Reclamation::class,
-                'choice_label' => 'description',
-            ])
+            
         ;
     }
 

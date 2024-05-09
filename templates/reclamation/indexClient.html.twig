@@ -17,7 +17,7 @@
             <p class="card-title">Date: {{ reclamation.date ? reclamation.date|date('Y-m-d H:i:s') : '' }}</p>
             <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}" class="btn btn-primary">Show</a>
             <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}" class="btn btn-warning">Edit</a>
-            <a href="{{ path('app_reponse_new', {'reclamationId': reclamation.id}) }}" class="btn btn-success">Add Response</a>
+            <a href="{{ path('app_reponse_new', {'reclamationId': reclamation.id,'idUser': app.user.idUser}) }}" class="btn btn-success">Add Response</a>
             <a class ="btn btn-danger">{{ include('reclamation/_delete_form.html.twig') }}</a>
         </div>
     </div>
@@ -28,7 +28,7 @@
     </div>
     
 
-    <a href="{{ path('app_reclamation_new') }}" class="btn btn-success">Create new</a>
+    <a href="{{ path('app_reclamation_new',{'idUser': app.user.idUser}) }}" class="btn btn-success">Create new</a>
 
   
 
